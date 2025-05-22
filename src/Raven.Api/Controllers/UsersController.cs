@@ -4,9 +4,9 @@ namespace Raven.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class OtpsController : ControllerBase
+public class UsersController : ControllerBase
 {
-    public OtpsController()
+    public UsersController()
     {
     }
 }
