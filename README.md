@@ -35,7 +35,7 @@ Raven was implemented using the following technologies and libraries:
 * **Backend Frameworks:** [.NET Core & ASP.NET Core](https://dotnet.microsoft.com/download/dotnet-core)
 * **REST API:** [ASP.NET Core Web API](https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-9.0)
 * **gRPC:** [ASP.NET Core gRPC (Grpc.AspNetCore NuGet package)](https://github.com/grpc/grpc-dotnet)
-* **API Documentation (REST):** [Microsoft.OpenAPI](https://github.com/microsoft/OpenAPI.NET), [Scalar](https://github.com/scalar/scalar/blob/main/integrations/aspnetcore/README.md).
+* **API Documentation (REST):** [Microsoft.OpenAPI](https://github.com/microsoft/OpenAPI.NET) & [Scalar](https://github.com/scalar/scalar/blob/main/integrations/aspnetcore/README.md).
 * **Dependency Injection:** [Microsoft.Extensions.DependencyInjection](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection)
 * **Configuration:** [ASP.NET Core configuration system](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-9.0)
 * **Input Validation:** [FluentValidation](https://github.com/FluentValidation/FluentValidation)
