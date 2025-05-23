@@ -32,5 +32,10 @@
         /// Gets or sets the phone number associated with the user.
         /// </summary>
         public required string PhoneNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date and time when the user was created.
+        /// </summary>
+        public DateTime CreatedAt { get; set; }
     }
 }

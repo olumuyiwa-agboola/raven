@@ -6,7 +6,7 @@ namespace Raven.Core.Abstractions.Services
     /// Defines methods for generating and validating one-time passwords (OTPs) for user authentication and/or authorization.
     /// </summary>
     /// <remarks>This service provides functionality to generate OTPs for a specific user and validate them.</remarks>
-    public interface IOtpService
+    public interface IOtpsService
     {
         /// <summary>
         /// Generates a one-time password (OTP) for the specified user.

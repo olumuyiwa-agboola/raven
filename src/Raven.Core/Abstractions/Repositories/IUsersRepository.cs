@@ -7,7 +7,7 @@ namespace Raven.Core.Abstractions.Repositories
     /// </summary>
     /// <remarks>This interface provides methods for adding, updating, deleting, and retrieving records of OTP users. 
     /// Implementations of this interface are responsible for handling the persistence and retrieval of <see cref="OtpUser"/> objects.</remarks>
-    public interface IUserRepository
+    public interface IUsersRepository
     {
         /// <summary>
         /// Adds a new OTP (One-Time Password) user to the system by saving the details of the user in a database.

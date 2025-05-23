@@ -8,7 +8,7 @@ namespace Raven.Core.Abstractions.Repositories
     /// <remarks>This interface provides functionality to save OTPs, update their status, track the number of 
     /// validation attempts, and OTP-related data for a specific user. Implementations of this interface are
     /// responsible for handling the persistence and retrieval of OTP-related data.</remarks>
-    public interface IOtpRepository
+    public interface IOtpsRepository
     {
         /// <summary>
         /// Saves the specified OTP (One-Time Password) to the database.

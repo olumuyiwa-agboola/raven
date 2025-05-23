@@ -42,7 +42,7 @@ Raven was implemented using the following technologies and libraries:
 * **Logging:** [Serilog](https://serilog.net/)
 * **Testing:** [xUnit](https://xunit.net/)
 * **Data Access:** [Dapper](https://github.com/DapperLib/Dapper)
-* **Database**: [MySQL](https://dev.mysql.com/) (not tightly coupled)
+* **Database**: [SQL Server 2022](https://www.microsoft.com/en-us/sql-server/sql-server-2022) (not tightly coupled)
 
 ## License
 
