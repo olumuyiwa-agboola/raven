@@ -1,4 +1,6 @@
 ﻿using Raven.Core.Models;
+using Raven.Core.Factories;
+using Microsoft.AspNetCore.Mvc;
 using Raven.Core.Abstractions.Services;
 using Raven.Core.Abstractions.Repositories;
 
@@ -9,13 +11,16 @@ namespace Raven.Core.Services
     /// </summary>
     public class UsersService(IUsersRepository _usersRepo) : IUsersService
     {
-        public async Task<(bool, OtpUser?, Error?)> CreateOtpUser(string firstName, string lastName, string emailAddress, string phoneNumber)
+        public async Task<(bool, CreateOtpUserResponse?, ProblemDetails?)> CreateOtpUser(CreateOtpUserRequest request)
         {
-            var otpUser = OtpUser.Create(firstName, lastName, emailAddress, phoneNumber);
+            var otpUser = OtpUser.Create(request.FirstName, request.LastName, request.Email, request.PhoneNumber);
 
-            var (isSuccess, error) = await _usersRepo.SaveOtpUser(otpUser);
-            
-            return isSuccess ? (true, otpUser, null) : (false, null, error);
+            var (otpUserWasSavedSuccessfully, error) = await _usersRepo.SaveOtpUser(otpUser);
+
+            if (otpUserWasSavedSuccessfully)
+                return (true, CreateOtpUserResponse.Create(otpUser.UserId, otpUser.CreatedAt), null);
+            else
+                return (false, null, ProblemDetailsFactory.CreateProblemDetailsFromError(error!));
         }
 
         public Task<(bool, Error?)> DeleteOtpUser(string userId)

@@ -2,6 +2,7 @@
 using System.Data;
 using Raven.Core.Enums;
 using Raven.Core.Models;
+using MySql.Data.MySqlClient;
 using Raven.Core.Abstractions.Factories;
 using Raven.Core.Abstractions.Repositories;
 
@@ -47,6 +48,19 @@ namespace Raven.Infrastructure.Repositories.MySQL
                         1 => (true, null),
                         _ => (false, Error.NewError(ErrorType.DatabaseInsertError, $"Unable to save the OTP user data to the database: {numberOfRowsAffected} rows affected.")),
                     };
+                }
+                catch (MySqlException ex)
+                {
+                    if (ex.Number == 1062)
+                    {
+                        if (ex.Message.Contains(otpUser.EmailAddress))
+                            return (false, Error.NewError(ErrorType.RecordAlreadyExists, "Email address already exists."));
+
+                        if (ex.Message.Contains(otpUser.PhoneNumber))
+                            return (false, Error.NewError(ErrorType.RecordAlreadyExists, "Phone number already exists."));
+                    }
+
+                    return (false, Error.NewError(ErrorType.Exception, $"An exception occured while trying to save the OTP user data to the database: {ex.Message}."));
                 }
                 catch (Exception ex)
                 {

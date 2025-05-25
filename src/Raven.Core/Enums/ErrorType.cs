@@ -3,9 +3,10 @@
     public enum ErrorType
     {
         NotFound,
+        Exception,
         InvalidInput,
         Unauthorized,
-        Exception,
+        RecordAlreadyExists,
         InternalServerError,
         DatabaseInsertError,
         DatabaseInsertFailure

@@ -8,7 +8,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="Ulid" />
+		<PackageReference Include="Humanizer.Core" />
 		<PackageReference Include="FluentValidation" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" />
 	</ItemGroup>
 
 </Project>

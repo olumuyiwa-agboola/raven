@@ -1,4 +1,5 @@
 ﻿using Raven.Core.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Raven.Core.Abstractions.Services
 {
@@ -44,18 +45,16 @@ namespace Raven.Core.Abstractions.Services
         /// <remarks>This method performs validation on the input parameters and may fail if the provided
         /// details are invalid or if the user already exists. Ensure that all required fields are properly formatted
         /// before calling this method.</remarks>
-        /// <param name="firstName">The first name of the user. Cannot be null or empty.</param>
-        /// <param name="lastName">The last name of the user. Cannot be null or empty.</param>
-        /// <param name="emailAddress">The email address of the user. Must be a valid email format and cannot be null or empty.</param>
-        /// <param name="phoneNumber">The phone number of the user. Must be a valid phone number and cannot be null or empty.</param>
+        /// <param name="request">The <see cref="CreateOtpUserRequest"/> object which holds the first name, last name, 
+        /// email address and phone number of the user. Cannot be null or empty.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
         /// <list type="number">
         ///     <item>a <see langword="bool"/> indicating whether the operation was successful,</item>
-        ///     <item>an <see cref="OtpUser"/> object holding the details of the OTP user, or <see langword="null"/> if an error occured, and</item>
-        ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
+        ///     <item>an <see cref="CreateOtpUserResponse"/> object holding the response data to be returned to the caller, or <see langword="null"/> if an error occured, and</item>
+        ///     <item>an <see cref="ProblemDetails"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>
         /// </returns>
-        Task<(bool, OtpUser?, Error?)> CreateOtpUser(string firstName, string lastName, string emailAddress, string phoneNumber);
+        Task<(bool, CreateOtpUserResponse?, ProblemDetails?)> CreateOtpUser(CreateOtpUserRequest request);
 
         /// <summary>
         /// Updates the details of an OTP user in the system.
