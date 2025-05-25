@@ -14,13 +14,14 @@ namespace Raven.Core.Models
         private CreateOtpUserResponse(string userId, DateTimeOffset createdAt)
         {
             UserId = userId;
-            CreatedAt = createdAt.Humanize();
+            Message = "OTP user created successfully!";
+            CreatedAt = $"{createdAt.ToString("dddd dd MMMM, yyyy, hh:mm:ss tt")} ({createdAt.Humanize()})";
         }
 
         /// <summary>
         /// The response message indicating a successful creation of the user.
         /// </summary>
-        public static readonly string Message = "OTP user created successfully!";
+        public string? Message { get; init; }
 
         /// <summary>
         /// Gets or initializes the user identifier associated with the user.
