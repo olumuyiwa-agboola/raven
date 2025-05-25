@@ -1,4 +1,4 @@
-﻿using Raven.Core.Entities;
+﻿using Raven.Core.Models;
 
 namespace Raven.Core.Abstractions.Services
 {
@@ -7,8 +7,7 @@ namespace Raven.Core.Abstractions.Services
     /// updating, and deletion of user records.
     /// </summary>
     /// <remarks>This service provides methods to interact with OTP user data, such as retrieving user
-    /// details,  creating new users, updating existing user information, and deleting user records.  Each method
-    /// operates asynchronously and returns results or status codes indicating the outcome of the operation.</remarks>
+    /// details, creating new users, updating existing user information, and deleting user records.</remarks>
     public interface IUsersService
     {
         /// <summary>
@@ -18,17 +17,26 @@ namespace Raven.Core.Abstractions.Services
         /// Ensure that the provided <paramref name="userId"/> is valid  and corresponds to a profiled user.</remarks>
         /// <param name="userId">The unique identifier of the user for whom the OTP user information is to be retrieved. 
         /// Must not be <see langword="null"/> or empty.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains the <see cref="OtpUser"/> 
-        /// associated with the specified user identifier, or <see langword="null"/> if no such user exists.</returns>
-        Task<OtpUser?> GetOtpUser(string userId);
+        /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
+        /// <list type="number">
+        ///     <item>a <see langword="bool"/> indicating whether the operation was successful,</item>
+        ///     <item>an <see cref="OtpUser"/> object holding the details of the OTP user, or <see langword="null"/> if the user is not found, and</item>
+        ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
+        /// </list>    
+        /// </returns>
+        Task<(bool, OtpUser?, Error?)> GetOtpUser(string userId);
 
         /// <summary>
         /// Deletes the OTP (One-Time Password) user associated with the specified user identifier.
         /// </summary>
         /// <param name="userId">The unique identifier of the user to delete. Cannot be null or empty.</param>
-        /// <returns>The number of records deleted as an <see cref="int"/> if the operation is successful;  otherwise, <see
-        /// langword="null"/> if the user does not exist or the operation fails.</returns>
-        Task<int?> DeleteOtpUser(string userId);
+        /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
+        /// <list type="number">
+        ///     <item>a <see langword="bool"/> indicating whether the operation was successful,</item>
+        ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
+        /// </list>    
+        /// </returns>
+        Task<(bool, Error?)> DeleteOtpUser(string userId);
 
         /// <summary>
         /// Creates a new OTP (One-Time Password) user with the specified details.
@@ -40,10 +48,15 @@ namespace Raven.Core.Abstractions.Services
         /// <param name="lastName">The last name of the user. Cannot be null or empty.</param>
         /// <param name="emailAddress">The email address of the user. Must be a valid email format and cannot be null or empty.</param>
         /// <param name="phoneNumber">The phone number of the user. Must be a valid phone number and cannot be null or empty.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains the unique identifier of the
-        /// created user, or <see langword="null"/> if the user could not be created.</returns>
-        Task<string?> CreateOtpUser(string firstName, string lastName, string emailAddress, string phoneNumber);
-    
+        /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
+        /// <list type="number">
+        ///     <item>a <see langword="bool"/> indicating whether the operation was successful,</item>
+        ///     <item>an <see cref="OtpUser"/> object holding the details of the OTP user, or <see langword="null"/> if an error occured, and</item>
+        ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
+        /// </list>
+        /// </returns>
+        Task<(bool, OtpUser?, Error?)> CreateOtpUser(string firstName, string lastName, string emailAddress, string phoneNumber);
+
         /// <summary>
         /// Updates the details of an OTP user in the system.
         /// </summary>
@@ -52,8 +65,12 @@ namespace Raven.Core.Abstractions.Services
         /// <param name="lastName">The updated last name of the user, or <see langword="null"/> to leave it unchanged.</param>
         /// <param name="emailAddress">The updated email address of the user, or <see langword="null"/> to leave it unchanged.</param>
         /// <param name="phoneNumber">The updated phone number of the user, or <see langword="null"/> to leave it unchanged.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains the number of records updated, 
-        /// or <see langword="null"/> if the user was not found.</returns>
-        Task<int?> UpdateOtpUser(string userId, string? firstName, string? lastName, string? emailAddress, string? phoneNumber);
+        /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
+        /// <list type="number">
+        ///     <item>a <see langword="bool"/> indicating whether the operation was successful,</item>
+        ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
+        /// </list>
+        /// </returns>
+        Task<(bool, Error?)> UpdateOtpUser(string userId, string? firstName, string? lastName, string? emailAddress, string? phoneNumber);
     }
 }

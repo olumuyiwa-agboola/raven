@@ -1,6 +1,6 @@
 ﻿using Raven.Core.Enums;
 
-namespace Raven.Core.Entities
+namespace Raven.Core.Models
 {
     /// <summary>
     /// Represents a one-time password (OTP) generated for a user, including its state, usage, and expiration details.
