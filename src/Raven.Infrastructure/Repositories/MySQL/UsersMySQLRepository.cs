@@ -46,7 +46,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
                     return numberOfRowsAffected switch
                     {
                         1 => (true, null),
-                        _ => (false, Error.NewError(ErrorType.DatabaseInsertError, $"Unable to save the OTP user data to the database: {numberOfRowsAffected} rows affected.")),
+                        _ => (false, Error.NewError(ErrorType.DatabaseInsertError, $"An error occured while trying to insert the OTP user data into the database: {numberOfRowsAffected} rows affected.")),
                     };
                 }
                 catch (MySqlException ex)
