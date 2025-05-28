@@ -6,12 +6,13 @@ namespace Raven.Api.Extensions
     {
         internal static WebApplication ConfigureApplicationBuilder(this WebApplicationBuilder builder)
         {
-            builder.Services.ConfigureOptions(builder.Configuration);
-            builder.Services.AddControllersAndRouting();
-            builder.Services.AddOpenApiDocumentation();
-            builder.Services.AddDomainServices();
-            builder.Services.AddRepositories();
             builder.Services.AddFactories();
+            builder.Services.AddRepositories();
+            builder.Services.ConfigureOptions();
+            builder.Services.AddDomainServices();
+            builder.Services.AddOpenApiDocumentation();
+            builder.Services.AddControllersAndRouting();
+            builder.Services.AddLogger(builder.Configuration);
 
             return builder.Build();
         }

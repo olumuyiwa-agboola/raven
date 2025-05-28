@@ -6,9 +6,10 @@ namespace Raven.Api.Configurations
 {
     internal static class Options
     {
-        internal static IServiceCollection ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
+        internal static IServiceCollection ConfigureOptions(this IServiceCollection services)
         {
-            services.AddOptionsWithFluentValidation<ConnectionStrings, ConnectionStringsValidator>("ConnectionStrings");
+            services.AddOptionsWithFluentValidation<LoggerSettings, LoggerSettingsValidator>(nameof(LoggerSettings));
+            services.AddOptionsWithFluentValidation<ConnectionStrings, ConnectionStringsValidator>(nameof(ConnectionStrings));
 
             return services;
         }
