@@ -13,8 +13,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<IOtpsService, OtpsService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
-builder.Services.AddScoped<IOtpsRepository, OtpsRepository>();
-builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IOtpsRepository, OtpsMySQLRepository>();
+builder.Services.AddScoped<IUsersRepository, UsersMySQLRepository>();
 builder.Services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
 
 builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection("ConnectionStrings"));

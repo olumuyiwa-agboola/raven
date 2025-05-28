@@ -11,7 +11,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
     /// <summary>
     /// Implementation of the <see cref="IUsersRepository"/> interface for managing OTP (One-Time Password) users in a database.
     /// </summary>
-    public class UsersRepository(IDbConnectionFactory dbConnectionFactory) : IUsersRepository
+    public class UsersMySQLRepository(IDbConnectionFactory dbConnectionFactory) : IUsersRepository
     {
         private readonly IDbConnection ravenMySqlConnection = dbConnectionFactory.GetRavenMySqlDbConnection();
 

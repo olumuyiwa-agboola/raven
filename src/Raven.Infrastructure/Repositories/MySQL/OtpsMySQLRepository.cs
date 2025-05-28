@@ -6,7 +6,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
     /// <summary>
     /// Implementation of the <see cref="IOtpsRepository"/> interface for managing OTP (One-Time Password) data in a database.
     /// </summary>
-    public class OtpsRepository : IOtpsRepository
+    public class OtpsMySQLRepository : IOtpsRepository
     {
         public Task<(bool, Otp?, Error?)> GetOtp(string userId)
         {
