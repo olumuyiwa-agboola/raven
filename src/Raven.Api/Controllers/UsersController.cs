@@ -1,7 +1,7 @@
 using System.Net;
-using Raven.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Raven.Core.Abstractions.Services;
+using Raven.Core.Models.Requests;
 
 namespace Raven.Api.Controllers;
 

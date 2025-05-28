@@ -1,5 +1,8 @@
-﻿using Raven.Core.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Raven.Core.Models.Entities;
+using Raven.Core.Models.Requests;
+using Raven.Core.Models.Responses;
+using Raven.Core.Models.Shared;
 
 namespace Raven.Core.Abstractions.Services
 {

@@ -1,5 +1,6 @@
-﻿using Raven.Core.Models;
-using Raven.Core.Abstractions.Repositories;
+﻿using Raven.Core.Abstractions.Repositories;
+using Raven.Core.Models.Entities;
+using Raven.Core.Models.Shared;
 
 namespace Raven.Infrastructure.Repositories.MySQL
 {

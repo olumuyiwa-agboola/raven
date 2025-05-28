@@ -1,6 +1,6 @@
 ﻿using Humanizer;
 
-namespace Raven.Core.Models
+namespace Raven.Core.Models.Responses
 {
     /// <summary>
     /// Represents the body of a 200 OK response from a request to create a new OTP user.

@@ -1,4 +1,5 @@
-﻿using Raven.Core.Models;
+﻿using Raven.Core.Models.Entities;
+using Raven.Core.Models.Shared;
 
 namespace Raven.Core.Abstractions.Services
 {

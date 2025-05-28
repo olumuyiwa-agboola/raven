@@ -1,4 +1,4 @@
-﻿namespace Raven.Core.Models
+﻿namespace Raven.Core.Models.Entities
 {
     /// <summary>
     /// Represents a user that has been profiled for one-time password (OTP) verification.

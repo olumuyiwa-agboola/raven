@@ -1,6 +1,6 @@
 ﻿using Raven.Core.Enums;
 
-namespace Raven.Core.Models
+namespace Raven.Core.Models.Shared
 {
     /// <summary>
     /// Represents an error that occured during the execution of a method.

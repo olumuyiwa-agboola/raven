@@ -1,10 +1,11 @@
 ﻿using Dapper;
 using System.Data;
 using Raven.Core.Enums;
-using Raven.Core.Models;
 using MySql.Data.MySqlClient;
 using Raven.Core.Abstractions.Factories;
 using Raven.Core.Abstractions.Repositories;
+using Raven.Core.Models.Entities;
+using Raven.Core.Models.Shared;
 
 namespace Raven.Infrastructure.Repositories.MySQL
 {

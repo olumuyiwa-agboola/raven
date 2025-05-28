@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Raven.Core.Enums;
-using Raven.Core.Models;
 using Microsoft.AspNetCore.Mvc;
+using Raven.Core.Models.Shared;
 
 namespace Raven.Core.Factories
 {

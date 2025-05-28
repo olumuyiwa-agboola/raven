@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Raven.Core.Models
+namespace Raven.Core.Models.Requests
 {
     /// <summary>
     /// Represents the body of a POST request to create a new OTP user with the specified details.

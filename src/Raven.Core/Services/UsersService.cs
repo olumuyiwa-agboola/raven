@@ -1,8 +1,11 @@
-﻿using Raven.Core.Models;
-using Raven.Core.Factories;
+﻿using Raven.Core.Factories;
 using Microsoft.AspNetCore.Mvc;
 using Raven.Core.Abstractions.Services;
 using Raven.Core.Abstractions.Repositories;
+using Raven.Core.Models.Entities;
+using Raven.Core.Models.Requests;
+using Raven.Core.Models.Responses;
+using Raven.Core.Models.Shared;
 
 namespace Raven.Core.Services
 {
