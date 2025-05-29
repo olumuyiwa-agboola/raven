@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using Serilog.Events;
 using Raven.Core.Models.Configuration;
 
 namespace Raven.Api.Configurations
@@ -11,7 +12,14 @@ namespace Raven.Api.Configurations
 
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
-                .WriteTo.File(loggerSettings!.FilePath!, rollingInterval: RollingInterval.Day)
+                .WriteTo.File(
+                    shared: true,
+                    rollOnFileSizeLimit: true,
+                    path: loggerSettings!.FilePath!,
+                    rollingInterval: RollingInterval.Day,
+                    fileSizeLimitBytes: 10_000_000, // 10 MB
+                    restrictedToMinimumLevel: LogEventLevel.Debug,
+                    flushToDiskInterval: TimeSpan.FromSeconds(1))
                 .CreateLogger();
 
             services.AddSerilog();
