@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Raven.Core.Libraries.Constants;
 
 namespace Raven.Core.Models.Requests
 {
@@ -12,22 +13,22 @@ namespace Raven.Core.Models.Requests
         /// <summary>
         /// Gets or initializes the email address associated with the user.
         /// </summary>
-        public required string Email { get; init; }
+        public string Email { get; init; } = string.Empty;
 
         /// <summary>
         /// Gets or initializes the last name of the user.
         /// </summary>
-        public required string LastName { get; init; }
+        public string LastName { get; init; } = string.Empty;
 
         /// <summary>
         /// Gets or initializes the first name of the user.
         /// </summary>
-        public required string FirstName { get; init; }
+        public string FirstName { get; init; } = string.Empty;
 
         /// <summary>
         /// Gets or initializes the phone number of the user.
         /// </summary>
-        public required string PhoneNumber { get; init; }
+        public string PhoneNumber { get; init; } = string.Empty;
     }
 
     /// <summary>
@@ -44,21 +45,25 @@ namespace Raven.Core.Models.Requests
         public CreateOtpUserRequestValidator()
         {
             RuleFor(x => x.Email)
-                .NotEmpty()
-                .EmailAddress()
-                .WithMessage("Invalid email address.");
+                .IsRequired()
+                .MustNotExceed(200)
+                .MustBeAValidEmailAddress()
+                .MustContainOnlyAllowedCharactersForEmailAddresses();
 
             RuleFor(x => x.LastName)
-                .NotEmpty()
-                .WithMessage("Last name is required.");
+                .IsRequired()
+                .MustNotExceed(100)
+                .MustContainOnlyAllowedCharacters();
 
             RuleFor(x => x.FirstName)
-                .NotEmpty()
-                .WithMessage("First name is required.");
+                .IsRequired()
+                .MustNotExceed(100)
+                .MustContainOnlyAllowedCharacters();
 
             RuleFor(x => x.PhoneNumber)
-                .NotEmpty()
-                .WithMessage("Phone number is required.");
+                .IsRequired()
+                .MustNotExceed(20)
+                .MustContainOnlyAllowedCharactersForPhoneNumbers();
         }
     }
 }

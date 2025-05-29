@@ -1,4 +1,4 @@
-﻿namespace Raven.Core.Enums
+﻿namespace Raven.Core.Libraries.Enums
 {
     public enum ErrorType
     {

@@ -1,7 +1,7 @@
 ﻿using System.Net;
-using Raven.Core.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Raven.Core.Models.Shared;
+using Raven.Core.Libraries.Enums;
 
 namespace Raven.Core.Factories
 {
@@ -28,6 +28,23 @@ namespace Raven.Core.Factories
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
                 },
             };
+        }
+
+        public static ValidationProblemDetails CreateValidationProblemDetails(Dictionary<string, string> validationFailures, string instance)
+        {
+            var validationProblemDetails = new ValidationProblemDetails()
+            {
+                Instance = instance,
+                Status = (int)HttpStatusCode.BadRequest,
+                Title = "One or more validation errors occurred.",
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            };
+
+            validationFailures.ToList().ForEach(failure =>
+                validationProblemDetails.Errors.Add(failure.Key, [failure.Value])
+            );
+
+            return validationProblemDetails;
         }
     }
 }

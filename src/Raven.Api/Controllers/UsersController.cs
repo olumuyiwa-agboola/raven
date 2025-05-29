@@ -1,7 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using Raven.Core.Abstractions.Services;
 using Raven.Core.Models.Requests;
+using Raven.Core.Abstractions.Services;
 
 namespace Raven.Api.Controllers;
 
@@ -12,8 +12,10 @@ public class UsersController(IUsersService _usersService) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateUser(CreateOtpUserRequest request)
     {
-        var (isSiccess, createOtpUserResponse, problemDetails) = await _usersService.CreateOtpUser(request);
+        var (isSuccess, createOtpUserResponse, problemDetails) = await _usersService.CreateOtpUser(request);
 
-        return isSiccess ? StatusCode((int)HttpStatusCode.OK, createOtpUserResponse) : StatusCode((int)problemDetails!.Status!, problemDetails);
+        return isSuccess ? 
+            StatusCode((int)HttpStatusCode.OK, createOtpUserResponse) : 
+            StatusCode((int)problemDetails!.Status!, problemDetails);
     }
 }

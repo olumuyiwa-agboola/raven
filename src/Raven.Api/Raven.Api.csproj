@@ -9,10 +9,12 @@
 
 	<ItemGroup>
 		<PackageReference Include="Serilog" />
+		<PackageReference Include="FluentValidation" />
 		<PackageReference Include="Serilog.Sinks.File" />
 		<PackageReference Include="Serilog.Sinks.Console" />
 		<PackageReference Include="Serilog.Extensions.Hosting" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
 	</ItemGroup>
 
 	<ItemGroup>

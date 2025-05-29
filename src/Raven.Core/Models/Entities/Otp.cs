@@ -1,4 +1,4 @@
-﻿using Raven.Core.Enums;
+﻿using Raven.Core.Libraries.Enums;
 
 namespace Raven.Core.Models.Entities
 {

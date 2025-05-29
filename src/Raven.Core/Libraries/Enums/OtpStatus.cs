@@ -1,4 +1,4 @@
-﻿namespace Raven.Core.Enums
+﻿namespace Raven.Core.Libraries.Enums
 {
     /// <summary>
     /// Represents the status of a one-time password (OTP).

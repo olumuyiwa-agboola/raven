@@ -10,6 +10,7 @@ namespace Raven.Api.Extensions
             builder.Services.AddRepositories();
             builder.Services.ConfigureOptions();
             builder.Services.AddDomainServices();
+            builder.Services.AddAbstractValidators();
             builder.Services.AddOpenApiDocumentation();
             builder.Services.AddControllersAndRouting();
             builder.Services.AddLogger(builder.Configuration);
