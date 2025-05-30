@@ -8,7 +8,7 @@
         Unauthorized,
         RecordAlreadyExists,
         InternalServerError,
-        DatabaseInsertError,
+        DatabaseError,
         DatabaseInsertFailure
     }
 }

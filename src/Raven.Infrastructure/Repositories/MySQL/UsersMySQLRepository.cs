@@ -47,7 +47,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
                     return numberOfRowsAffected switch
                     {
                         1 => (true, null),
-                        _ => (false, Error.NewError(ErrorType.DatabaseInsertError, $"An error occured while trying to insert the OTP user data into the database: {numberOfRowsAffected} rows affected.")),
+                        _ => (false, Error.NewError(ErrorType.DatabaseError, $"An error occured while trying to insert the OTP user data into the database: {numberOfRowsAffected} rows affected.")),
                     };
                 }
                 catch (MySqlException ex)
@@ -70,19 +70,94 @@ namespace Raven.Infrastructure.Repositories.MySQL
             }
         }
 
-        public Task<(bool, Error?)> DeleteOtpUser(OtpUser otpUser)
+        public async Task<(bool, Error?)> DeleteOtpUser(OtpUser otpUser)
         {
-            throw new NotImplementedException();
+            DynamicParameters parameters = new();
+            parameters.Add("UserId", otpUser.UserId);
+
+            string command = """
+                DELETE FROM otp_users WHERE user_id = @UserId;
+                """;
+
+            using (ravenMySqlConnection)
+            {
+                try
+                {
+                    int numberOfRowsAffected = await ravenMySqlConnection.ExecuteAsync(command, parameters);
+                    return numberOfRowsAffected switch
+                    {
+                        1 => (true, null),
+                        0 => (false, Error.NewError(ErrorType.NotFound, "The OTP user was not found in the database.")),
+                        _ => (false, Error.NewError(ErrorType.DatabaseError, $"An error occured while trying to delete the OTP user data from the database: {numberOfRowsAffected} rows affected.")),
+                    };
+                }
+                catch (Exception ex)
+                {
+                    return (false, Error.NewError(ErrorType.Exception, $"An exception occured while trying to delete the OTP user data from the database: {ex.Message}."));
+                }
+            }
         }
 
-        public Task<(bool, OtpUser?, Error?)> GetOtpUser(string userId)
+        public async Task<(bool, OtpUser?, Error?)> GetOtpUser(string userId)
         {
-            throw new NotImplementedException();
+            DynamicParameters parameters = new();
+            parameters.Add("UserId", userId);
+
+            string command = """
+                SELECT * FROM otp_users WHERE user_id = @UserId;
+                """;
+
+            using (ravenMySqlConnection)
+            {
+                try
+                {
+                    OtpUser? otpUser = await ravenMySqlConnection.QuerySingleOrDefaultAsync<OtpUser>(command, parameters);
+                    if (otpUser is null)
+                        return (false, null, Error.NewError(ErrorType.NotFound, "The OTP user was not found in the database."));
+                    return (true, otpUser, null);
+                }
+                catch (Exception ex)
+                {
+                    return (false, null, Error.NewError(ErrorType.Exception, $"An exception occured while trying to retrieve the OTP user data from the database: {ex.Message}."));
+                }
+            }
         }
 
-        public Task<(bool, Error?)> UpdateOtpUser(OtpUser otpUser)
+        public async Task<(bool, Error?)> UpdateOtpUser(OtpUser otpUser)
         {
-            throw new NotImplementedException();
+            DynamicParameters parameters = new();
+            parameters.Add("UserId", otpUser.UserId);
+            parameters.Add("LastName", otpUser.LastName);
+            parameters.Add("FirstName", otpUser.FirstName);
+            parameters.Add("CreatedAt", otpUser.CreatedAt);
+            parameters.Add("PhoneNumber", otpUser.PhoneNumber);
+            parameters.Add("EmailAddress", otpUser.EmailAddress);
+            parameters.Add("LastUpdatedAt", otpUser.LastUpdatedAt);
+
+            string command = """
+                UPDATE otp_users
+                SET first_name = @FirstName, last_name = @LastName, email_address = @EmailAddress,
+                    phone_number = @PhoneNumber, created_at = @CreatedAt, last_updated_at = @LastUpdatedAt
+                WHERE user_id = @UserId;
+                """;
+
+            using (ravenMySqlConnection)
+            {
+                try
+                {
+                    int numberOfRowsAffected = await ravenMySqlConnection.ExecuteAsync(command, parameters);
+                    return numberOfRowsAffected switch
+                    {
+                        1 => (true, null),
+                        0 => (false, Error.NewError(ErrorType.NotFound, "The OTP user was not found in the database.")),
+                        _ => (false, Error.NewError(ErrorType.DatabaseError, $"An error occured while trying to update the OTP user data in the database: {numberOfRowsAffected} rows affected.")),
+                    };
+                }
+                catch (Exception ex)
+                {
+                    return (false, Error.NewError(ErrorType.Exception, $"An exception occured while trying to update the OTP user data in the database: {ex.Message}."));
+                }
+            }
         }
     }
 }
