@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Raven.Core.Libraries.Constants;
+using System.ComponentModel.DataAnnotations;
 
 namespace Raven.Core.Models.Requests
 {
@@ -8,27 +9,27 @@ namespace Raven.Core.Models.Requests
     /// </summary>
     /// <remarks>This class is used to encapsulate the data required to create a new user obtained 
     /// from the body of a POST request to the relevant endpoint.</remarks>
-    public record CreateOtpUserRequest
+    public record CreateOtpUserRequest(string Email, string LastName, string FirstName, string PhoneNumber)
     {
         /// <summary>
         /// Gets or initializes the email address associated with the user.
         /// </summary>
-        public string Email { get; init; } = string.Empty;
+        public string Email { get; init; } = Email;
 
         /// <summary>
         /// Gets or initializes the last name of the user.
         /// </summary>
-        public string LastName { get; init; } = string.Empty;
+        public string LastName { get; init; } = LastName;
 
         /// <summary>
         /// Gets or initializes the first name of the user.
         /// </summary>
-        public string FirstName { get; init; } = string.Empty;
+        public string FirstName { get; init; } = FirstName;
 
         /// <summary>
         /// Gets or initializes the phone number of the user.
         /// </summary>
-        public string PhoneNumber { get; init; } = string.Empty;
+        public string PhoneNumber { get; init; } = PhoneNumber;
     }
 
     /// <summary>
