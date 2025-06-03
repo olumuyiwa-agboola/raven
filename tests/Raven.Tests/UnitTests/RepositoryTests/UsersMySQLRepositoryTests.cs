@@ -24,19 +24,15 @@ namespace Raven.Tests.UnitTests.RepositoryTests
                 .RuleFor(x => x.PhoneNumber, x => x.Phone.PhoneNumber())
                 .RuleFor(x => x.EmailAddress, x => x.Internet.Email(x.Person.FirstName, x.Person.LastName));
 
-            _dbConnectionFactory = _ravenMySQLDbFixture.Services.GetRequiredService<IDbConnectionFactory>();
+            _dbConnectionFactory = _ravenMySQLDbFixture.Services!.GetRequiredService<IDbConnectionFactory>();
             _usersMySQLRepository = new UsersMySQLRepository(_dbConnectionFactory);
         }
 
         [Fact]
         public async Task SaveOtpUser_TakesOtpUserObject_ReturnsTupleOfTrueAndNull()
         {
-            // Arrange
-
-            // Act
             var (isSavedSuccessfully, error) = await _usersMySQLRepository.SaveOtpUser(_sampleOtpUser);
 
-            // Assert
             isSavedSuccessfully.Should().BeTrue();
             error.Should().BeNull();
         }

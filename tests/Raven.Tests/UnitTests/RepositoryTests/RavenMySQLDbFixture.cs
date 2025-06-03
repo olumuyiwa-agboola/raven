@@ -11,9 +11,15 @@ namespace Raven.Tests.UnitTests.RepositoryTests
 {
     public class RavenMySQLDbFixture : IAsyncLifetime
     {
-        public IServiceProvider Services { get; private set; }
+        public IServiceProvider? Services { get; private set; }
 
-        private MySqlContainer Container { get; } = new MySqlBuilder().Build();
+        private MySqlContainer Container { get; } = new MySqlBuilder()
+            .WithName("raven_test")
+            .WithImage("mysql:9.3")
+            .WithUsername("raven_test")
+            .WithPassword("raven_test123")
+            .WithPortBinding(63184, 3306)
+            .Build();
 
         public async Task InitializeAsync()
         {
@@ -30,7 +36,7 @@ namespace Raven.Tests.UnitTests.RepositoryTests
 
         private void MigrateDatabase()
         {
-            var runner = Services.GetRequiredService<IMigrationRunner>();
+            var runner = Services!.GetRequiredService<IMigrationRunner>();
             runner.MigrateUp();
         }
 
