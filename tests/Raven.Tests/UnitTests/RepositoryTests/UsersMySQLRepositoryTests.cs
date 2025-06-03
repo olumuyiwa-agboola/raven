@@ -1,18 +1,19 @@
 ﻿using Bogus;
-using FakeItEasy;
+using FluentAssertions;
 using Raven.Core.Models.Entities;
 using Raven.Core.Abstractions.Factories;
 using Raven.Infrastructure.Repositories.MySQL;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Raven.Tests.UnitTests.RepositoryTests
 {
-    public class UsersMySQLRepositoryTests
+    public class UsersMySQLRepositoryTests : IClassFixture<RavenMySQLDbFixture>
     {
         private readonly OtpUser _sampleOtpUser;
         private readonly IDbConnectionFactory _dbConnectionFactory;
         private readonly UsersMySQLRepository _usersMySQLRepository;
 
-        public UsersMySQLRepositoryTests()
+        public UsersMySQLRepositoryTests(RavenMySQLDbFixture _ravenMySQLDbFixture)
         {
             _sampleOtpUser = new Faker<OtpUser>(locale: "en_NG")
                 .RuleFor(x => x.LastName, x => x.Person.LastName)
@@ -23,7 +24,7 @@ namespace Raven.Tests.UnitTests.RepositoryTests
                 .RuleFor(x => x.PhoneNumber, x => x.Phone.PhoneNumber())
                 .RuleFor(x => x.EmailAddress, x => x.Internet.Email(x.Person.FirstName, x.Person.LastName));
 
-            _dbConnectionFactory = A.Fake<IDbConnectionFactory>();
+            _dbConnectionFactory = _ravenMySQLDbFixture.Services.GetRequiredService<IDbConnectionFactory>();
             _usersMySQLRepository = new UsersMySQLRepository(_dbConnectionFactory);
         }
 
@@ -33,8 +34,11 @@ namespace Raven.Tests.UnitTests.RepositoryTests
             // Arrange
 
             // Act
+            var (isSavedSuccessfully, error) = await _usersMySQLRepository.SaveOtpUser(_sampleOtpUser);
 
             // Assert
+            isSavedSuccessfully.Should().BeTrue();
+            error.Should().BeNull();
         }
     }
 }

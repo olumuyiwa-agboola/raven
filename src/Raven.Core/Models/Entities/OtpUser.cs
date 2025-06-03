@@ -8,41 +8,30 @@
     /// workflows.</remarks>
     public record OtpUser
     {
-        private OtpUser(string firstName, string lastName, string emailAddress, string phoneNumber)
-        {
-            LastName = lastName;
-            FirstName = firstName;
-            PhoneNumber = phoneNumber;
-            EmailAddress = emailAddress;
-            CreatedAt = DateTimeOffset.Now;
-            LastUpdatedAt = DateTimeOffset.Now;
-            UserId = Ulid.NewUlid().ToString();
-        }
-
         /// <summary>
         /// Gets or initializes the email address associated with the user.
         /// </summary>
-        public string EmailAddress { get; init; }
+        public string EmailAddress { get; init; } = string.Empty;
 
         /// <summary>
         /// Gets or initializes the unique identifier for the user.
         /// </summary>
-        public string UserId { get; init; }
+        public string UserId { get; init; } = string.Empty;
 
         /// <summary>
         /// Gets or initializes the last name of the user.
         /// </summary>
-        public string LastName { get; init; }
+        public string LastName { get; init; } = string.Empty;
 
         /// <summary>
         /// Gets or initializes the first name of the user.
         /// </summary>
-        public string FirstName { get; init; }
+        public string FirstName { get; init; } = string.Empty;
 
         /// <summary>
         /// Gets or initializes the phone number associated with the user.
         /// </summary>
-        public string PhoneNumber { get; init; }
+        public string PhoneNumber { get; init; } = string.Empty;
 
         /// <summary>
         /// Gets or initializes the date and time when the user was created.
@@ -55,6 +44,15 @@
         public DateTimeOffset LastUpdatedAt { get; init; }
 
         public static OtpUser Create(string firstName, string lastName, string emailAddress, string phoneNumber)
-            => new(firstName, lastName, emailAddress, phoneNumber);
+            => new() 
+            {
+                LastName = lastName,
+                FirstName = firstName,
+                PhoneNumber = phoneNumber,
+                EmailAddress = emailAddress,
+                CreatedAt = DateTimeOffset.Now,
+                LastUpdatedAt = DateTimeOffset.Now,
+                UserId = Ulid.NewUlid().ToString()
+            };
     }
 }
