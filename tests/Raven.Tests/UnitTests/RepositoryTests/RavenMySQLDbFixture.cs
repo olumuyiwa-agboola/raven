@@ -2,10 +2,10 @@
 using FluentMigrator.Runner;
 using Raven.Infrastructure.Factories;
 using Raven.Core.Models.Configuration;
-using Raven.Infrastructure.Migrations;
 using Raven.Core.Abstractions.Factories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Raven.Tests.Migrations;
 
 namespace Raven.Tests.UnitTests.RepositoryTests
 {
@@ -57,7 +57,7 @@ namespace Raven.Tests.UnitTests.RepositoryTests
             services.AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
                     .AddMySql().WithGlobalConnectionString(Container.GetConnectionString())
-                    .ScanIn(typeof(CreateOtpUsersTable).Assembly).For.Migrations());
+                    .ScanIn(typeof(OtpUsersTable).Assembly).For.Migrations());
 
             Services = services.BuildServiceProvider();
         }
