@@ -34,7 +34,7 @@ namespace Raven.Tests.UnitTests.RepositoryTests
         }
 
         [Fact]
-        public async Task SaveOtpUser_TakesExistingOtpUserObject_ReturnsTupleOfFalseAndError()
+        public async Task SaveOtpUser_TakesExistingOtpUserObject_ReturnsTupleOfFalseAndErrorObject()
         {
             // Arrange
             OtpUser existingUser = OtpUsersTable.SeedData[0];
@@ -44,6 +44,69 @@ namespace Raven.Tests.UnitTests.RepositoryTests
 
             // Assert
             isSavedSuccessfully.Should().BeFalse();
+            error.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task DeleteOtpUser_TakesExistingOtpUserObject_ReturnsTupleOfTrueAndNull()
+        {
+            // Arrange
+            string existingUserId = OtpUsersTable.SeedData[1].UserId;
+
+            // Act
+            var (isDeletedSuccessfully, error) = await _usersMySQLRepository.DeleteOtpUser(existingUserId);
+
+            // Assert
+            isDeletedSuccessfully.Should().BeTrue();
+            error.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task DeleteOtpUser_TakesNonExistentOtpUserObject_ReturnsTupleOfFalseAndErrorObject()
+        {
+            // Arrange
+            string nonExistentUserId = OtpUsers.Generate(1).First().UserId;
+
+            // Act
+            var (isDeletedSuccessfully, error) = await _usersMySQLRepository.DeleteOtpUser(nonExistentUserId);
+
+            // Assert
+            isDeletedSuccessfully.Should().BeFalse();
+            error.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task GetOtpUser_TakesExistingOtpUserId_ReturnsTupleOfTrueAndOtpUserObjectAndNull()
+        {
+            // Arrange
+            OtpUser existingUser = OtpUsersTable.SeedData[4];
+
+            // Act
+            var (isRetrievedSuccessfully, otpUser, error) = await _usersMySQLRepository.GetOtpUser(existingUser.UserId);
+
+            // Assert
+            isRetrievedSuccessfully.Should().BeTrue();
+            otpUser.Should().NotBeNull();
+            otpUser.UserId.Should().Be(existingUser.UserId);
+            otpUser.FirstName.Should().Be(existingUser.FirstName);
+            otpUser.LastName.Should().Be(existingUser.LastName);
+            otpUser.EmailAddress.Should().Be(existingUser.EmailAddress);
+            otpUser.PhoneNumber.Should().Be(existingUser.PhoneNumber);
+            error.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task GetOtpUser_TakesNonExistentOtpUserId_ReturnsTupleOfFalseAndNullAndErrorObject()
+        {
+            // Arrange
+            OtpUser nonExistentUser = OtpUsers.Generate(1).First();
+
+            // Act
+            var (isRetrievedSuccessfully, otpUser, error) = await _usersMySQLRepository.GetOtpUser(nonExistentUser.UserId);
+
+            // Assert
+            isRetrievedSuccessfully.Should().BeFalse();
+            otpUser.Should().BeNull();
             error.Should().NotBeNull();
         }
     }

@@ -35,7 +35,7 @@ namespace Raven.Core.Abstractions.Repositories
         ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>    
         /// </returns>
-        Task<(bool, Error?)> DeleteOtpUser(OtpUser otpUser);
+        Task<(bool, Error?)> DeleteOtpUser(string userId);
 
         /// <summary>
         /// Updates the details of an existing OTP user in the system by updating the details of the user in a database.

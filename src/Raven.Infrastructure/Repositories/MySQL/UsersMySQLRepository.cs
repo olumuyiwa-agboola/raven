@@ -70,10 +70,10 @@ namespace Raven.Infrastructure.Repositories.MySQL
             }
         }
 
-        public async Task<(bool, Error?)> DeleteOtpUser(OtpUser otpUser)
+        public async Task<(bool, Error?)> DeleteOtpUser(string userId)
         {
             DynamicParameters parameters = new();
-            parameters.Add("UserId", otpUser.UserId);
+            parameters.Add("UserId", userId);
 
             string command = """
                 DELETE FROM otp_users WHERE user_id = @UserId;
@@ -104,7 +104,11 @@ namespace Raven.Infrastructure.Repositories.MySQL
             parameters.Add("UserId", userId);
 
             string command = """
-                SELECT * FROM otp_users WHERE user_id = @UserId;
+                SELECT 
+                    user_id AS UserId, first_name AS FirstName, last_name AS LastName, email_address AS EmailAddress,
+                    phone_number AS PhoneNumber, created_at AS CreatedAt, last_updated_at AS LastUpdatedAt 
+                FROM 
+                    otp_users WHERE user_id = @UserId;
                 """;
 
             using (ravenMySqlConnection)
