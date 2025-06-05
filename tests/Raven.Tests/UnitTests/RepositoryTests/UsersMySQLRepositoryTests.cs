@@ -79,7 +79,7 @@ namespace Raven.Tests.UnitTests.RepositoryTests
         public async Task GetOtpUser_TakesExistingOtpUserId_ReturnsTupleOfTrueAndOtpUserObjectAndNull()
         {
             // Arrange
-            OtpUser existingUser = OtpUsersTable.SeedData[4];
+            OtpUser existingUser = OtpUsersTable.SeedData[3];
 
             // Act
             var (isRetrievedSuccessfully, otpUser, error) = await _usersMySQLRepository.GetOtpUser(existingUser.UserId);
@@ -108,6 +108,97 @@ namespace Raven.Tests.UnitTests.RepositoryTests
             isRetrievedSuccessfully.Should().BeFalse();
             otpUser.Should().BeNull();
             error.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task UpdateOtpUser_TakesAnExistingOtpUserIdAndEmailAddress_ReturnsTupleOfTrueAndNull()
+        {
+            // Arrange
+            OtpUser existingUser = OtpUsersTable.SeedData[4];
+            string oldEmailAddress = existingUser.EmailAddress;
+            string newEmailAddress = "sample@email.com";
+
+            // Act
+            var (isUpdatedSuccessfully, userUpdateError) = await _usersMySQLRepository.UpdateOtpUser(
+                userId: existingUser.UserId,
+                emailAddress: newEmailAddress);
+
+            var (isRetrievedSuccessfully, updatedOtpUser, userRetrievalError) = await _usersMySQLRepository.GetOtpUser(existingUser.UserId);
+
+            // Assert
+            isUpdatedSuccessfully.Should().BeTrue();
+            isRetrievedSuccessfully.Should().BeTrue();
+
+            userUpdateError.Should().BeNull();
+            userRetrievalError.Should().BeNull();
+
+            updatedOtpUser.Should().NotBeNull();
+            updatedOtpUser.UserId.Should().Be(existingUser.UserId);
+            updatedOtpUser.FirstName.Should().Be(existingUser.FirstName);
+            updatedOtpUser.LastName.Should().Be(existingUser.LastName);
+            updatedOtpUser.EmailAddress.Should().Be(newEmailAddress);
+            updatedOtpUser.PhoneNumber.Should().Be(existingUser.PhoneNumber);
+        }
+
+        [Fact]
+        public async Task UpdateOtpUser_TakesAnExistingOtpUserIdAndEmailAddressAndPhoneNumber_ReturnsTupleOfTrueAndNull()
+        {
+            // Arrange
+            OtpUser existingUser = OtpUsersTable.SeedData[5];
+            string oldEmailAddress = existingUser.EmailAddress;
+            string newEmailAddress = "sample2@email.com";
+            string newPhoneNumber = "09091215648";
+
+            // Act
+            var (isUpdatedSuccessfully, userUpdateError) = await _usersMySQLRepository.UpdateOtpUser(
+                userId: existingUser.UserId,
+                emailAddress: newEmailAddress,
+                phoneNumber: newPhoneNumber);
+
+            var (isRetrievedSuccessfully, updatedOtpUser, userRetrievalError) = await _usersMySQLRepository.GetOtpUser(existingUser.UserId);
+
+            // Assert
+            isUpdatedSuccessfully.Should().BeTrue();
+            isRetrievedSuccessfully.Should().BeTrue();
+
+            userUpdateError.Should().BeNull();
+            userRetrievalError.Should().BeNull();
+
+            updatedOtpUser.Should().NotBeNull();
+            updatedOtpUser.UserId.Should().Be(existingUser.UserId);
+            updatedOtpUser.FirstName.Should().Be(existingUser.FirstName);
+            updatedOtpUser.LastName.Should().Be(existingUser.LastName);
+            updatedOtpUser.EmailAddress.Should().Be(newEmailAddress);
+            updatedOtpUser.PhoneNumber.Should().Be(newPhoneNumber);
+        }
+
+        [Fact]
+        public async Task UpdateOtpUser_TakesAnExistingOtpUserIdAndAnExistingEmailAddress_ReturnsTupleOfFalseAndErrorObject()
+        {
+            // Arrange
+            OtpUser existingUser = OtpUsersTable.SeedData[5];
+            string oldEmailAddress = existingUser.EmailAddress;
+            string newEmailAddress = "sample2@email.com";
+
+            // Act
+            var (isUpdatedSuccessfully, userUpdateError) = await _usersMySQLRepository.UpdateOtpUser(
+                userId: existingUser.UserId,
+                emailAddress: newEmailAddress);
+
+            var (isRetrievedSuccessfully, updatedOtpUser, userRetrievalError) = await _usersMySQLRepository.GetOtpUser(existingUser.UserId);
+
+            // Assert
+            isUpdatedSuccessfully.Should().BeTrue();
+            isRetrievedSuccessfully.Should().BeTrue();
+
+            userUpdateError.Should().BeNull();
+            userRetrievalError.Should().BeNull();
+
+            updatedOtpUser.Should().NotBeNull();
+            updatedOtpUser.UserId.Should().Be(existingUser.UserId);
+            updatedOtpUser.FirstName.Should().Be(existingUser.FirstName);
+            updatedOtpUser.LastName.Should().Be(existingUser.LastName);
+            updatedOtpUser.EmailAddress.Should().Be(newEmailAddress);
         }
     }
 }

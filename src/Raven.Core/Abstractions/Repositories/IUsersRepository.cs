@@ -38,18 +38,22 @@ namespace Raven.Core.Abstractions.Repositories
         Task<(bool, Error?)> DeleteOtpUser(string userId);
 
         /// <summary>
-        /// Updates the details of an existing OTP user in the system by updating the details of the user in a database.
+        /// Updates one or more of the details of an existing OTP user in the system by updating the details of the user in a database.
         /// </summary>
-        /// <remarks>Use this method to modify the details of an OTP user. Ensure that the provided <see
-        /// cref="OtpUser"/> object contains valid and complete information before calling this method.</remarks>
-        /// <param name="otpUser">The <see cref="OtpUser"/> object containing the updated user details. Cannot be null.</param>
+        /// <remarks>Use this method to modify the details of an OTP user. Ensure that the user ID provided is valid and that at least of
+        /// of first name, last name, email address and phone number is provided.</remarks>
+        /// <param name="lastName">The new last name.</param>
+        /// <param name="firstName">The new first name.</param>
+        /// <param name="phoneNumber">The new phone number.</param>
+        /// <param name="emailAddress">The new email address.</param>
+        /// <param name="userId">The user ID of the OTP user whole detail is to be updated.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
         /// <list type="number">
         ///     <item>a <see langword="bool"/> indicating whether the operation was successful,</item>
         ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>    
         /// </returns>
-        Task<(bool, Error?)> UpdateOtpUser(OtpUser otpUser);
+        Task<(bool, Error?)> UpdateOtpUser(string userId, string? firstName, string? lastName, string? emailAddress, string? phoneNumber);
 
         /// <summary>
         /// Retrieves the OTP (One-Time Password) user associated with the specified user identifier.
