@@ -5,7 +5,7 @@ using Raven.Core.Models.Configuration;
 using Raven.Core.Abstractions.Factories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Raven.Tests.Migrations;
+using Raven.IntegrationTests.Data.Migrations;
 
 namespace Raven.Tests.UnitTests.RepositoryTests
 {

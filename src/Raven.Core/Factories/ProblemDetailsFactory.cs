@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Raven.Core.Models.Shared;
 using Raven.Core.Libraries.Enums;
+using Raven.Core.Libraries.Constants;
 
 namespace Raven.Core.Factories
 {
@@ -15,15 +16,15 @@ namespace Raven.Core.Factories
                 {
                     Instance = null,
                     Detail = error.Message,
-                    Title = "Record already exists.",
                     Status = (int)HttpStatusCode.Conflict,
+                    Title = ErrorMessages.RecordAlreadyExists,
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.5.9"
                 },
                 _ => new ProblemDetails()
                 {
                     Instance = null,
                     Detail = error.Message,
-                    Title = "Internal server error.",
+                    Title = ErrorMessages.InternalServerError,
                     Status = (int)HttpStatusCode.InternalServerError,
                     Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
                 },
@@ -36,7 +37,7 @@ namespace Raven.Core.Factories
             {
                 Instance = instance,
                 Status = (int)HttpStatusCode.BadRequest,
-                Title = "One or more validation errors occurred.",
+                Title = ErrorMessages.FailedValidations,
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             };
 

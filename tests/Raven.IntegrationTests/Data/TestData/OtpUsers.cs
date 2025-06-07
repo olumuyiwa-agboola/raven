@@ -1,7 +1,7 @@
 ﻿using Bogus;
 using Raven.Core.Models.Entities;
 
-namespace Raven.Tests.TestData
+namespace Raven.IntegrationTests.Data.TestData
 {
     public static class OtpUsers
     {

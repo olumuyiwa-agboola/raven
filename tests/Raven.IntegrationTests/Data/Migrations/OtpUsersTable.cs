@@ -1,8 +1,8 @@
 ﻿using FluentMigrator;
-using Raven.Tests.TestData;
 using Raven.Core.Models.Entities;
+using Raven.IntegrationTests.Data.TestData;
 
-namespace Raven.Tests.Migrations
+namespace Raven.IntegrationTests.Data.Migrations
 {
     [Migration(1)]
     public class OtpUsersTable : Migration

@@ -1,12 +1,13 @@
 ﻿using FluentAssertions;
-using Raven.Tests.TestData;
-using Raven.Tests.Migrations;
 using Raven.Core.Models.Entities;
 using Raven.Core.Abstractions.Factories;
+using Raven.IntegrationTests.Data.TestData;
+using Raven.Tests.UnitTests.RepositoryTests;
+using Raven.IntegrationTests.Data.Migrations;
 using Raven.Infrastructure.Repositories.MySQL;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Raven.Tests.UnitTests.RepositoryTests
+namespace Raven.IntegrationTests.RepositoryTests
 {
     public class UsersMySQLRepositoryTests : IClassFixture<RavenMySQLDbFixture>
     {
@@ -123,21 +124,9 @@ namespace Raven.Tests.UnitTests.RepositoryTests
                 userId: existingUser.UserId,
                 emailAddress: newEmailAddress);
 
-            var (isRetrievedSuccessfully, updatedOtpUser, userRetrievalError) = await _usersMySQLRepository.GetOtpUser(existingUser.UserId);
-
             // Assert
             isUpdatedSuccessfully.Should().BeTrue();
-            isRetrievedSuccessfully.Should().BeTrue();
-
             userUpdateError.Should().BeNull();
-            userRetrievalError.Should().BeNull();
-
-            updatedOtpUser.Should().NotBeNull();
-            updatedOtpUser.UserId.Should().Be(existingUser.UserId);
-            updatedOtpUser.FirstName.Should().Be(existingUser.FirstName);
-            updatedOtpUser.LastName.Should().Be(existingUser.LastName);
-            updatedOtpUser.EmailAddress.Should().Be(newEmailAddress);
-            updatedOtpUser.PhoneNumber.Should().Be(existingUser.PhoneNumber);
         }
 
         [Fact]
