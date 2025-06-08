@@ -7,7 +7,7 @@ namespace Raven.Api.Configurations
     {
         internal static IServiceCollection AddAbstractValidators(this IServiceCollection services)
         {
-            services.AddValidatorsFromAssemblyContaining<CreateOtpUserRequestValidator>();
+            services.AddValidatorsFromAssemblyContaining<CreateUserRequestValidator>();
 
             return services;
         }

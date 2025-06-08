@@ -10,12 +10,12 @@ namespace Raven.Api.Controllers;
 public class UsersController(IUsersService _usersService) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> CreateUser(CreateOtpUserRequest request)
+    public async Task<IActionResult> CreateUser(CreateUserRequest request)
     {
-        var (isSuccess, createOtpUserResponse, problemDetails) = await _usersService.CreateOtpUser(request);
+        var (isSuccess, createUserResponse, problemDetails) = await _usersService.CreateUser(request);
 
         return isSuccess ? 
-            StatusCode((int)HttpStatusCode.OK, createOtpUserResponse) : 
+            StatusCode((int)HttpStatusCode.OK, createUserResponse) : 
             StatusCode((int)problemDetails!.Status!, problemDetails);
     }
 }

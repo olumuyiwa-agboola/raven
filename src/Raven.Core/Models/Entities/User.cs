@@ -1,12 +1,12 @@
 ﻿namespace Raven.Core.Models.Entities
 {
     /// <summary>
-    /// Represents a user that has been profiled for one-time password (OTP) verification.
+    /// Represents a user that has been profiled for authorization code verification.
     /// </summary>
     /// <remarks>This class encapsulates the essential details of a user, including their name,
-    /// contact information and identifier, for use in OTP-related operations or authentication
+    /// contact information and identifier, for use in authorization-related operations or authentication
     /// workflows.</remarks>
-    public record OtpUser
+    public record User
     {
         /// <summary>
         /// Gets or initializes the email address associated with the user.
@@ -43,7 +43,7 @@
         /// </summary>
         public DateTimeOffset LastUpdatedAt { get; init; }
 
-        public static OtpUser Create(string firstName, string lastName, string emailAddress, string phoneNumber)
+        public static User Create(string firstName, string lastName, string emailAddress, string phoneNumber)
             => new() 
             {
                 LastName = lastName,

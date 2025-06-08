@@ -14,9 +14,9 @@ namespace Raven.Core.Services
     /// </summary>
     public class UsersService(IUsersRepository _usersRepo) : IUsersService
     {
-        public async Task<(bool, CreateOtpUserResponse?, ProblemDetails?)> CreateOtpUser(CreateOtpUserRequest request)
+        public async Task<(bool, CreateOtpUserResponse?, ProblemDetails?)> CreateUser(CreateUserRequest request)
         {
-            var otpUser = OtpUser.Create(request.FirstName, request.LastName, request.Email, request.PhoneNumber);
+            var otpUser = User.Create(request.FirstName, request.LastName, request.Email, request.PhoneNumber);
 
             var (otpUserWasSavedSuccessfully, error) = await _usersRepo.SaveOtpUser(otpUser);
 
@@ -31,7 +31,7 @@ namespace Raven.Core.Services
             throw new NotImplementedException();
         }
 
-        public Task<(bool, OtpUser?, Error?)> GetOtpUser(string userId)
+        public Task<(bool, User?, Error?)> GetOtpUser(string userId)
         {
             throw new NotImplementedException();
         }

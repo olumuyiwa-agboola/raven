@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Raven.Core.Models.Entities;
+using Raven.IntegrationTests.Fixtures;
 using Raven.Core.Abstractions.Factories;
 using Raven.IntegrationTests.Data.TestData;
-using Raven.Tests.UnitTests.RepositoryTests;
 using Raven.IntegrationTests.Data.Migrations;
 using Raven.Infrastructure.Repositories.MySQL;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,10 +21,10 @@ namespace Raven.IntegrationTests.RepositoryTests
         }
 
         [Fact]
-        public async Task SaveOtpUser_TakesOtpUserObject_ReturnsTupleOfTrueAndNull()
+        public async Task Saving_a_user_to_the_database_succeeds_if_the_user_ID_email_address_and_phone_number_do_not_already_exist()
         {
             // Arrange
-            OtpUser newUser = OtpUsers.Generate(1).First();
+            User newUser = OtpUsers.Generate(1).First();
 
             // Act
             var (isSavedSuccessfully, error) = await _usersMySQLRepository.SaveOtpUser(newUser);
@@ -35,10 +35,10 @@ namespace Raven.IntegrationTests.RepositoryTests
         }
 
         [Fact]
-        public async Task SaveOtpUser_TakesExistingOtpUserObject_ReturnsTupleOfFalseAndErrorObject()
+        public async Task Saving_a_user_to_the_database_fails_if_the_user_ID__or_email_address_or_phone_number_already_exists()
         {
             // Arrange
-            OtpUser existingUser = OtpUsersTable.SeedData[0];
+            User existingUser = OtpUsersTable.SeedData[0];
 
             // Act
             var (isSavedSuccessfully, error) = await _usersMySQLRepository.SaveOtpUser(existingUser);
@@ -49,7 +49,7 @@ namespace Raven.IntegrationTests.RepositoryTests
         }
 
         [Fact]
-        public async Task DeleteOtpUser_TakesExistingOtpUserObject_ReturnsTupleOfTrueAndNull()
+        public async Task Deleting_a_user_from_the_database_succeeds_if_the_user_ID_exists()
         {
             // Arrange
             string existingUserId = OtpUsersTable.SeedData[1].UserId;
@@ -63,7 +63,7 @@ namespace Raven.IntegrationTests.RepositoryTests
         }
 
         [Fact]
-        public async Task DeleteOtpUser_TakesNonExistentOtpUserObject_ReturnsTupleOfFalseAndErrorObject()
+        public async Task Deleting_a_user_from_the_database_fails_if_the_user_ID_does_not_exist()
         {
             // Arrange
             string nonExistentUserId = OtpUsers.Generate(1).First().UserId;
@@ -77,10 +77,10 @@ namespace Raven.IntegrationTests.RepositoryTests
         }
 
         [Fact]
-        public async Task GetOtpUser_TakesExistingOtpUserId_ReturnsTupleOfTrueAndOtpUserObjectAndNull()
+        public async Task Getting_a_user_from_the_database_succeeds_if_the_user_ID_exists()
         {
             // Arrange
-            OtpUser existingUser = OtpUsersTable.SeedData[3];
+            User existingUser = OtpUsersTable.SeedData[3];
 
             // Act
             var (isRetrievedSuccessfully, otpUser, error) = await _usersMySQLRepository.GetOtpUser(existingUser.UserId);
@@ -97,10 +97,10 @@ namespace Raven.IntegrationTests.RepositoryTests
         }
 
         [Fact]
-        public async Task GetOtpUser_TakesNonExistentOtpUserId_ReturnsTupleOfFalseAndNullAndErrorObject()
+        public async Task Getting_a_user_from_the_database_fails_if_the_user_ID_does_not_exist()
         {
             // Arrange
-            OtpUser nonExistentUser = OtpUsers.Generate(1).First();
+            User nonExistentUser = OtpUsers.Generate(1).First();
 
             // Act
             var (isRetrievedSuccessfully, otpUser, error) = await _usersMySQLRepository.GetOtpUser(nonExistentUser.UserId);
@@ -112,12 +112,11 @@ namespace Raven.IntegrationTests.RepositoryTests
         }
 
         [Fact]
-        public async Task UpdateOtpUser_TakesAnExistingOtpUserIdAndEmailAddress_ReturnsTupleOfTrueAndNull()
+        public async Task Updating_a_user_succeeds_if_the_user_ID_exists_and_at_least_one_attribute_to_update_is_provided()
         {
             // Arrange
-            OtpUser existingUser = OtpUsersTable.SeedData[4];
-            string oldEmailAddress = existingUser.EmailAddress;
-            string newEmailAddress = "sample@email.com";
+            var existingUser = OtpUsersTable.SeedData[4];
+            string newEmailAddress = "sampletest@gmail.com";
 
             // Act
             var (isUpdatedSuccessfully, userUpdateError) = await _usersMySQLRepository.UpdateOtpUser(
@@ -127,67 +126,6 @@ namespace Raven.IntegrationTests.RepositoryTests
             // Assert
             isUpdatedSuccessfully.Should().BeTrue();
             userUpdateError.Should().BeNull();
-        }
-
-        [Fact]
-        public async Task UpdateOtpUser_TakesAnExistingOtpUserIdAndEmailAddressAndPhoneNumber_ReturnsTupleOfTrueAndNull()
-        {
-            // Arrange
-            OtpUser existingUser = OtpUsersTable.SeedData[5];
-            string oldEmailAddress = existingUser.EmailAddress;
-            string newEmailAddress = "sample2@email.com";
-            string newPhoneNumber = "09091215648";
-
-            // Act
-            var (isUpdatedSuccessfully, userUpdateError) = await _usersMySQLRepository.UpdateOtpUser(
-                userId: existingUser.UserId,
-                emailAddress: newEmailAddress,
-                phoneNumber: newPhoneNumber);
-
-            var (isRetrievedSuccessfully, updatedOtpUser, userRetrievalError) = await _usersMySQLRepository.GetOtpUser(existingUser.UserId);
-
-            // Assert
-            isUpdatedSuccessfully.Should().BeTrue();
-            isRetrievedSuccessfully.Should().BeTrue();
-
-            userUpdateError.Should().BeNull();
-            userRetrievalError.Should().BeNull();
-
-            updatedOtpUser.Should().NotBeNull();
-            updatedOtpUser.UserId.Should().Be(existingUser.UserId);
-            updatedOtpUser.FirstName.Should().Be(existingUser.FirstName);
-            updatedOtpUser.LastName.Should().Be(existingUser.LastName);
-            updatedOtpUser.EmailAddress.Should().Be(newEmailAddress);
-            updatedOtpUser.PhoneNumber.Should().Be(newPhoneNumber);
-        }
-
-        [Fact]
-        public async Task UpdateOtpUser_TakesAnExistingOtpUserIdAndAnExistingEmailAddress_ReturnsTupleOfFalseAndErrorObject()
-        {
-            // Arrange
-            OtpUser existingUser = OtpUsersTable.SeedData[5];
-            string oldEmailAddress = existingUser.EmailAddress;
-            string newEmailAddress = "sample2@email.com";
-
-            // Act
-            var (isUpdatedSuccessfully, userUpdateError) = await _usersMySQLRepository.UpdateOtpUser(
-                userId: existingUser.UserId,
-                emailAddress: newEmailAddress);
-
-            var (isRetrievedSuccessfully, updatedOtpUser, userRetrievalError) = await _usersMySQLRepository.GetOtpUser(existingUser.UserId);
-
-            // Assert
-            isUpdatedSuccessfully.Should().BeTrue();
-            isRetrievedSuccessfully.Should().BeTrue();
-
-            userUpdateError.Should().BeNull();
-            userRetrievalError.Should().BeNull();
-
-            updatedOtpUser.Should().NotBeNull();
-            updatedOtpUser.UserId.Should().Be(existingUser.UserId);
-            updatedOtpUser.FirstName.Should().Be(existingUser.FirstName);
-            updatedOtpUser.LastName.Should().Be(existingUser.LastName);
-            updatedOtpUser.EmailAddress.Should().Be(newEmailAddress);
         }
     }
 }

@@ -15,16 +15,17 @@ namespace Raven.UnitTests.ServiceTests
     public class UsersServiceTests
     {
         [Fact]
-        public async Task Creating_an_OTP_user_succeeds_if_the_user_is_saved_to_the_database_successfully()
+        public async Task Creating_a_user_succeeds_if_saving_the_user_to_the_database_succeeds()
         {
             // Arrange
             var usersRepository = A.Fake<IUsersRepository>();
+            A.CallTo(() => usersRepository.SaveOtpUser(A<User>.Ignored)).Returns((true, null));
+
             var sut = new UsersService(usersRepository);
-            var request = GenerateSample<CreateOtpUserRequest>();
-            A.CallTo(() => usersRepository.SaveOtpUser(A<OtpUser>.Ignored)).Returns((true, null));
+            var request = GenerateSample<CreateUserRequest>();
 
             // Act
-            var (isOtpUserCreationSuccessful, createOtpUserResponse, problemDetails) = await sut.CreateOtpUser(request);
+            var (isOtpUserCreationSuccessful, createOtpUserResponse, problemDetails) = await sut.CreateUser(request);
 
             //Assert
             isOtpUserCreationSuccessful.Should().BeTrue();
@@ -39,17 +40,17 @@ namespace Raven.UnitTests.ServiceTests
         }
 
         [Fact]
-        public async Task Creating_an_OTP_user_fails_if_saving_the_user_to_the_database_fails()
+        public async Task Creating_a_user_fails_if_saving_the_user_to_the_database_fails()
         {
             // Arrange
             var usersRepository = A.Fake<IUsersRepository>();
             var sut = new UsersService(usersRepository);
-            var request = GenerateSample<CreateOtpUserRequest>();
+            var request = GenerateSample<CreateUserRequest>();
             var error = Error.NewError(ErrorType.RecordAlreadyExists, ErrorMessages.EmailAlreadyExists);  
-            A.CallTo(() => usersRepository.SaveOtpUser(A<OtpUser>.Ignored)).Returns((false, error));
+            A.CallTo(() => usersRepository.SaveOtpUser(A<User>.Ignored)).Returns((false, error));
 
             // Act
-            var (isOtpUserCreationSuccessful, createOtpUserResponse, problemDetails) = await sut.CreateOtpUser(request);
+            var (isOtpUserCreationSuccessful, createOtpUserResponse, problemDetails) = await sut.CreateUser(request);
 
             //Assert
             isOtpUserCreationSuccessful.Should().BeFalse();
@@ -66,7 +67,7 @@ namespace Raven.UnitTests.ServiceTests
         {
             return typeof(T) switch
             {
-                Type t when t == typeof(CreateOtpUserRequest) => (T)(object)new Faker<CreateOtpUserRequest>()
+                Type t when t == typeof(CreateUserRequest) => (T)(object)new Faker<CreateUserRequest>()
                                         .RuleFor(x => x.LastName, x => x.Person.LastName)
                                         .RuleFor(x => x.FirstName, x => x.Person.FirstName)
                                         .RuleFor(x => x.PhoneNumber, x => x.Phone.PhoneNumber())

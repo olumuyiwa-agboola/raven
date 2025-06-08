@@ -5,9 +5,9 @@ namespace Raven.IntegrationTests.Data.TestData
 {
     public static class OtpUsers
     {
-        public static List<OtpUser> Generate(int numberOfUsers)
+        public static List<User> Generate(int numberOfUsers)
         {
-            var otpUserFaker = new Faker<OtpUser>(locale: "en_NG")
+            var otpUserFaker = new Faker<User>(locale: "en_NG")
                 .RuleFor(user => user.LastName, faker => faker.Name.LastName())
                 .RuleFor(user => user.FirstName, faker => faker.Name.FirstName())
                 .RuleFor(user => user.CreatedAt, _ => DateTimeOffset.Now)

@@ -24,11 +24,11 @@ namespace Raven.Core.Abstractions.Services
         /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
         /// <list type="number">
         ///     <item>a <see langword="bool"/> indicating whether the operation was successful,</item>
-        ///     <item>an <see cref="OtpUser"/> object holding the details of the OTP user, or <see langword="null"/> if the user is not found, and</item>
+        ///     <item>an <see cref="User"/> object holding the details of the OTP user, or <see langword="null"/> if the user is not found, and</item>
         ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>    
         /// </returns>
-        Task<(bool, OtpUser?, Error?)> GetOtpUser(string userId);
+        Task<(bool, User?, Error?)> GetOtpUser(string userId);
 
         /// <summary>
         /// Deletes the OTP (One-Time Password) user associated with the specified user identifier.
@@ -48,7 +48,7 @@ namespace Raven.Core.Abstractions.Services
         /// <remarks>This method performs validation on the input parameters and may fail if the provided
         /// details are invalid or if the user already exists. Ensure that all required fields are properly formatted
         /// before calling this method.</remarks>
-        /// <param name="request">The <see cref="CreateOtpUserRequest"/> object which holds the first name, last name, 
+        /// <param name="request">The <see cref="CreateUserRequest"/> object which holds the first name, last name, 
         /// email address and phone number of the user. Cannot be null or empty.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
         /// <list type="number">
@@ -57,7 +57,7 @@ namespace Raven.Core.Abstractions.Services
         ///     <item>an <see cref="ProblemDetails"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>
         /// </returns>
-        Task<(bool, CreateOtpUserResponse?, ProblemDetails?)> CreateOtpUser(CreateOtpUserRequest request);
+        Task<(bool, CreateOtpUserResponse?, ProblemDetails?)> CreateUser(CreateUserRequest request);
 
         /// <summary>
         /// Updates the details of an OTP user in the system.

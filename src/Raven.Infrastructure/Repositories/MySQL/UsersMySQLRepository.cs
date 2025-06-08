@@ -15,7 +15,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
     /// </summary>
     public class UsersMySQLRepository(IDbConnectionFactory dbConnectionFactory) : IUsersRepository
     {
-        public async Task<(bool, Error?)> SaveOtpUser(OtpUser otpUser)
+        public async Task<(bool, Error?)> SaveOtpUser(User otpUser)
         {
             DynamicParameters parameters = new();
             parameters.Add("UserId", otpUser.UserId);
@@ -100,7 +100,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
             }
         }
 
-        public async Task<(bool, OtpUser?, Error?)> GetOtpUser(string userId)
+        public async Task<(bool, User?, Error?)> GetOtpUser(string userId)
         {
             DynamicParameters parameters = new();
             parameters.Add("UserId", userId);
@@ -119,7 +119,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
             {
                 try
                 {
-                    OtpUser? otpUser = await ravenMySqlConnection.QuerySingleOrDefaultAsync<OtpUser>(command, parameters);
+                    User? otpUser = await ravenMySqlConnection.QuerySingleOrDefaultAsync<User>(command, parameters);
                     if (otpUser is null)
                         return (false, null, Error.NewError(ErrorType.NotFound, "The OTP user was not found in the database."));
                     return (true, otpUser, null);

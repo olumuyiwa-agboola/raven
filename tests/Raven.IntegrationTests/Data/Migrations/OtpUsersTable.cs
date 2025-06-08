@@ -7,7 +7,7 @@ namespace Raven.IntegrationTests.Data.Migrations
     [Migration(1)]
     public class OtpUsersTable : Migration
     {
-        public static List<OtpUser> SeedData = OtpUsers.Generate(10);
+        public static List<User> SeedData = OtpUsers.Generate(10);
 
         public override void Up()
         {

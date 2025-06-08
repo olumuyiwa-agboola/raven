@@ -4,10 +4,10 @@ using Raven.Infrastructure.Factories;
 using Raven.Core.Models.Configuration;
 using Raven.Core.Abstractions.Factories;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Raven.IntegrationTests.Data.Migrations;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Raven.Tests.UnitTests.RepositoryTests
+namespace Raven.IntegrationTests.Fixtures
 {
     public class RavenMySQLDbFixture : IAsyncLifetime
     {

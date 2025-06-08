@@ -9,7 +9,7 @@ namespace Raven.Core.Models.Requests
     /// </summary>
     /// <remarks>This class is used to encapsulate the data required to create a new user obtained 
     /// from the body of a POST request to the relevant endpoint.</remarks>
-    public record CreateOtpUserRequest
+    public record CreateUserRequest
     {
         /// <summary>
         /// Gets or initializes the email address associated with the user.
@@ -33,17 +33,17 @@ namespace Raven.Core.Models.Requests
     }
 
     /// <summary>
-    /// Provides validation rules for the <see cref="CreateOtpUserRequest"/> model.
+    /// Provides validation rules for the <see cref="CreateUserRequest"/> model.
     /// </summary>
-    /// <remarks>This validator ensures that the required fields in a <see cref="CreateOtpUserRequest"/> instance
+    /// <remarks>This validator ensures that the required fields in a <see cref="CreateUserRequest"/> instance
     /// are populated and meet specific format requirements. The following rules are applied: <list type="bullet">
     /// <item><description><c>Email</c> must not be empty and must be a valid email address.</description></item>
     /// <item><description><c>LastName</c> must not be empty.</description></item> <item><description><c>FirstName</c>
     /// must not be empty.</description></item> <item><description><c>PhoneNumber</c> must not be
     /// empty.</description></item> </list></remarks>
-    public class CreateOtpUserRequestValidator : AbstractValidator<CreateOtpUserRequest>
+    public class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
     {
-        public CreateOtpUserRequestValidator()
+        public CreateUserRequestValidator()
         {
             RuleFor(x => x.Email)
                 .IsRequired()

@@ -7,7 +7,7 @@ namespace Raven.Core.Abstractions.Repositories
     /// Defines a contract for managing OTP (One-Time Password) user data in a database.
     /// </summary>
     /// <remarks>This interface provides methods for adding, updating, deleting, and retrieving records of OTP users. 
-    /// Implementations of this interface are responsible for handling the persistence and retrieval of <see cref="OtpUser"/> objects.</remarks>
+    /// Implementations of this interface are responsible for handling the persistence and retrieval of <see cref="User"/> objects.</remarks>
     public interface IUsersRepository
     {
         /// <summary>
@@ -23,7 +23,7 @@ namespace Raven.Core.Abstractions.Repositories
         ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>    
         /// </returns>
-        Task<(bool, Error?)> SaveOtpUser(OtpUser otpUser);
+        Task<(bool, Error?)> SaveOtpUser(User otpUser);
 
         /// <summary>
         /// Deletes the specified OTP user from the system by removing the details of the user from a database.
@@ -66,10 +66,10 @@ namespace Raven.Core.Abstractions.Repositories
         /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
         /// <list type="number">
         ///     <item>a <see langword="bool"/> indicating whether the operation was successful,</item>
-        ///     <item>an <see cref="OtpUser"/> object holding the details of the OTP user, or <see langword="null"/> if no user is found, and</item>
+        ///     <item>an <see cref="User"/> object holding the details of the OTP user, or <see langword="null"/> if no user is found, and</item>
         ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>    
         /// </returns>
-        Task<(bool, OtpUser?, Error?)> GetOtpUser(string userId);
+        Task<(bool, User?, Error?)> GetOtpUser(string userId);
     }
 }
