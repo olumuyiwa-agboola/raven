@@ -1,6 +1,7 @@
 ﻿using Bogus;
 using FluentAssertions;
 using Raven.Core.Models.DTOs;
+using Raven.Core.Libraries.Enums;
 using Raven.Core.Models.Entities;
 using Raven.IntegrationTests.Fixtures;
 using Raven.Core.Abstractions.Factories;
@@ -76,7 +77,9 @@ namespace Raven.IntegrationTests.RepositoryTests
 
             // Assert
             isDeletedSuccessfully.Should().BeFalse();
+
             error.Should().NotBeNull();
+            error.Type.Should().Be(ErrorType.NotFound);
         }
 
         [Fact]
