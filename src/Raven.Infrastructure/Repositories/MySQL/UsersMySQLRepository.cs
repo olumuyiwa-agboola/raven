@@ -1,12 +1,14 @@
 ﻿using Dapper;
 using System.Text;
 using System.Data;
+using Raven.Core.Models.DTOs;
 using MySql.Data.MySqlClient;
 using Raven.Core.Models.Shared;
 using Raven.Core.Libraries.Enums;
 using Raven.Core.Models.Entities;
 using Raven.Core.Abstractions.Factories;
 using Raven.Core.Abstractions.Repositories;
+using System.Reflection;
 
 namespace Raven.Infrastructure.Repositories.MySQL
 {
@@ -15,7 +17,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
     /// </summary>
     public class UsersMySQLRepository(IDbConnectionFactory dbConnectionFactory) : IUsersRepository
     {
-        public async Task<(bool, Error?)> SaveOtpUser(User otpUser)
+        public async Task<(bool, Error?)> SaveUser(User otpUser)
         {
             DynamicParameters parameters = new();
             parameters.Add("UserId", otpUser.UserId);
@@ -70,7 +72,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
             }
         }
 
-        public async Task<(bool, Error?)> DeleteOtpUser(string userId)
+        public async Task<(bool, Error?)> DeleteUser(string userId)
         {
             DynamicParameters parameters = new();
             parameters.Add("UserId", userId);
@@ -100,7 +102,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
             }
         }
 
-        public async Task<(bool, User?, Error?)> GetOtpUser(string userId)
+        public async Task<(bool, User?, Error?)> GetUser(string userId)
         {
             DynamicParameters parameters = new();
             parameters.Add("UserId", userId);
@@ -112,7 +114,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
                 FROM 
                     otp_users WHERE user_id = @UserId;
                 """;
-            
+
             IDbConnection ravenMySqlConnection = dbConnectionFactory.GetRavenMySqlDbConnection();
 
             using (ravenMySqlConnection)
@@ -131,60 +133,26 @@ namespace Raven.Infrastructure.Repositories.MySQL
             }
         }
 
-        public async Task<(bool, Error?)> UpdateOtpUser(string userId, string? firstName = null, string? lastName = null, string? emailAddress = null, string? phoneNumber = null)
+        public async Task<(bool, Error?)> UpdateUser(string userId, UserUpdateDto updates)
         {
-            if (string.IsNullOrWhiteSpace(userId))
-                return (false, Error.NewError(ErrorType.InvalidInput, "Invalid User ID."));
-
-            if (string.IsNullOrWhiteSpace(firstName) && string.IsNullOrWhiteSpace(lastName) && string.IsNullOrWhiteSpace(emailAddress) && string.IsNullOrWhiteSpace(phoneNumber))
-                return (false, Error.NewError(ErrorType.InvalidInput, "Atleast one of first name, last name, email address and phone number must be provided."));
-
             DynamicParameters parameters = new();
             parameters.Add("UserId", userId);
 
-            int numberOfFieldsToUpdate = 0;
-            StringBuilder commandBuilder = new();
-            commandBuilder.Append("UPDATE otp_users SET ");
+            StringBuilder commandBuilder = new("UPDATE otp_users SET ");
 
-            if (!string.IsNullOrWhiteSpace(firstName))
+            foreach (PropertyInfo propertyInfo in typeof(UserUpdateDto).GetProperties())
             {
-                numberOfFieldsToUpdate++;
-                parameters.Add("FirstName", firstName);
-                commandBuilder.Append("first_name = @FirstName");
+                var property = (Property)propertyInfo.GetValue(updates)!;
+
+                if (string.IsNullOrWhiteSpace(property?.Value)) continue;
+
+                parameters.Add(property.ColumnName, property.Value);
+                commandBuilder.Append($"{property.ColumnName} = @{property.ColumnName}, ");
             }
 
-            if (!string.IsNullOrWhiteSpace(lastName))
-            {
-                if (numberOfFieldsToUpdate > 0)
-                    commandBuilder.Append(", ");
-
-                numberOfFieldsToUpdate++;
-                parameters.Add("LastName", lastName);
-                commandBuilder.Append("last_name = @LastName");
-            }
-
-            if (!string.IsNullOrWhiteSpace(emailAddress))
-            {
-                if (numberOfFieldsToUpdate > 0)
-                    commandBuilder.Append(", ");
-
-                numberOfFieldsToUpdate++;
-                parameters.Add("EmailAddress", emailAddress);
-                commandBuilder.Append("email_address = @EmailAddress");
-            }
-
-            if (!string.IsNullOrWhiteSpace(phoneNumber))
-            {
-                if (numberOfFieldsToUpdate > 0)
-                    commandBuilder.Append(", ");
-
-                numberOfFieldsToUpdate++;
-                parameters.Add("PhoneNumber", phoneNumber);
-                commandBuilder.Append("phone_number = @PhoneNumber");
-            }
-
+            commandBuilder.Length -= 2;
             commandBuilder.Append(" WHERE user_id = @UserId;");
-            
+
             string command = commandBuilder.ToString();
             IDbConnection ravenMySqlConnection = dbConnectionFactory.GetRavenMySqlDbConnection();
 

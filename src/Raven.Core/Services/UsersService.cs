@@ -18,7 +18,7 @@ namespace Raven.Core.Services
         {
             var otpUser = User.Create(request.FirstName, request.LastName, request.Email, request.PhoneNumber);
 
-            var (otpUserWasSavedSuccessfully, error) = await _usersRepo.SaveOtpUser(otpUser);
+            var (otpUserWasSavedSuccessfully, error) = await _usersRepo.SaveUser(otpUser);
 
             if (otpUserWasSavedSuccessfully)
                 return (true, CreateOtpUserResponse.Create(otpUser.UserId, otpUser.CreatedAt), null);

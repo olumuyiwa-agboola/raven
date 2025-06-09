@@ -19,7 +19,7 @@ namespace Raven.UnitTests.ServiceTests
         {
             // Arrange
             var usersRepository = A.Fake<IUsersRepository>();
-            A.CallTo(() => usersRepository.SaveOtpUser(A<User>.Ignored)).Returns((true, null));
+            A.CallTo(() => usersRepository.SaveUser(A<User>.Ignored)).Returns((true, null));
 
             var sut = new UsersService(usersRepository);
             var request = GenerateSample<CreateUserRequest>();
@@ -47,7 +47,7 @@ namespace Raven.UnitTests.ServiceTests
             var sut = new UsersService(usersRepository);
             var request = GenerateSample<CreateUserRequest>();
             var error = Error.NewError(ErrorType.RecordAlreadyExists, ErrorMessages.EmailAlreadyExists);  
-            A.CallTo(() => usersRepository.SaveOtpUser(A<User>.Ignored)).Returns((false, error));
+            A.CallTo(() => usersRepository.SaveUser(A<User>.Ignored)).Returns((false, error));
 
             // Act
             var (isOtpUserCreationSuccessful, createOtpUserResponse, problemDetails) = await sut.CreateUser(request);

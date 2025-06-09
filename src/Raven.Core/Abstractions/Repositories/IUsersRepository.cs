@@ -1,5 +1,6 @@
-﻿using Raven.Core.Models.Entities;
+﻿using Raven.Core.Models.DTOs;
 using Raven.Core.Models.Shared;
+using Raven.Core.Models.Entities;
 
 namespace Raven.Core.Abstractions.Repositories
 {
@@ -23,7 +24,7 @@ namespace Raven.Core.Abstractions.Repositories
         ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>    
         /// </returns>
-        Task<(bool, Error?)> SaveOtpUser(User otpUser);
+        Task<(bool, Error?)> SaveUser(User otpUser);
 
         /// <summary>
         /// Deletes the specified OTP user from the system by removing the details of the user from a database.
@@ -35,7 +36,7 @@ namespace Raven.Core.Abstractions.Repositories
         ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>    
         /// </returns>
-        Task<(bool, Error?)> DeleteOtpUser(string userId);
+        Task<(bool, Error?)> DeleteUser(string userId);
 
         /// <summary>
         /// Updates one or more of the details of an existing OTP user in the system by updating the details of the user in a database.
@@ -53,7 +54,7 @@ namespace Raven.Core.Abstractions.Repositories
         ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>    
         /// </returns>
-        Task<(bool, Error?)> UpdateOtpUser(string userId, string? firstName, string? lastName, string? emailAddress, string? phoneNumber);
+        Task<(bool, Error?)> UpdateUser(string userId, UserUpdateDto updates);
 
         /// <summary>
         /// Retrieves the OTP (One-Time Password) user associated with the specified user identifier.
@@ -70,6 +71,6 @@ namespace Raven.Core.Abstractions.Repositories
         ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>    
         /// </returns>
-        Task<(bool, User?, Error?)> GetOtpUser(string userId);
+        Task<(bool, User?, Error?)> GetUser(string userId);
     }
 }
