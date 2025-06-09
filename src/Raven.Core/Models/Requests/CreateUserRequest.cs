@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Raven.Core.Libraries.Constants;
+using Raven.Core.Models.DTOs;
 using System.ComponentModel.DataAnnotations;
 
 namespace Raven.Core.Models.Requests
@@ -14,7 +15,7 @@ namespace Raven.Core.Models.Requests
         /// <summary>
         /// Gets or initializes the email address associated with the user.
         /// </summary>
-        public string Email { get; init; } = string.Empty;
+        public string EmailAddress { get; init; } = string.Empty;
 
         /// <summary>
         /// Gets or initializes the last name of the user.
@@ -45,7 +46,7 @@ namespace Raven.Core.Models.Requests
     {
         public CreateUserRequestValidator()
         {
-            RuleFor(x => x.Email)
+            RuleFor(x => x.EmailAddress)
                 .IsRequired()
                 .MustNotExceed(200)
                 .MustBeAValidEmailAddress()

@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Raven.Core.Models.Entities;
 using Raven.Core.Models.Requests;
 using Raven.Core.Models.Responses;
-using Raven.Core.Models.Shared;
 
 namespace Raven.Core.Abstractions.Services
 {
@@ -15,7 +13,7 @@ namespace Raven.Core.Abstractions.Services
     public interface IUsersService
     {
         /// <summary>
-        /// Retrieves the OTP (One-Time Password) user associated with the specified user identifier.
+        /// Retrieves the user associated with the specified user identifier.
         /// </summary>
         /// <remarks>This method is used to retrieve OTP-related information for a user.
         /// Ensure that the provided <paramref name="userId"/> is valid  and corresponds to a profiled user.</remarks>
@@ -24,23 +22,24 @@ namespace Raven.Core.Abstractions.Services
         /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
         /// <list type="number">
         ///     <item>a <see langword="bool"/> indicating whether the operation was successful,</item>
-        ///     <item>an <see cref="User"/> object holding the details of the OTP user, or <see langword="null"/> if the user is not found, and</item>
-        ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
+        ///     <item>a <see cref="GetUserResponse"/> object representing the response object to be returned to the caller if no error occured, and</item>
+        ///     <item>a <see cref="ProblemDetails"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>    
         /// </returns>
-        Task<(bool, User?, Error?)> GetOtpUser(string userId);
+        Task<(bool, GetUserResponse?, ProblemDetails?)> GetUser(string userId);
 
         /// <summary>
-        /// Deletes the OTP (One-Time Password) user associated with the specified user identifier.
+        /// Deletes the user associated with the specified user identifier.
         /// </summary>
         /// <param name="userId">The unique identifier of the user to delete. Cannot be null or empty.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
         /// <list type="number">
         ///     <item>a <see langword="bool"/> indicating whether the operation was successful,</item>
-        ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
+        ///     <item>a <see cref="DeleteUserResponse"/> object representing the response object to be returned to the caller if no error occured, and</item>
+        ///     <item>a <see cref="ProblemDetails"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>    
         /// </returns>
-        Task<(bool, Error?)> DeleteOtpUser(string userId);
+        Task<(bool, DeleteUserResponse?, ProblemDetails?)> DeleteUser(string userId);
 
         /// <summary>
         /// Creates a new OTP (One-Time Password) user with the specified details.
@@ -53,26 +52,25 @@ namespace Raven.Core.Abstractions.Services
         /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
         /// <list type="number">
         ///     <item>a <see langword="bool"/> indicating whether the operation was successful,</item>
-        ///     <item>an <see cref="CreateOtpUserResponse"/> object holding the response data to be returned to the caller, or <see langword="null"/> if an error occured, and</item>
-        ///     <item>an <see cref="ProblemDetails"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
+        ///     <item>a <see cref="CreateUserResponse"/> object representing the response object to be returned to the caller if no error occured, and</item>
+        ///     <item>a <see cref="ProblemDetails"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>
         /// </returns>
-        Task<(bool, CreateOtpUserResponse?, ProblemDetails?)> CreateUser(CreateUserRequest request);
+        Task<(bool, CreateUserResponse?, ProblemDetails?)> CreateUser(CreateUserRequest request);
 
         /// <summary>
         /// Updates the details of an OTP user in the system.
         /// </summary>
         /// <param name="userId">The unique identifier of the user to update. This value cannot be null or empty.</param>
-        /// <param name="firstName">The updated first name of the user, or <see langword="null"/> to leave it unchanged.</param>
-        /// <param name="lastName">The updated last name of the user, or <see langword="null"/> to leave it unchanged.</param>
-        /// <param name="emailAddress">The updated email address of the user, or <see langword="null"/> to leave it unchanged.</param>
-        /// <param name="phoneNumber">The updated phone number of the user, or <see langword="null"/> to leave it unchanged.</param>
+        /// <param name="request">An <see cref="UpdateUserRequest"/> object containing the fields to be updated. At least 
+        /// one of these properties must be not be null or empty.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
         /// <list type="number">
         ///     <item>a <see langword="bool"/> indicating whether the operation was successful,</item>
-        ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
+        ///     <item>a <see cref="UpdateUserResponse"/> object representing the response object to be returned to the caller if no error occured, and</item>
+        ///     <item>a <see cref="ProblemDetails"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>
         /// </returns>
-        Task<(bool, Error?)> UpdateOtpUser(string userId, string? firstName, string? lastName, string? emailAddress, string? phoneNumber);
+        Task<(bool, UpdateUserResponse?, ProblemDetails?)> UpdateUser(string userId, UpdateUserRequest request);
     }
 }

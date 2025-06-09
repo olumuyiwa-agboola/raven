@@ -31,9 +31,7 @@ namespace Raven.UnitTests.ServiceTests
             isOtpUserCreationSuccessful.Should().BeTrue();
 
             createOtpUserResponse.Should().NotBeNull();
-            createOtpUserResponse.Message.Should().Contain("successful");
             createOtpUserResponse.UserId.Should().NotBeNullOrWhiteSpace();
-            createOtpUserResponse.Message.Should().NotBeNullOrWhiteSpace();
             createOtpUserResponse.CreatedAt.Should().NotBeNullOrWhiteSpace();
 
             problemDetails.Should().BeNull();
@@ -71,7 +69,7 @@ namespace Raven.UnitTests.ServiceTests
                                         .RuleFor(x => x.LastName, x => x.Person.LastName)
                                         .RuleFor(x => x.FirstName, x => x.Person.FirstName)
                                         .RuleFor(x => x.PhoneNumber, x => x.Phone.PhoneNumber())
-                                        .RuleFor(x => x.Email, x => x.Internet.Email(x.Person.FirstName, x.Person.LastName))
+                                        .RuleFor(x => x.EmailAddress, x => x.Internet.Email(x.Person.FirstName, x.Person.LastName))
                                         .Generate(),
 
                 _ => throw new InvalidOperationException($"No sample generator defined for type {typeof(T).Name}."),

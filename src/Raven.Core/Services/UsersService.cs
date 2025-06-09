@@ -1,5 +1,5 @@
 ﻿using Raven.Core.Factories;
-using Raven.Core.Models.Shared;
+using Raven.Core.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Raven.Core.Models.Entities;
 using Raven.Core.Models.Requests;
@@ -14,31 +14,48 @@ namespace Raven.Core.Services
     /// </summary>
     public class UsersService(IUsersRepository _usersRepo) : IUsersService
     {
-        public async Task<(bool, CreateOtpUserResponse?, ProblemDetails?)> CreateUser(CreateUserRequest request)
+        public async Task<(bool, CreateUserResponse?, ProblemDetails?)> CreateUser(CreateUserRequest request)
         {
-            var otpUser = User.Create(request.FirstName, request.LastName, request.Email, request.PhoneNumber);
+            var user = User.Create(request.FirstName, request.LastName, request.EmailAddress, request.PhoneNumber);
 
-            var (otpUserWasSavedSuccessfully, error) = await _usersRepo.SaveUser(otpUser);
+            var (userWasSavedSuccessfully, error) = await _usersRepo.SaveUser(user);
 
-            if (otpUserWasSavedSuccessfully)
-                return (true, CreateOtpUserResponse.Create(otpUser.UserId, otpUser.CreatedAt), null);
+            if (userWasSavedSuccessfully)
+                return (true, CreateUserResponse.Create(user.UserId, user.CreatedAt), null);
             else
                 return (false, null, ProblemDetailsFactory.CreateProblemDetailsFromError(error!));
         }
 
-        public Task<(bool, Error?)> DeleteOtpUser(string userId)
+        public async Task<(bool, DeleteUserResponse?, ProblemDetails?)> DeleteUser(string userId)
         {
-            throw new NotImplementedException();
+            var (userWasDeletedSuccessfully, error) = await _usersRepo.DeleteUser(userId);
+
+            if (userWasDeletedSuccessfully)
+                return (true, DeleteUserResponse.Create(userId), null);
+            else
+                return (false, null, ProblemDetailsFactory.CreateProblemDetailsFromError(error!));
         }
 
-        public Task<(bool, User?, Error?)> GetOtpUser(string userId)
+        public async Task<(bool, GetUserResponse?, ProblemDetails?)> GetUser(string userId)
         {
-            throw new NotImplementedException();
+            var (userWasRetrievedSuccessfully, user, error) = await _usersRepo.GetUser(userId);
+
+            if (userWasRetrievedSuccessfully)
+                return (true, GetUserResponse.Create(user!), null);
+            else
+                return (false, null, ProblemDetailsFactory.CreateProblemDetailsFromError(error!));
         }
 
-        public Task<(bool, Error?)> UpdateOtpUser(string userId, string? firstName, string? lastName, string? emailAddress, string? phoneNumber)
+        public async Task<(bool, UpdateUserResponse?, ProblemDetails?)> UpdateUser(string userId, UpdateUserRequest request)
         {
-            throw new NotImplementedException();
+            var updates = new UserUpdateDto(request.FirstName, request.LastName, request.PhoneNumber, request.EmailAddress);
+
+            var (userWasUpdatedSuccessfully, error) = await _usersRepo.UpdateUser(userId, updates);
+
+            if (userWasUpdatedSuccessfully)
+                return (true, UpdateUserResponse.Create(userId), null);
+            else
+                return (false, null, ProblemDetailsFactory.CreateProblemDetailsFromError(error!));
         }
     }
 }

@@ -38,5 +38,4 @@
         public string? Value = Value;
 
         public string ColumnName = ColumnName;
-    }
-}
+    }}
