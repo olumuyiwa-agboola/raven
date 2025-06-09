@@ -25,14 +25,14 @@ namespace Raven.UnitTests.ServiceTests
             var request = GenerateSample<CreateUserRequest>();
 
             // Act
-            var (isOtpUserCreationSuccessful, createOtpUserResponse, problemDetails) = await sut.CreateUser(request);
+            var (isUserCreationSuccessful, createUserResponse, problemDetails) = await sut.CreateUser(request);
 
             //Assert
-            isOtpUserCreationSuccessful.Should().BeTrue();
+            isUserCreationSuccessful.Should().BeTrue();
 
-            createOtpUserResponse.Should().NotBeNull();
-            createOtpUserResponse.UserId.Should().NotBeNullOrWhiteSpace();
-            createOtpUserResponse.CreatedAt.Should().NotBeNullOrWhiteSpace();
+            createUserResponse.Should().NotBeNull();
+            createUserResponse.UserId.Should().NotBeNullOrWhiteSpace();
+            createUserResponse.CreatedAt.Should().NotBeNullOrWhiteSpace();
 
             problemDetails.Should().BeNull();
         }
@@ -48,17 +48,38 @@ namespace Raven.UnitTests.ServiceTests
             A.CallTo(() => usersRepository.SaveUser(A<User>.Ignored)).Returns((false, error));
 
             // Act
-            var (isOtpUserCreationSuccessful, createOtpUserResponse, problemDetails) = await sut.CreateUser(request);
+            var (isUserCreationSuccessful, createUserResponse, problemDetails) = await sut.CreateUser(request);
 
             //Assert
-            isOtpUserCreationSuccessful.Should().BeFalse();
+            isUserCreationSuccessful.Should().BeFalse();
 
-            createOtpUserResponse.Should().BeNull();
+            createUserResponse.Should().BeNull();
 
             problemDetails.Should().NotBeNull();
             problemDetails.Status.Should().Be((int)HttpStatusCode.Conflict);
             problemDetails.Title.Should().BeEquivalentTo(ErrorMessages.RecordAlreadyExists);
             problemDetails.Detail.Should().BeEquivalentTo(ErrorMessages.EmailAlreadyExists);
+        }
+
+        [Fact]
+        public async Task Deleting_a_user_fails_if_the_user_ID_does_not_exist()
+        {
+            // Arrange
+            var usersRepository = A.Fake<IUsersRepository>();
+            var sut = new UsersService(usersRepository);
+            var nonExistentUserId = Ulid.NewUlid().ToString();
+            var error = Error.NewError(ErrorType.UserNotFound, "The user was not found in the database.");
+            A.CallTo(() => usersRepository.DeleteUser(nonExistentUserId)).Returns((false, error));
+
+            // Act
+            var (isUserDeleteSuccessful, deleteUserResponse, problemDetails) = await sut.DeleteUser(nonExistentUserId);
+
+            // Assert
+            isUserDeleteSuccessful.Should().BeFalse();
+
+            deleteUserResponse.Should().BeNull();
+            problemDetails.Should().NotBeNull();
+            problemDetails.Detail?.Should().Be(error.Message);
         }
 
         private static T GenerateSample<T>()

@@ -12,6 +12,14 @@ namespace Raven.Core.Factories
         {
             return error.Type switch
             {
+                ErrorType.UserNotFound => new ProblemDetails()
+                {
+                    Instance = null,
+                    Detail = error.Message,
+                    Title = ErrorMessages.UserNotFound,
+                    Status = (int)HttpStatusCode.UnprocessableEntity,
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.9"
+                },
                 ErrorType.RecordAlreadyExists => new ProblemDetails()
                 {
                     Instance = null,

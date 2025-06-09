@@ -5,9 +5,9 @@ using Raven.IntegrationTests.Data.TestData;
 namespace Raven.IntegrationTests.Data.Migrations
 {
     [Migration(1)]
-    public class OtpUsersTable : Migration
+    public class UsersTable : Migration
     {
-        public static List<User> SeedData = OtpUsers.Generate(10);
+        public static List<User> SeedData = Users.Generate(10);
 
         public override void Up()
         {

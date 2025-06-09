@@ -7,7 +7,6 @@ namespace Raven.Api.Configurations
     {
         internal static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped<IOtpsRepository, OtpsMySQLRepository>();
             services.AddScoped<IUsersRepository, UsersMySQLRepository>();
 
             return services;

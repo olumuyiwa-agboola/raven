@@ -5,19 +5,19 @@ using Raven.Core.Models.Responses;
 namespace Raven.Core.Abstractions.Services
 {
     /// <summary>
-    /// Defines a contract for managing OTP (One-Time Password) users, including operations for retrieval, creation, 
+    /// Defines a contract for managing users, including operations for retrieval, creation, 
     /// updating, and deletion of user records.
     /// </summary>
-    /// <remarks>This service provides methods to interact with OTP user data, such as retrieving user
+    /// <remarks>This service provides methods to interact with user data, such as retrieving user
     /// details, creating new users, updating existing user information, and deleting user records.</remarks>
     public interface IUsersService
     {
         /// <summary>
         /// Retrieves the user associated with the specified user identifier.
         /// </summary>
-        /// <remarks>This method is used to retrieve OTP-related information for a user.
+        /// <remarks>This method is used to retrieve user information.
         /// Ensure that the provided <paramref name="userId"/> is valid  and corresponds to a profiled user.</remarks>
-        /// <param name="userId">The unique identifier of the user for whom the OTP user information is to be retrieved. 
+        /// <param name="userId">The unique identifier of the user for whom the user information is to be retrieved. 
         /// Must not be <see langword="null"/> or empty.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
         /// <list type="number">
@@ -42,7 +42,7 @@ namespace Raven.Core.Abstractions.Services
         Task<(bool, DeleteUserResponse?, ProblemDetails?)> DeleteUser(string userId);
 
         /// <summary>
-        /// Creates a new OTP (One-Time Password) user with the specified details.
+        /// Creates a new user with the specified details.
         /// </summary>
         /// <remarks>This method performs validation on the input parameters and may fail if the provided
         /// details are invalid or if the user already exists. Ensure that all required fields are properly formatted
@@ -59,7 +59,7 @@ namespace Raven.Core.Abstractions.Services
         Task<(bool, CreateUserResponse?, ProblemDetails?)> CreateUser(CreateUserRequest request);
 
         /// <summary>
-        /// Updates the details of an OTP user in the system.
+        /// Updates the details of a user in the system.
         /// </summary>
         /// <param name="userId">The unique identifier of the user to update. This value cannot be null or empty.</param>
         /// <param name="request">An <see cref="UpdateUserRequest"/> object containing the fields to be updated. At least 

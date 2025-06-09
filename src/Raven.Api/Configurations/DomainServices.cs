@@ -7,7 +7,6 @@ namespace Raven.Api.Configurations
     {
         internal static IServiceCollection AddDomainServices(this IServiceCollection services)
         {
-            services.AddScoped<IOtpsService, OtpsService>();
             services.AddScoped<IUsersService, UsersService>();
 
             return services;

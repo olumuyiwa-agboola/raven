@@ -3,6 +3,7 @@ using FluentAssertions;
 using Raven.Core.Models.DTOs;
 using Raven.Core.Libraries.Enums;
 using Raven.Core.Models.Entities;
+using Raven.Core.Libraries.Constants;
 using Raven.IntegrationTests.Fixtures;
 using Raven.Core.Abstractions.Factories;
 using Raven.IntegrationTests.Data.TestData;
@@ -16,7 +17,7 @@ namespace Raven.IntegrationTests.RepositoryTests
     {
         private readonly UsersMySQLRepository sut;
         private readonly IDbConnectionFactory _dbConnectionFactory;
-        private static readonly Faker _faker = new Faker(locale: "en_NG");
+        private static readonly Faker _faker = new(locale: "en_NG");
 
         public UsersMySQLRepositoryTests(RavenMySQLDbFixture _ravenMySQLDbFixture)
         {
@@ -28,7 +29,7 @@ namespace Raven.IntegrationTests.RepositoryTests
         public async Task Saving_a_user_to_the_database_succeeds_if_the_user_ID_email_address_and_phone_number_do_not_already_exist()
         {
             // Arrange
-            User newUser = OtpUsers.Generate(1).First();
+            User newUser = Users.Generate(1).First();
 
             // Act
             var (isSavedSuccessfully, error) = await sut.SaveUser(newUser);
@@ -42,7 +43,7 @@ namespace Raven.IntegrationTests.RepositoryTests
         public async Task Saving_a_user_to_the_database_fails_if_the_user_ID_or_email_address_or_phone_number_already_exists()
         {
             // Arrange
-            User existingUser = OtpUsersTable.SeedData[0];
+            User existingUser = UsersTable.SeedData[0];
 
             // Act
             var (isSavedSuccessfully, error) = await sut.SaveUser(existingUser);
@@ -56,7 +57,7 @@ namespace Raven.IntegrationTests.RepositoryTests
         public async Task Deleting_a_user_from_the_database_succeeds_if_the_user_ID_exists()
         {
             // Arrange
-            string existingUserId = OtpUsersTable.SeedData[1].UserId;
+            string existingUserId = UsersTable.SeedData[1].UserId;
 
             // Act
             var (isDeletedSuccessfully, error) = await sut.DeleteUser(existingUserId);
@@ -70,7 +71,7 @@ namespace Raven.IntegrationTests.RepositoryTests
         public async Task Deleting_a_user_from_the_database_fails_if_the_user_ID_does_not_exist()
         {
             // Arrange
-            string nonExistentUserId = OtpUsers.Generate(1).First().UserId;
+            string nonExistentUserId = Users.Generate(1).First().UserId;
 
             // Act
             var (isDeletedSuccessfully, error) = await sut.DeleteUser(nonExistentUserId);
@@ -79,26 +80,28 @@ namespace Raven.IntegrationTests.RepositoryTests
             isDeletedSuccessfully.Should().BeFalse();
 
             error.Should().NotBeNull();
-            error.Type.Should().Be(ErrorType.NotFound);
+            error.Type.Should().Be(ErrorType.UserNotFound);
         }
 
         [Fact]
         public async Task Getting_a_user_from_the_database_succeeds_if_the_user_ID_exists()
         {
             // Arrange
-            User existingUser = OtpUsersTable.SeedData[3];
+            User existingUser = UsersTable.SeedData[3];
 
             // Act
-            var (isRetrievedSuccessfully, otpUser, error) = await sut.GetUser(existingUser.UserId);
+            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(existingUser.UserId);
 
             // Assert
             isRetrievedSuccessfully.Should().BeTrue();
-            otpUser.Should().NotBeNull();
-            otpUser.UserId.Should().Be(existingUser.UserId);
-            otpUser.FirstName.Should().Be(existingUser.FirstName);
-            otpUser.LastName.Should().Be(existingUser.LastName);
-            otpUser.EmailAddress.Should().Be(existingUser.EmailAddress);
-            otpUser.PhoneNumber.Should().Be(existingUser.PhoneNumber);
+
+            user.Should().NotBeNull();
+            user.UserId.Should().Be(existingUser.UserId);
+            user.LastName.Should().Be(existingUser.LastName);
+            user.FirstName.Should().Be(existingUser.FirstName);
+            user.PhoneNumber.Should().Be(existingUser.PhoneNumber);
+            user.EmailAddress.Should().Be(existingUser.EmailAddress);
+
             error.Should().BeNull();
         }
 
@@ -106,14 +109,15 @@ namespace Raven.IntegrationTests.RepositoryTests
         public async Task Getting_a_user_from_the_database_fails_if_the_user_ID_does_not_exist()
         {
             // Arrange
-            User nonExistentUser = OtpUsers.Generate(1).First();
+            User nonExistentUser = Users.Generate(1).First();
 
             // Act
-            var (isRetrievedSuccessfully, otpUser, error) = await sut.GetUser(nonExistentUser.UserId);
+            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(nonExistentUser.UserId);
 
             // Assert
             isRetrievedSuccessfully.Should().BeFalse();
-            otpUser.Should().BeNull();
+
+            user.Should().BeNull();
             error.Should().NotBeNull();
         }
 
@@ -133,10 +137,10 @@ namespace Raven.IntegrationTests.RepositoryTests
         {
             return new List<object[]>
             {
-                new object[] { OtpUsersTable.SeedData[4].UserId,  new UserUpdateDto(emailAddress: _faker.Internet.Email()) },
-                new object[] { OtpUsersTable.SeedData[4].UserId,  new UserUpdateDto(emailAddress: _faker.Internet.Email(), phoneNumber: _faker.Phone.PhoneNumber()) },
-                new object[] { OtpUsersTable.SeedData[4].UserId,  new UserUpdateDto(emailAddress: _faker.Internet.Email(), phoneNumber: _faker.Phone.PhoneNumber(), firstName: _faker.Name.FirstName()), },
-                new object[] { OtpUsersTable.SeedData[4].UserId,  new UserUpdateDto(emailAddress: _faker.Internet.Email(), phoneNumber: _faker.Phone.PhoneNumber(), firstName: _faker.Name.FirstName(), lastName: _faker.Name.LastName()), },
+                new object[] { UsersTable.SeedData[4].UserId,  new UserUpdateDto(emailAddress: _faker.Internet.Email()) },
+                new object[] { UsersTable.SeedData[4].UserId,  new UserUpdateDto(emailAddress: _faker.Internet.Email(), phoneNumber: _faker.Phone.PhoneNumber()) },
+                new object[] { UsersTable.SeedData[4].UserId,  new UserUpdateDto(emailAddress: _faker.Internet.Email(), phoneNumber: _faker.Phone.PhoneNumber(), firstName: _faker.Name.FirstName()), },
+                new object[] { UsersTable.SeedData[4].UserId,  new UserUpdateDto(emailAddress: _faker.Internet.Email(), phoneNumber: _faker.Phone.PhoneNumber(), firstName: _faker.Name.FirstName(), lastName: _faker.Name.LastName()), },
             };
         }
 
@@ -144,7 +148,7 @@ namespace Raven.IntegrationTests.RepositoryTests
         public async Task Updating_a_user_fails_if_the_user_ID_does_not_exist()
         {
             // Arrange
-            string userId = OtpUsers.Generate(1).First().UserId;
+            string userId = Users.Generate(1).First().UserId;
             UserUpdateDto updates = new(emailAddress: _faker.Internet.Email());
 
             // Act

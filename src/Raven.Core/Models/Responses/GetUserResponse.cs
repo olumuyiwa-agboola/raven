@@ -7,7 +7,7 @@ namespace Raven.Core.Models.Responses
     /// Represents the body of a 200 OK response from a request to get a user.
     /// </summary>
     /// <remarks>This class is used to encapsulate the data to be returned in the body of a 200 OK 
-    /// response from a request to get a OTP user sent to the relevant endpoint.</remarks>
+    /// response from a request to get a user sent to the relevant endpoint.</remarks>
     public record GetUserResponse
     {
         private GetUserResponse(User user)

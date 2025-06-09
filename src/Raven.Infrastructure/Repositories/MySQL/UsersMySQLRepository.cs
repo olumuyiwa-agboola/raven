@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using System.Text;
 using System.Data;
+using System.Reflection;
 using Raven.Core.Models.DTOs;
 using MySql.Data.MySqlClient;
 using Raven.Core.Models.Shared;
@@ -8,25 +9,24 @@ using Raven.Core.Libraries.Enums;
 using Raven.Core.Models.Entities;
 using Raven.Core.Abstractions.Factories;
 using Raven.Core.Abstractions.Repositories;
-using System.Reflection;
 
 namespace Raven.Infrastructure.Repositories.MySQL
 {
     /// <summary>
-    /// Implementation of the <see cref="IUsersRepository"/> interface for managing OTP (One-Time Password) users in a database.
+    /// Implementation of the <see cref="IUsersRepository"/> interface for managing users in a database.
     /// </summary>
     public class UsersMySQLRepository(IDbConnectionFactory dbConnectionFactory) : IUsersRepository
     {
-        public async Task<(bool, Error?)> SaveUser(User otpUser)
+        public async Task<(bool, Error?)> SaveUser(User user)
         {
             DynamicParameters parameters = new();
-            parameters.Add("UserId", otpUser.UserId);
-            parameters.Add("LastName", otpUser.LastName);
-            parameters.Add("FirstName", otpUser.FirstName);
-            parameters.Add("CreatedAt", otpUser.CreatedAt);
-            parameters.Add("PhoneNumber", otpUser.PhoneNumber);
-            parameters.Add("EmailAddress", otpUser.EmailAddress);
-            parameters.Add("LastUpdatedAt", otpUser.LastUpdatedAt);
+            parameters.Add("UserId", user.UserId);
+            parameters.Add("LastName", user.LastName);
+            parameters.Add("FirstName", user.FirstName);
+            parameters.Add("CreatedAt", user.CreatedAt);
+            parameters.Add("PhoneNumber", user.PhoneNumber);
+            parameters.Add("EmailAddress", user.EmailAddress);
+            parameters.Add("LastUpdatedAt", user.LastUpdatedAt);
 
             string command = """
                 INSERT INTO otp_users
@@ -49,25 +49,25 @@ namespace Raven.Infrastructure.Repositories.MySQL
                     return numberOfRowsAffected switch
                     {
                         1 => (true, null),
-                        _ => (false, Error.NewError(ErrorType.DatabaseError, $"An error occured while trying to insert the OTP user data into the database: {numberOfRowsAffected} rows affected.")),
+                        _ => (false, Error.NewError(ErrorType.DatabaseError, $"An error occured while trying to insert the user data into the database: {numberOfRowsAffected} rows affected.")),
                     };
                 }
                 catch (MySqlException ex)
                 {
                     if (ex.Number == 1062)
                     {
-                        if (ex.Message.Contains(otpUser.EmailAddress))
+                        if (ex.Message.Contains(user.EmailAddress))
                             return (false, Error.NewError(ErrorType.RecordAlreadyExists, "Email address already exists."));
 
-                        if (ex.Message.Contains(otpUser.PhoneNumber))
+                        if (ex.Message.Contains(user.PhoneNumber))
                             return (false, Error.NewError(ErrorType.RecordAlreadyExists, "Phone number already exists."));
                     }
 
-                    return (false, Error.NewError(ErrorType.Exception, $"An exception occured while trying to save the OTP user data to the database: {ex.Message}."));
+                    return (false, Error.NewError(ErrorType.Exception, $"An exception occured while trying to save the user data to the database: {ex.Message}."));
                 }
                 catch (Exception ex)
                 {
-                    return (false, Error.NewError(ErrorType.Exception, $"An exception occured while trying to save the OTP user data to the database: {ex.Message}."));
+                    return (false, Error.NewError(ErrorType.Exception, $"An exception occured while trying to save the user data to the database: {ex.Message}."));
                 }
             }
         }
@@ -91,13 +91,13 @@ namespace Raven.Infrastructure.Repositories.MySQL
                     return numberOfRowsAffected switch
                     {
                         1 => (true, null),
-                        0 => (false, Error.NewError(ErrorType.NotFound, "The OTP user was not found in the database.")),
-                        _ => (false, Error.NewError(ErrorType.DatabaseError, $"An error occured while trying to delete the OTP user data from the database: {numberOfRowsAffected} rows affected.")),
+                        0 => (false, Error.NewError(ErrorType.UserNotFound, "The user was not found in the database.")),
+                        _ => (false, Error.NewError(ErrorType.DatabaseError, $"An error occured while trying to delete the user from the database: {numberOfRowsAffected} rows affected.")),
                     };
                 }
                 catch (Exception ex)
                 {
-                    return (false, Error.NewError(ErrorType.Exception, $"An exception occured while trying to delete the OTP user data from the database: {ex.Message}."));
+                    return (false, Error.NewError(ErrorType.Exception, $"An exception occured while trying to delete the user from the database: {ex.Message}."));
                 }
             }
         }
@@ -121,14 +121,14 @@ namespace Raven.Infrastructure.Repositories.MySQL
             {
                 try
                 {
-                    User? otpUser = await ravenMySqlConnection.QuerySingleOrDefaultAsync<User>(command, parameters);
-                    if (otpUser is null)
-                        return (false, null, Error.NewError(ErrorType.NotFound, "The OTP user was not found in the database."));
-                    return (true, otpUser, null);
+                    User? user = await ravenMySqlConnection.QuerySingleOrDefaultAsync<User>(command, parameters);
+                    if (user is null)
+                        return (false, null, Error.NewError(ErrorType.UserNotFound, "The user was not found in the database."));
+                    return (true, user, null);
                 }
                 catch (Exception ex)
                 {
-                    return (false, null, Error.NewError(ErrorType.Exception, $"An exception occured while trying to retrieve the OTP user data from the database: {ex.Message}."));
+                    return (false, null, Error.NewError(ErrorType.Exception, $"An exception occured while trying to retrieve the user data from the database: {ex.Message}."));
                 }
             }
         }
@@ -164,13 +164,13 @@ namespace Raven.Infrastructure.Repositories.MySQL
                     return numberOfRowsAffected switch
                     {
                         1 => (true, null),
-                        0 => (false, Error.NewError(ErrorType.NotFound, "The OTP user was not found in the database.")),
-                        _ => (false, Error.NewError(ErrorType.DatabaseError, $"An error occured while trying to update the OTP user data in the database: {numberOfRowsAffected} rows affected.")),
+                        0 => (false, Error.NewError(ErrorType.UserNotFound, "The user was not found in the database.")),
+                        _ => (false, Error.NewError(ErrorType.DatabaseError, $"An error occured while trying to update the user data in the database: {numberOfRowsAffected} rows affected.")),
                     };
                 }
                 catch (Exception ex)
                 {
-                    return (false, Error.NewError(ErrorType.Exception, $"An exception occured while trying to update the OTP user data in the database: {ex.Message}."));
+                    return (false, Error.NewError(ErrorType.Exception, $"An exception occured while trying to update the user data in the database: {ex.Message}."));
                 }
             }
         }

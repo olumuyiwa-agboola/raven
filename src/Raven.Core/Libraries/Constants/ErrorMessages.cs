@@ -2,6 +2,8 @@
 {
     public static class ErrorMessages
     {
+        public const string UserNotFound = "User not found.";
+
         public const string RecordAlreadyExists = "Record already exists.";
 
         public const string InternalServerError = "Internal server error.";

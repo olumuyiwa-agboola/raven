@@ -57,7 +57,7 @@ namespace Raven.IntegrationTests.Fixtures
             services.AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
                     .AddMySql().WithGlobalConnectionString(Container.GetConnectionString())
-                    .ScanIn(typeof(OtpUsersTable).Assembly).For.Migrations());
+                    .ScanIn(typeof(UsersTable).Assembly).For.Migrations());
 
             Services = services.BuildServiceProvider();
         }

@@ -2,7 +2,7 @@
 {
     public enum ErrorType
     {
-        NotFound,
+        UserNotFound,
         Exception,
         InvalidInput,
         Unauthorized,

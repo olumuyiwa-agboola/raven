@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Raven.Core.Models.Requests
 {
     /// <summary>
-    /// Represents the body of a POST request to create a new OTP user with the specified details.
+    /// Represents the body of a POST request to create a new user with the specified details.
     /// </summary>
     /// <remarks>This class is used to encapsulate the data required to create a new user obtained 
     /// from the body of a POST request to the relevant endpoint.</remarks>
