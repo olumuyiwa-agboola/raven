@@ -8,8 +8,8 @@
 
 ## Overview
 
-**Raven** is a robust and scalable backend service designed for generating, sending, and validating one-time passwords (OTPs)
-exposed via a REST API and a gRPC service. 
+**Raven** is a robust and scalable backend service designed for generating, sending, and validating authorization codes, exposed 
+via a REST API and a gRPC service. 
 Implemented as a backend development practice project, it demonstrates adherence to the hexagonal architecture, clean and secure
 coding principles, implementation of relevant design patterns, and thorough API documentation for both REST and gRPC interfaces.
 
@@ -18,8 +18,9 @@ best practices.
 
 ## Key Features
 
-* **OTP Generation & Delivery:** Secure and configurable OTP generation and delivery via email and SMS (placeholder for actual implementation).
-* **OTP Validation:** Secure and reliable OTP validation with configurable expiration and retry count.
+* **Authorization Code Generation & Delivery:** Secure and configurable authorization code generation and delivery via email and 
+* SMS (placeholder for actual implementation).
+* **Authorization Code Validation:** Secure and reliable authorization code validation with configurable expiration and retry count.
 * **REST API:** Well-documented RESTful API for easy integration with web and mobile applications.
 * **gRPC Service:** High-performance gRPC service for internal microservice communication.
 * **Hexagonal Architecture:** Clear separation of concerns with distinct layers for presentation, domain, and infrastructure.
@@ -50,4 +51,4 @@ This project is licensed under the [GNU General Public License v3](https://opens
 
 -----
 
-**Thank you for checking out Raven\!**
+**Thanks for checking out Raven\!**
