@@ -1,5 +1,6 @@
 ﻿using FluentMigrator;
 using Raven.Core.Models.Entities;
+using Raven.Core.Libraries.Constants;
 using Raven.IntegrationTests.Data.TestData;
 
 namespace Raven.IntegrationTests.Data.Migrations
@@ -11,19 +12,19 @@ namespace Raven.IntegrationTests.Data.Migrations
 
         public override void Up()
         {
-            Create.Table("otp_users")
-                .WithColumn("user_id").AsString(50).PrimaryKey()
-                .WithColumn("first_name").AsString(100).NotNullable()
-                .WithColumn("last_name").AsString(100).NotNullable()
-                .WithColumn("email_address").AsString(200).Indexed()
-                .WithColumn("phone_number").AsString(50).Indexed()
-                .WithColumn("created_at").AsDateTime()
-                .WithColumn("last_updated_at").AsDateTime();
+            Create.Table($"{DataStores.Users.Name}")
+                .WithColumn($"{DataStores.Users.Attributes.UserId}").AsString(50).PrimaryKey()
+                .WithColumn($"{DataStores.Users.Attributes.FirstName}").AsString(100).NotNullable()
+                .WithColumn($"{DataStores.Users.Attributes.LastName}").AsString(100).NotNullable()
+                .WithColumn($"{DataStores.Users.Attributes.EmailAddress}").AsString(200).Indexed()
+                .WithColumn($"{DataStores.Users.Attributes.PhoneNumber}").AsString(50).Indexed()
+                .WithColumn($"{DataStores.Users.Attributes.CreatedAt}").AsDateTime()
+                .WithColumn($"{DataStores.Users.Attributes.LastUpdatedAt}").AsDateTime();
 
 
             foreach (var user in SeedData)
             {
-                Insert.IntoTable("otp_users").Row(new
+                Insert.IntoTable($"{DataStores.Users.Name}").Row(new
                 {
                     user_id = user.UserId,
                     last_name = user.LastName,
@@ -38,7 +39,7 @@ namespace Raven.IntegrationTests.Data.Migrations
 
         public override void Down()
         {
-            Delete.Table("otp_users");
+            Delete.Table($"{DataStores.Users.Name}");
         }
     }
 }

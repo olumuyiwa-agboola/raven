@@ -11,5 +11,7 @@
         public const string EmailAlreadyExists = "Email address already exists.";
 
         public const string FailedValidations = "One or more validations failed.";
+
+        public const string PhoneNumberAlreadyExists = "Phone number already exists.";
     }
 }

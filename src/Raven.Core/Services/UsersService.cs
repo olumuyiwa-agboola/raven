@@ -10,7 +10,7 @@ using Raven.Core.Abstractions.Repositories;
 namespace Raven.Core.Services
 {
     /// <summary>
-    /// Implementation of the <see cref="IUsersService"/> interface for managing  (One-Time Password) users.
+    /// Implementation of the <see cref="IUsersService"/> interface for managing users.
     /// </summary>
     public class UsersService(IUsersRepository _usersRepo) : IUsersService
     {

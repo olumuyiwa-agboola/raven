@@ -9,6 +9,7 @@ using Raven.Core.Libraries.Enums;
 using Raven.Core.Models.Entities;
 using Raven.Core.Abstractions.Factories;
 using Raven.Core.Abstractions.Repositories;
+using Raven.Core.Libraries.Constants;
 
 namespace Raven.Infrastructure.Repositories.MySQL
 {
@@ -28,10 +29,16 @@ namespace Raven.Infrastructure.Repositories.MySQL
             parameters.Add("EmailAddress", user.EmailAddress);
             parameters.Add("LastUpdatedAt", user.LastUpdatedAt);
 
-            string command = """
-                INSERT INTO otp_users
+            string command = $"""
+                INSERT INTO {DataStores.Users.Name}
                 (
-                    user_id, first_name, last_name, email_address, phone_number, created_at, last_updated_at
+                    {DataStores.Users.Attributes.UserId}, 
+                    {DataStores.Users.Attributes.FirstName}, 
+                    {DataStores.Users.Attributes.LastName}, 
+                    {DataStores.Users.Attributes.EmailAddress}, 
+                    {DataStores.Users.Attributes.PhoneNumber}, 
+                    {DataStores.Users.Attributes.CreatedAt}, 
+                    {DataStores.Users.Attributes.LastUpdatedAt}
                 )
                 VALUES
                 (
@@ -77,8 +84,8 @@ namespace Raven.Infrastructure.Repositories.MySQL
             DynamicParameters parameters = new();
             parameters.Add("UserId", userId);
 
-            string command = """
-                DELETE FROM otp_users WHERE user_id = @UserId;
+            string command = $"""
+                DELETE FROM {DataStores.Users.Name} WHERE {DataStores.Users.Attributes.UserId} = @UserId;
                 """;
 
             IDbConnection ravenMySqlConnection = dbConnectionFactory.GetRavenMySqlDbConnection();
@@ -107,12 +114,17 @@ namespace Raven.Infrastructure.Repositories.MySQL
             DynamicParameters parameters = new();
             parameters.Add("UserId", userId);
 
-            string command = """
+            string command = $"""
                 SELECT 
-                    user_id AS UserId, first_name AS FirstName, last_name AS LastName, email_address AS EmailAddress,
-                    phone_number AS PhoneNumber, created_at AS CreatedAt, last_updated_at AS LastUpdatedAt 
+                    {DataStores.Users.Attributes.UserId} AS UserId, 
+                    {DataStores.Users.Attributes.FirstName} AS FirstName, 
+                    {DataStores.Users.Attributes.LastName} AS LastName, 
+                    {DataStores.Users.Attributes.EmailAddress} AS EmailAddress,
+                    {DataStores.Users.Attributes.PhoneNumber} AS PhoneNumber,
+                    {DataStores.Users.Attributes.CreatedAt} AS CreatedAt, 
+                    {DataStores.Users.Attributes.LastUpdatedAt} AS LastUpdatedAt 
                 FROM 
-                    otp_users WHERE user_id = @UserId;
+                    {DataStores.Users.Name} WHERE {DataStores.Users.Attributes.UserId} = @UserId;
                 """;
 
             IDbConnection ravenMySqlConnection = dbConnectionFactory.GetRavenMySqlDbConnection();
@@ -138,7 +150,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
             DynamicParameters parameters = new();
             parameters.Add("UserId", userId);
 
-            StringBuilder commandBuilder = new("UPDATE otp_users SET ");
+            StringBuilder commandBuilder = new($"UPDATE {DataStores.Users.Name} SET ");
 
             foreach (PropertyInfo propertyInfo in typeof(UserUpdateDto).GetProperties())
             {
@@ -151,7 +163,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
             }
 
             commandBuilder.Length -= 2;
-            commandBuilder.Append(" WHERE user_id = @UserId;");
+            commandBuilder.Append($" WHERE {DataStores.Users.Attributes.UserId} = @UserId;");
 
             string command = commandBuilder.ToString();
             IDbConnection ravenMySqlConnection = dbConnectionFactory.GetRavenMySqlDbConnection();
