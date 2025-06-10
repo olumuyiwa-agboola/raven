@@ -3,7 +3,6 @@ using FluentAssertions;
 using Raven.Core.Models.DTOs;
 using Raven.Core.Libraries.Enums;
 using Raven.Core.Models.Entities;
-using Raven.Core.Libraries.Constants;
 using Raven.IntegrationTests.Fixtures;
 using Raven.Core.Abstractions.Factories;
 using Raven.IntegrationTests.Data.TestData;
@@ -84,7 +83,7 @@ namespace Raven.IntegrationTests.RepositoryTests
         }
 
         [Fact]
-        public async Task Getting_a_user_from_the_database_succeeds_if_the_user_ID_exists()
+        public async Task Getting_a_user_from_the_database_using_the_user_ID_succeeds_if_the_user_ID_exists()
         {
             // Arrange
             User existingUser = UsersTable.SeedData[3];
@@ -106,13 +105,89 @@ namespace Raven.IntegrationTests.RepositoryTests
         }
 
         [Fact]
-        public async Task Getting_a_user_from_the_database_fails_if_the_user_ID_does_not_exist()
+        public async Task Getting_a_user_from_the_database_using_the_email_address_succeeds_if_the_email_address_exists()
+        {
+            // Arrange
+            User existingUser = UsersTable.SeedData[3];
+
+            // Act
+            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(existingUser.EmailAddress, SearchType.EmailAddress);
+
+            // Assert
+            isRetrievedSuccessfully.Should().BeTrue();
+
+            user.Should().NotBeNull();
+            user.UserId.Should().Be(existingUser.UserId);
+            user.LastName.Should().Be(existingUser.LastName);
+            user.FirstName.Should().Be(existingUser.FirstName);
+            user.PhoneNumber.Should().Be(existingUser.PhoneNumber);
+            user.EmailAddress.Should().Be(existingUser.EmailAddress);
+
+            error.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task Getting_a_user_from_the_database_using_the_phone_number_succeeds_if_the_phone_number_exists()
+        {
+            // Arrange
+            User existingUser = UsersTable.SeedData[3];
+
+            // Act
+            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(existingUser.PhoneNumber, SearchType.PhoneNumber);
+
+            // Assert
+            isRetrievedSuccessfully.Should().BeTrue();
+
+            user.Should().NotBeNull();
+            user.UserId.Should().Be(existingUser.UserId);
+            user.LastName.Should().Be(existingUser.LastName);
+            user.FirstName.Should().Be(existingUser.FirstName);
+            user.PhoneNumber.Should().Be(existingUser.PhoneNumber);
+            user.EmailAddress.Should().Be(existingUser.EmailAddress);
+
+            error.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task Getting_a_user_from_the_database_using_the_user_id_fails_if_the_user_ID_does_not_exist()
         {
             // Arrange
             User nonExistentUser = Users.Generate(1).First();
 
             // Act
             var (isRetrievedSuccessfully, user, error) = await sut.GetUser(nonExistentUser.UserId, SearchType.UserId);
+
+            // Assert
+            isRetrievedSuccessfully.Should().BeFalse();
+
+            user.Should().BeNull();
+            error.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task Getting_a_user_from_the_database_using_the_email_address_fails_if_the_email_address_does_not_exist()
+        {
+            // Arrange
+            User nonExistentUser = Users.Generate(1).First();
+
+            // Act
+            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(nonExistentUser.EmailAddress, SearchType.EmailAddress);
+
+            // Assert
+            isRetrievedSuccessfully.Should().BeFalse();
+
+            user.Should().BeNull();
+            error.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task Getting_a_user_from_the_database_using_the_phone_number_fails_if_the_phone_number_does_not_exist()
+        {
+            // Arrange
+            User nonExistentUser = Users.Generate(1).First();
+
+            // Act
+            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(nonExistentUser.PhoneNumber, SearchType.PhoneNumber);
 
             // Assert
             isRetrievedSuccessfully.Should().BeFalse();

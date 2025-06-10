@@ -4,7 +4,7 @@
     {
         public static class Users 
         { 
-            public const string Name = "otp_users";
+            public const string Name = "users";
 
             public static class Attributes
             {
