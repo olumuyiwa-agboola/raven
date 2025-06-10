@@ -1,6 +1,7 @@
 ﻿using Raven.Core.Models.DTOs;
 using Raven.Core.Models.Shared;
 using Raven.Core.Models.Entities;
+using Raven.Core.Libraries.Enums;
 
 namespace Raven.Core.Abstractions.Repositories
 {
@@ -57,13 +58,14 @@ namespace Raven.Core.Abstractions.Repositories
         Task<(bool, Error?)> UpdateUser(string userId, UserUpdateDto updates);
 
         /// <summary>
-        /// Retrieves the user associated with the specified user identifier.
+        /// Retrieves the user associated with the specified search parameter.
         /// </summary>
-        /// <remarks>Use this method to retrieve -related information for a specific user. Ensure that
-        /// the provided  <paramref name="userId"/> is valid and corresponds to an existing user in the
+        /// <remarks>Use this method to retrieve the details of a specific user using one of the available <see cref="SearchType"/>. Ensure that
+        /// the provided <paramref name="searchParameter"/> and <paramref name="searchType"/> are valid and correspond to an existing user in the
         /// system.</remarks>
-        /// <param name="userId">The unique identifier of the user for whom the user information is to be retrieved. This parameter
+        /// <param name="searchParameter">The unique identifier of the user for whom the user information is to be retrieved. This parameter
         /// cannot be null or empty.</param>
+        /// <param name="searchType">Specifies the type of search to be performed. This parameter cannot be null.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
         /// <list type="number">
         ///     <item>a <see langword="bool"/> indicating whether the operation was successful,</item>
@@ -71,6 +73,6 @@ namespace Raven.Core.Abstractions.Repositories
         ///     <item>an <see cref="Error"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>    
         /// </returns>
-        Task<(bool, User?, Error?)> GetUser(string userId);
+        Task<(bool, User?, Error?)> GetUser(string searchParameter, SearchType searchType);
     }
 }

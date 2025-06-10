@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Raven.Core.Libraries.Enums;
 using Raven.Core.Models.Requests;
 using Raven.Core.Models.Responses;
 
@@ -13,12 +14,14 @@ namespace Raven.Core.Abstractions.Services
     public interface IUsersService
     {
         /// <summary>
-        /// Retrieves the user associated with the specified user identifier.
+        /// Retrieves the user associated with the specified search parameter.
         /// </summary>
-        /// <remarks>This method is used to retrieve user information.
-        /// Ensure that the provided <paramref name="userId"/> is valid  and corresponds to a profiled user.</remarks>
-        /// <param name="userId">The unique identifier of the user for whom the user information is to be retrieved. 
-        /// Must not be <see langword="null"/> or empty.</param>
+        /// <remarks>Use this method to retrieve the details of a specific user using one of the available <see cref="SearchType"/>. Ensure that
+        /// the provided <paramref name="searchParameter"/> and <paramref name="searchType"/> are valid and correspond to an existing user in the
+        /// system.</remarks>
+        /// <param name="searchParameter">The unique identifier of the user for whom the user information is to be retrieved. This parameter
+        /// cannot be null or empty.</param>
+        /// <param name="searchType">Specifies the type of search to be performed. This parameter cannot be null.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
         /// <list type="number">
         ///     <item>a <see langword="bool"/> indicating whether the operation was successful,</item>
@@ -26,7 +29,7 @@ namespace Raven.Core.Abstractions.Services
         ///     <item>a <see cref="ProblemDetails"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>    
         /// </returns>
-        Task<(bool, GetUserResponse?, ProblemDetails?)> GetUser(string userId);
+        Task<(bool, GetUserResponse?, ProblemDetails?)> GetUser(string searchParameter, SearchType searchType);
 
         /// <summary>
         /// Deletes the user associated with the specified user identifier.

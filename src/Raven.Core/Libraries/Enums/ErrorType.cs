@@ -2,13 +2,14 @@
 {
     public enum ErrorType
     {
-        UserNotFound,
         Exception,
         InvalidInput,
         Unauthorized,
+        UserNotFound,
+        DatabaseError,
+        InvalidSearchType,
         RecordAlreadyExists,
         InternalServerError,
-        DatabaseError,
         DatabaseInsertFailure
     }
 }

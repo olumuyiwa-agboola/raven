@@ -109,12 +109,11 @@ namespace Raven.Infrastructure.Repositories.MySQL
             }
         }
 
-        public async Task<(bool, User?, Error?)> GetUser(string userId)
+        public async Task<(bool, User?, Error?)> GetUser(string searchParameter, SearchType searchType)
         {
             DynamicParameters parameters = new();
-            parameters.Add("UserId", userId);
-
-            string command = $"""
+            StringBuilder commandBuilder = new();
+            commandBuilder.Append($"""
                 SELECT 
                     {DataStores.Users.Attributes.UserId} AS UserId, 
                     {DataStores.Users.Attributes.FirstName} AS FirstName, 
@@ -124,9 +123,31 @@ namespace Raven.Infrastructure.Repositories.MySQL
                     {DataStores.Users.Attributes.CreatedAt} AS CreatedAt, 
                     {DataStores.Users.Attributes.LastUpdatedAt} AS LastUpdatedAt 
                 FROM 
-                    {DataStores.Users.Name} WHERE {DataStores.Users.Attributes.UserId} = @UserId;
-                """;
+                    {DataStores.Users.Name} 
+                """);
 
+            switch (searchType)
+            {
+                case SearchType.UserId:
+                    parameters.Add("UserId", searchParameter);
+                    commandBuilder.Append($"WHERE {DataStores.Users.Attributes.UserId} = @UserId;");
+                    break;
+
+                case SearchType.EmailAddress:
+                    parameters.Add("EmailAddress", searchParameter);
+                    commandBuilder.Append($"WHERE {DataStores.Users.Attributes.EmailAddress} = @EmailAddress;");
+                    break;
+
+                case SearchType.PhoneNumber:
+                    parameters.Add("PhoneNumber", searchParameter);
+                    commandBuilder.Append($"WHERE {DataStores.Users.Attributes.PhoneNumber} = @PhoneNumber;");
+                    break;
+
+                default:
+                    return (false, null, Error.NewError(ErrorType.InvalidSearchType, "The search type provided is invalid."));
+            }
+
+            string command = commandBuilder.ToString();
             IDbConnection ravenMySqlConnection = dbConnectionFactory.GetRavenMySqlDbConnection();
 
             using (ravenMySqlConnection)
