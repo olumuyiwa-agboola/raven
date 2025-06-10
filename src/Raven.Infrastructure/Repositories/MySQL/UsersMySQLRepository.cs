@@ -7,9 +7,9 @@ using MySql.Data.MySqlClient;
 using Raven.Core.Models.Shared;
 using Raven.Core.Libraries.Enums;
 using Raven.Core.Models.Entities;
+using Raven.Core.Libraries.Constants;
 using Raven.Core.Abstractions.Factories;
 using Raven.Core.Abstractions.Repositories;
-using Raven.Core.Libraries.Constants;
 
 namespace Raven.Infrastructure.Repositories.MySQL
 {

@@ -1,4 +1,6 @@
-﻿namespace Raven.Core.Models.DTOs
+﻿using Raven.Core.Libraries.Constants;
+
+namespace Raven.Core.Models.DTOs
 {
     /// <summary>
     /// Represents a data transfer object (DTO) for updating user information.
@@ -18,10 +20,10 @@
                 throw new ArgumentException("At least one field must be provided for update.");
             }
 
-            LastName = new("last_name", lastName);
-            FirstName = new("first_name", firstName);
-            PhoneNumber = new("phone_number", phoneNumber);
-            EmailAddress = new("email_address", emailAddress);
+            LastName = new($"{DataStores.Users.Attributes.LastName}", lastName);
+            FirstName = new($"{DataStores.Users.Attributes.FirstName}", firstName);
+            PhoneNumber = new($"{DataStores.Users.Attributes.PhoneNumber}", phoneNumber);
+            EmailAddress = new($"{DataStores.Users.Attributes.EmailAddress}", emailAddress);
         }
 
         public Property LastName { get; set; }
