@@ -36,12 +36,12 @@ namespace Raven.Core.Models.Requests
             RuleFor(x => x.LastName)
                 .IsRequired()
                 .MustNotExceed(100)
-                .MustContainOnlyAllowedCharacters();
+                .MustContainOnlyAllowedCharactersForNames();
 
             RuleFor(x => x.FirstName)
                 .IsRequired()
                 .MustNotExceed(100)
-                .MustContainOnlyAllowedCharacters();
+                .MustContainOnlyAllowedCharactersForNames();
 
             RuleFor(x => x.PhoneNumber)
                 .IsRequired()

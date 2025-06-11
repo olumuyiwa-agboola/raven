@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
 using Raven.Core.Libraries.Constants;
-using Raven.Core.Models.DTOs;
-using System.ComponentModel.DataAnnotations;
 
 namespace Raven.Core.Models.Requests
 {
@@ -55,12 +53,12 @@ namespace Raven.Core.Models.Requests
             RuleFor(x => x.LastName)
                 .IsRequired()
                 .MustNotExceed(100)
-                .MustContainOnlyAllowedCharacters();
+                .MustContainOnlyAllowedCharactersForNames();
 
             RuleFor(x => x.FirstName)
                 .IsRequired()
                 .MustNotExceed(100)
-                .MustContainOnlyAllowedCharacters();
+                .MustContainOnlyAllowedCharactersForNames();
 
             RuleFor(x => x.PhoneNumber)
                 .IsRequired()

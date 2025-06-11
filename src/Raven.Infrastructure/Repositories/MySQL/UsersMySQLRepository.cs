@@ -170,6 +170,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
         {
             DynamicParameters parameters = new();
             parameters.Add("UserId", userId);
+            parameters.Add("LastUpdatedAt", DateTime.Now);
 
             StringBuilder commandBuilder = new($"UPDATE {DataStores.Users.Name} SET ");
 
@@ -183,7 +184,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
                 commandBuilder.Append($"{property.ColumnName} = @{property.ColumnName}, ");
             }
 
-            commandBuilder.Length -= 2;
+            commandBuilder.Append($"{DataStores.Users.Attributes.LastUpdatedAt} = @LastUpdatedAt");
             commandBuilder.Append($" WHERE {DataStores.Users.Attributes.UserId} = @UserId;");
 
             string command = commandBuilder.ToString();

@@ -31,9 +31,9 @@ public class UsersController(IUsersService _usersService) : ControllerBase
 
     [HttpDelete]
     [Route("{userId}")]
-    public async Task<IActionResult> DeleteUser([FromRoute] string userId)
+    public async Task<IActionResult> DeleteUser(UserIdRouteParameter routeParameter)
     {
-        var (isSuccess, deleteUserResponse, problemDetails) = await _usersService.DeleteUser(userId);
+        var (isSuccess, deleteUserResponse, problemDetails) = await _usersService.DeleteUser(routeParameter.UserId);
 
         return isSuccess ?
             StatusCode((int)HttpStatusCode.OK, deleteUserResponse) :
@@ -42,9 +42,9 @@ public class UsersController(IUsersService _usersService) : ControllerBase
 
     [HttpPut]
     [Route("{userId}")]
-    public async Task<IActionResult> UpdateUser(string userId, UpdateUserRequest request)
+    public async Task<IActionResult> UpdateUser(UserIdRouteParameter routeParameter, UpdateUserRequest request)
     {
-        var (isSuccess, updateUserResponse, problemDetails) = await _usersService.UpdateUser(userId, request);
+        var (isSuccess, updateUserResponse, problemDetails) = await _usersService.UpdateUser(routeParameter.UserId, request);
 
         return isSuccess ?
             StatusCode((int)HttpStatusCode.OK, updateUserResponse) :
