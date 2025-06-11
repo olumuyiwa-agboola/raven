@@ -1,3 +1,5 @@
+using Scalar.AspNetCore;
+
 namespace Raven.Api.Extensions
 {
     internal static class WebApplicationExtensions
@@ -7,6 +9,15 @@ namespace Raven.Api.Extensions
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                app.MapScalarApiReference(options =>
+                {
+                    options
+                    .WithTitle("Raven - OpenAPI Documentation")
+                    .WithFavicon("https://img.icons8.com/external-icongeek26-glyph-icongeek26/64/external-raven-birds-icongeek26-glyph-icongeek26.png");
+                });
+
+                app.MapGet("/", () => Results.Redirect("/scalar/v1"))
+                    .ExcludeFromDescription();
             }
 
             app.UseHttpsRedirection();
