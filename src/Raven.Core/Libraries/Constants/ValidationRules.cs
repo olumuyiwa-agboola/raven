@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Raven.Core.Libraries.Enums;
 
 namespace Raven.Core.Libraries.Constants
 {
@@ -32,6 +33,12 @@ namespace Raven.Core.Libraries.Constants
                 .WithMessage("Is not a valid email address.");
         }
 
+        public static IRuleBuilderOptions<T, SearchType> MustBeAValidSearchType<T>(this IRuleBuilder<T, SearchType> ruleBuilder)
+        {
+            return ruleBuilder
+                .IsInEnum().WithMessage("Must be 'UserId' or 'EmailAddress' or 'PhoneNumber'");
+        }
+
         public static IRuleBuilderOptions<T, string> MustNotExceed<T>(this IRuleBuilder<T, string> ruleBuilder, int maximumLength)
         {
             return ruleBuilder
@@ -46,7 +53,7 @@ namespace Raven.Core.Libraries.Constants
                 .WithMessage($"Contains unallowed characters.");
         }
 
-        public static IRuleBuilderOptions<T, string> MustContainOnlyAllowedCharactersForUserId<T>(this IRuleBuilder<T, string> ruleBuilder)
+        public static IRuleBuilderOptions<T, string> MustContainOnlyAllowedCharactersForUserIds<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
             return ruleBuilder
                 .Matches("^[A-Za-z0-9]+$")
