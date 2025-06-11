@@ -22,14 +22,14 @@ namespace Raven.Core.Libraries.Constants
         public static IRuleBuilderOptions<T, string> IsRequired<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
             return ruleBuilder
-                .NotEmpty().WithMessage("Is required");
+                .NotEmpty().WithMessage("Is not provided.");
         }
 
         public static IRuleBuilderOptions<T, string> MustBeAValidEmailAddress<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
             return ruleBuilder
                 .EmailAddress()
-                .WithMessage("Is not a valid email addres.");
+                .WithMessage("Is not a valid email address.");
         }
 
         public static IRuleBuilderOptions<T, string> MustNotExceed<T>(this IRuleBuilder<T, string> ruleBuilder, int maximumLength)
@@ -39,10 +39,17 @@ namespace Raven.Core.Libraries.Constants
                 .WithMessage($"Exceeds {maximumLength} characters.");
         }
 
-        public static IRuleBuilderOptions<T, string> MustContainOnlyAllowedCharacters<T>(this IRuleBuilder<T, string> ruleBuilder)
+        public static IRuleBuilderOptions<T, string> MustContainOnlyAllowedCharactersForNames<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
             return ruleBuilder
                 .Matches("^[A-Za-z0-9-_ ]+$")
+                .WithMessage($"Contains unallowed characters.");
+        }
+
+        public static IRuleBuilderOptions<T, string> MustContainOnlyAllowedCharactersForUserId<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            return ruleBuilder
+                .Matches("^[A-Za-z0-9]+$")
                 .WithMessage($"Contains unallowed characters.");
         }
 
