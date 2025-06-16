@@ -1,12 +1,12 @@
 ﻿using Bogus;
-using System.Net;
 using FakeItEasy;
+using System.Net;
 using FluentAssertions;
 using Raven.Core.Services;
 using Raven.Core.Models.Shared;
-using Raven.Core.Models.Requests;
-using Raven.Core.Models.Entities;
 using Raven.Core.Libraries.Enums;
+using Raven.Core.Models.Entities;
+using Raven.Core.Models.Requests;
 using Raven.Core.Libraries.Constants;
 using Raven.Core.Abstractions.Repositories;
 

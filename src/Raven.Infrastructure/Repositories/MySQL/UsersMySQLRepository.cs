@@ -115,13 +115,13 @@ namespace Raven.Infrastructure.Repositories.MySQL
             StringBuilder commandBuilder = new();
             commandBuilder.Append($"""
                 SELECT 
-                    {DataStores.Users.Attributes.UserId} AS UserId, 
-                    {DataStores.Users.Attributes.FirstName} AS FirstName, 
-                    {DataStores.Users.Attributes.LastName} AS LastName, 
-                    {DataStores.Users.Attributes.EmailAddress} AS EmailAddress,
+                    {DataStores.Users.Attributes.UserId} AS UserId,
+                    {DataStores.Users.Attributes.LastName} AS LastName,
+                    {DataStores.Users.Attributes.FirstName} AS FirstName,
+                    {DataStores.Users.Attributes.CreatedAt} AS CreatedAt,
                     {DataStores.Users.Attributes.PhoneNumber} AS PhoneNumber,
-                    {DataStores.Users.Attributes.CreatedAt} AS CreatedAt, 
-                    {DataStores.Users.Attributes.LastUpdatedAt} AS LastUpdatedAt 
+                    {DataStores.Users.Attributes.EmailAddress} AS EmailAddress,
+                    {DataStores.Users.Attributes.LastUpdatedAt} AS LastUpdatedAt
                 FROM 
                     {DataStores.Users.Name} 
                 """);
