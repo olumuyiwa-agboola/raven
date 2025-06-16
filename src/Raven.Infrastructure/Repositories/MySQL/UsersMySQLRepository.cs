@@ -109,7 +109,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
             }
         }
 
-        public async Task<(bool, User?, Error?)> GetUser(string searchParameter, SearchType searchType)
+        public async Task<(bool, User?, Error?)> GetUser(string searchParameter, SearchParameter searchType)
         {
             DynamicParameters parameters = new();
             StringBuilder commandBuilder = new();
@@ -128,17 +128,17 @@ namespace Raven.Infrastructure.Repositories.MySQL
 
             switch (searchType)
             {
-                case SearchType.UserId:
+                case SearchParameter.UserId:
                     parameters.Add("UserId", searchParameter);
                     commandBuilder.Append($"WHERE {DataStores.Users.Attributes.UserId} = @UserId;");
                     break;
 
-                case SearchType.EmailAddress:
+                case SearchParameter.EmailAddress:
                     parameters.Add("EmailAddress", searchParameter);
                     commandBuilder.Append($"WHERE {DataStores.Users.Attributes.EmailAddress} = @EmailAddress;");
                     break;
 
-                case SearchType.PhoneNumber:
+                case SearchParameter.PhoneNumber:
                     parameters.Add("PhoneNumber", searchParameter);
                     commandBuilder.Append($"WHERE {DataStores.Users.Attributes.PhoneNumber} = @PhoneNumber;");
                     break;
@@ -176,12 +176,12 @@ namespace Raven.Infrastructure.Repositories.MySQL
 
             foreach (PropertyInfo propertyInfo in typeof(UserUpdateDto).GetProperties())
             {
-                var property = (Property)propertyInfo.GetValue(updates)!;
+                var property = (Core.Models.Shared.Attribute)propertyInfo.GetValue(updates)!;
 
                 if (string.IsNullOrWhiteSpace(property?.Value)) continue;
 
-                parameters.Add(property.ColumnName, property.Value);
-                commandBuilder.Append($"{property.ColumnName} = @{property.ColumnName}, ");
+                parameters.Add(property.Name, property.Value);
+                commandBuilder.Append($"{property.Name} = @{property.Name}, ");
             }
 
             commandBuilder.Append($"{DataStores.Users.Attributes.LastUpdatedAt} = @LastUpdatedAt");

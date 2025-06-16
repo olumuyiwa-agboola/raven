@@ -1,6 +1,6 @@
 ﻿namespace Raven.Core.Libraries.Enums
 {
-    public enum SearchType
+    public enum SearchParameter
     {
         UserId,
 

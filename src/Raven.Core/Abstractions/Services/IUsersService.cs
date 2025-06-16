@@ -16,7 +16,7 @@ namespace Raven.Core.Abstractions.Services
         /// <summary>
         /// Retrieves the user associated with the specified search parameter.
         /// </summary>
-        /// <remarks>Use this method to retrieve the details of a specific user using one of the available <see cref="SearchType"/>. Ensure that
+        /// <remarks>Use this method to retrieve the details of a specific user using one of the available <see cref="SearchParameter"/>. Ensure that
         /// the provided <paramref name="searchParameter"/> and <paramref name="searchType"/> are valid and correspond to an existing user in the
         /// system.</remarks>
         /// <param name="searchParameter">The unique identifier of the user for whom the user information is to be retrieved. This parameter
@@ -29,7 +29,7 @@ namespace Raven.Core.Abstractions.Services
         ///     <item>a <see cref="ProblemDetails"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>    
         /// </returns>
-        Task<(bool, GetUserResponse?, ProblemDetails?)> GetUser(string searchParameter, SearchType searchType);
+        Task<(bool, GetUserResponse?, ProblemDetails?)> GetUser(string searchParameter, SearchParameter searchType);
 
         /// <summary>
         /// Deletes the user associated with the specified user identifier.

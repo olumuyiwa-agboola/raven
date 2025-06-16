@@ -16,15 +16,22 @@ namespace Raven.Core.Models.Responses
         }
 
         /// <summary>
-        /// Gets or initializes the user identifier associated with the user.
+        /// The user identifier associated with the user.
         /// </summary>
         public string? UserId { get; init; }
 
         /// <summary>
-        /// Gets or initializes the date and time the user was last updated.
+        /// The date and time the user was last updated.
         /// </summary>
         public string? LastUpdatedAt { get; init; }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="UpdateUserResponse"/> class using the unique identifer
+        /// of the deleted user.
+        /// </summary>
+        /// <param name="userId">The unique identifier of the updated user. Cannot be null.</param>
+        /// <returns>A <see cref="UpdateUserResponse"/> instance containing the unique identifier and
+        /// the <see langword="DateTimeOffSet"/> of update of the user.</returns>
         public static UpdateUserResponse Create(string userId)
             => new(userId, DateTimeOffset.Now);
     }

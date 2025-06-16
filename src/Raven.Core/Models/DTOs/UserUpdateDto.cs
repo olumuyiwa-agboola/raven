@@ -1,4 +1,5 @@
-﻿using Raven.Core.Libraries.Constants;
+﻿using Raven.Core.Models.Shared;
+using Raven.Core.Libraries.Constants;
 
 namespace Raven.Core.Models.DTOs
 {
@@ -26,18 +27,24 @@ namespace Raven.Core.Models.DTOs
             EmailAddress = new($"{DataStores.Users.Attributes.EmailAddress}", emailAddress);
         }
 
-        public Property LastName { get; set; }
+        /// <summary>
+        /// An instance of the <see cref="Attribute"/> class containing the user's new last name and the associated database attribute name.
+        /// </summary>
+        public Shared.Attribute LastName { get; set; }
 
-        public Property FirstName { get; set; }
+        /// <summary>
+        /// An instance of the <see cref="Attribute"/> class containing the user's new first name and the associated database attribute name.
+        /// </summary>
+        public Shared.Attribute FirstName { get; set; }
 
-        public Property PhoneNumber { get; set; }
+        /// <summary>
+        /// An instance of the <see cref="Attribute"/> class containing the user's new phone number and the associated database attribute name.
+        /// </summary>
+        public Shared.Attribute PhoneNumber { get; set; }
 
-        public Property EmailAddress { get; set; }
+        /// <summary>
+        /// An instance of the <see cref="Attribute"/> class containing the user's new email address and the associated database attribute name.
+        /// </summary>
+        public Shared.Attribute EmailAddress { get; set; }
     }
-
-    public record Property(string ColumnName, string? Value)
-    {
-        public string? Value = Value;
-
-        public string ColumnName = ColumnName;
-    }}
+}

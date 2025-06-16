@@ -16,15 +16,23 @@ namespace Raven.Core.Models.Responses
         }
 
         /// <summary>
-        /// Gets or initializes the user identifier associated with the user.
+        /// The user identifier associated with the user.
         /// </summary>
         public string? UserId { get; init; }
 
         /// <summary>
-        /// Gets or initializes the date and time the user was created.
+        /// The date and time the user was created.
         /// </summary>
         public string? CreatedAt { get; init; }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="CreateUserResponse"/> class using the generate unique 
+        /// identifier of the user and the date and time when the user was created.
+        /// </summary>
+        /// <param name="userId">The generated unique identifier of the new user. Cannot be null.</param>
+        /// <param name="createdAt">The <see langword="DateTimeOffSet"/> the user was created at. Cannot be null.</param>
+        /// <returns>A <see cref="CreateUserResponse"/> instance containing the unique identifier and the <see langword="DateTimeOffSet"/>
+        /// of creation of the new user.</returns>
         public static CreateUserResponse Create(string userId, DateTimeOffset createdAt)
             => new(userId, createdAt);
     }

@@ -22,40 +22,47 @@ namespace Raven.Core.Models.Responses
         }
 
         /// <summary>
-        /// Gets or initializes the user identifier associated with the user.
+        /// The user identifier associated with the user.
         /// </summary>
         public string? UserId { get; init; }
 
         /// <summary>
-        /// Gets or initializes the email address associated with the user.
+        /// The email address associated with the user.
         /// </summary>
         public string? EmailAddress { get; init; }
 
         /// <summary>
-        /// Gets or initializes the phone number associated with the user.
+        /// The phone number associated with the user.
         /// </summary>
         public string? PhoneNumber { get; init; }
 
         /// <summary>
-        /// Gets or initializes the first name associated with the user.
+        /// The first name associated with the user.
         /// </summary>
         public string? FirstName { get; init; }
 
         /// <summary>
-        /// Gets or initializes the last name associated with the user.
+        /// The last name associated with the user.
         /// </summary>
         public string? LastName { get; init; }
 
         /// <summary>
-        /// Gets or initializes the date and time the user was created.
+        /// The date and time the user was created.
         /// </summary>
         public string? CreatedAt { get; init; }
 
         /// <summary>
-        /// Gets or initializes the date and time the user was last updated.
+        /// The date and time the user was last updated.
         /// </summary>
         public string? LastUpdatedAt { get; init; }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="GetUserResponse"/> class from a 
+        /// <see cref="User"/> object.
+        /// </summary>
+        /// <param name="user">The user object to initialize the response with. Cannot be null.</param>
+        /// <returns>A <see cref="GetUserResponse"/> instance containing details of the specified user
+        /// to be returned as part of the response to a request to retrieve user details.</returns>
         public static GetUserResponse Create(User user)
             => new(user);
     }

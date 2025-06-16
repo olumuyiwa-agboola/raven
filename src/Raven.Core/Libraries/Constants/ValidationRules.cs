@@ -33,7 +33,7 @@ namespace Raven.Core.Libraries.Constants
                 .WithMessage("Is not a valid email address.");
         }
 
-        public static IRuleBuilderOptions<T, SearchType> MustBeAValidSearchType<T>(this IRuleBuilder<T, SearchType> ruleBuilder)
+        public static IRuleBuilderOptions<T, SearchParameter> MustBeAValidSearchType<T>(this IRuleBuilder<T, SearchParameter> ruleBuilder)
         {
             return ruleBuilder
                 .IsInEnum().WithMessage("Must be 'UserId' or 'EmailAddress' or 'PhoneNumber'");

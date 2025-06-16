@@ -17,10 +17,22 @@ namespace Raven.Core.Models.Shared
             Message = message;
         }
 
+        /// <summary>
+        /// The error type.
+        /// </summary>
         public ErrorType Type { get; }
 
+        /// <summary>
+        /// The error message.
+        /// </summary>
         public string Message { get; }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="Error"/> class with the specified error type and message.
+        /// </summary>
+        /// <param name="type">The error type.</param>
+        /// <param name="message">The error message.</param>
+        /// <returns>An instance of the <see cref="Error"/> class.</returns>
         public static Error NewError(ErrorType type, string message) => new(type, message);
     }
 }

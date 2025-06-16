@@ -3,14 +3,32 @@ using Raven.Core.Libraries.Constants;
 
 namespace Raven.Core.Models.Requests
 {
-    public class UpdateUserRequest
+    /// <summary>
+    /// Represents the body of a POST request to update a user's information.
+    /// </summary>
+    /// <remarks>This class is used to encapsulate the data required to update a user's profile,
+    /// obtained from the body of a POST request to the relevant endpoint. All properties are 
+    /// optional, and any property left unset will not be updated.</remarks>
+    public record UpdateUserRequest
     {
+        /// <summary>
+        /// The new last name of the user.
+        /// </summary>
         public string LastName { get; set; } = string.Empty;
 
+        /// <summary>
+        /// The new first name of the user.
+        /// </summary>
         public string FirstName { get; set; } = string.Empty;
 
+        /// <summary>
+        /// The new phone number of the user.
+        /// </summary>
         public string PhoneNumber { get; set; } = string.Empty;
 
+        /// <summary>
+        /// The new email address of the user.
+        /// </summary>
         public string EmailAddress { get; set; } = string.Empty;
     }
 

@@ -22,7 +22,7 @@ public class UsersController(IUsersService _usersService) : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetUser(GetUserRequest request)
     {
-        var (isSuccess, getUserResponse, problemDetails) = await _usersService.GetUser(request.SearchParameter, request.SearchType);
+        var (isSuccess, getUserResponse, problemDetails) = await _usersService.GetUser(request.Value, request.SearchParameter);
 
         return isSuccess ?
             StatusCode((int)HttpStatusCode.OK, getUserResponse) :
