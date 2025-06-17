@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using MySql.Data.MySqlClient;
 using Raven.Core.Libraries.Enums;
-using Raven.Core.Models.Configuration;
 
 namespace Raven.Core.Libraries.Constants
 {

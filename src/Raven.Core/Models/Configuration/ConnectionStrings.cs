@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using Raven.Core.Libraries.Constants;
-using Raven.Core.Abstractions.Factories;
 
 namespace Raven.Core.Models.Configuration
 {
@@ -27,7 +26,7 @@ namespace Raven.Core.Models.Configuration
     /// </remarks>
     public class ConnectionStringsValidator : AbstractValidator<ConnectionStrings>
     {
-        public ConnectionStringsValidator(IDbConnectionFactory dbConnectionFactory)
+        public ConnectionStringsValidator()
         {
             RuleFor(model => model.RavenMySQLConnectionString)
                 .MustBeAbleToEstablishAMySqlDatabaseConnection();
