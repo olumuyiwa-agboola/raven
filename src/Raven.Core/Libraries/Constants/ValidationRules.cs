@@ -39,6 +39,17 @@ namespace Raven.Core.Libraries.Constants
                 .IsInEnum().WithMessage("Must be 'UserId' or 'EmailAddress' or 'PhoneNumber'");
         }
 
+        public static IRuleBuilderOptions<T, string> MustBeAValidFilePath<T>(this IRuleBuilder<T, string> ruleBuilder)
+        {
+            return (IRuleBuilderOptions<T, string>)ruleBuilder.Custom((filePath, context) =>
+            {
+                if (!File.Exists(filePath))
+                {
+                    context.AddFailure("File path does not exist.");
+                }
+            });
+        }
+
         public static IRuleBuilderOptions<T, string> MustNotExceed<T>(this IRuleBuilder<T, string> ruleBuilder, int maximumLength)
         {
             return ruleBuilder
