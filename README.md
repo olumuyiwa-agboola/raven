@@ -8,13 +8,9 @@
 
 ## Overview
 
-**Raven** is a robust and scalable backend service designed for generating, sending, and validating authorization codes, exposed 
-via a REST API and a gRPC service. 
-Implemented as a backend development practice project, it demonstrates adherence to the hexagonal architecture, clean and secure
-coding principles, implementation of relevant design patterns, and thorough API documentation for both REST and gRPC interfaces.
-
-This project serves as a portfolio piece to showcase my understanding and application of various backend development concepts and 
-best practices.
+**Raven** is a unit testing & integration testing practice project implementing a backend service for generating, sending, and 
+validating one-time passwords (OTPs), exposed via a REST API.a robust and scalable backend service designed for generating, sending, 
+and validating authorization codes, exposed via a REST API.
 
 ## Key Features
 
@@ -22,7 +18,6 @@ best practices.
 * SMS (placeholder for actual implementation).
 * **Authorization Code Validation:** Secure and reliable authorization code validation with configurable expiration and retry count.
 * **REST API:** Well-documented RESTful API for easy integration with web and mobile applications.
-* **gRPC Service:** High-performance gRPC service for internal microservice communication.
 * **Hexagonal Architecture:** Clear separation of concerns with distinct layers for presentation, domain, and infrastructure.
 * **Design Patterns:** Implementation of relevant design patterns to promote maintainability and scalability.
 * **Clean Code:** Focus on writing readable, maintainable, and well-tested code.
@@ -35,7 +30,6 @@ Raven was implemented using the following technologies and libraries:
 * **Language:** [C#](https://docs.microsoft.com/en-us/dotnet/csharp/)
 * **Backend Frameworks:** [.NET Core & ASP.NET Core](https://dotnet.microsoft.com/download/dotnet-core)
 * **REST API:** [ASP.NET Core Web API](https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-9.0)
-* **gRPC:** [ASP.NET Core gRPC (Grpc.AspNetCore NuGet package)](https://github.com/grpc/grpc-dotnet)
 * **API Documentation (REST):** [Microsoft.OpenAPI](https://github.com/microsoft/OpenAPI.NET) & [Scalar](https://github.com/scalar/scalar/blob/main/integrations/aspnetcore/README.md).
 * **Dependency Injection:** [Microsoft.Extensions.DependencyInjection](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection)
 * **Configuration:** [ASP.NET Core configuration system](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-9.0)
@@ -43,7 +37,7 @@ Raven was implemented using the following technologies and libraries:
 * **Logging:** [Serilog](https://serilog.net/)
 * **Testing:** [xUnit](https://xunit.net/)
 * **Data Access:** [Dapper](https://github.com/DapperLib/Dapper)
-* **Database**: [SQL Server 2022](https://www.microsoft.com/en-us/sql-server/sql-server-2022) (not tightly coupled)
+* **Database**: [MySQL 9.3](https://dev.mysql.com/doc/refman/9.3/en/mysql-nutshell.html) (not tightly coupled)
 
 ## License
 
