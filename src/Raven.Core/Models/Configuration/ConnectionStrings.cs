@@ -27,7 +27,7 @@ namespace Raven.Core.Models.Configuration
     /// </remarks>
     public class ConnectionStringsValidator : AbstractValidator<ConnectionStrings>
     {
-        public ConnectionStringsValidator()
+        public ConnectionStringsValidator(IDbConnectionFactory dbConnectionFactory)
         {
             RuleFor(model => model.RavenMySQLConnectionString)
                 .MustBeAbleToEstablishAMySqlDatabaseConnection();
