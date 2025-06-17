@@ -70,7 +70,7 @@ namespace Raven.Core.Libraries.Constants
                     }
                     catch (Exception ex)
                     {
-                        context.AddFailure($"Connection string is invalid: {ex.Message}");
+                        context.AddFailure($"Unable to connect to database: {ex.Message}");
                     }
                 }
             });
