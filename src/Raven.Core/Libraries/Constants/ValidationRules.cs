@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using MySql.Data.MySqlClient;
-using Raven.Core.Abstractions.Factories;
 using Raven.Core.Libraries.Enums;
 using Raven.Core.Models.Configuration;
 
@@ -44,7 +43,7 @@ namespace Raven.Core.Libraries.Constants
 
         public static IRuleBuilderOptions<T, string> MustBeAValidFilePath<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
-            return (IRuleBuilderOptions<T, string>)ruleBuilder.Custom((filePath, context) =>
+            return (IRuleBuilderOptions<T, string>)ruleBuilder.Custom((filePath, context) => 
             {
                 if (!File.Exists(filePath))
                 {
