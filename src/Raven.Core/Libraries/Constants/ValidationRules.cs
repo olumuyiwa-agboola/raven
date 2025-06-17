@@ -64,7 +64,9 @@ namespace Raven.Core.Libraries.Constants
                     try
                     {
                         using var connection = new MySqlConnection(value);
+
                         connection.Open();
+                        connection.Close();
                     }
                     catch (Exception ex)
                     {
