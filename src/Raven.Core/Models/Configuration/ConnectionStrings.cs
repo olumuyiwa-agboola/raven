@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using Raven.Core.Libraries.Constants;
+using Raven.Core.Abstractions.Factories;
 
 namespace Raven.Core.Models.Configuration
 {
@@ -28,7 +30,7 @@ namespace Raven.Core.Models.Configuration
         public ConnectionStringsValidator()
         {
             RuleFor(model => model.RavenMySQLConnectionString)
-                .NotEmpty().WithMessage($"{nameof(ConnectionStrings.RavenMySQLConnectionString)} is required");
+                .MustBeAbleToEstablishAMySqlDatabaseConnection();
         }
     }
 }
