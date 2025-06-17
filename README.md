@@ -9,8 +9,7 @@
 ## Overview
 
 **Raven** is a unit testing & integration testing practice project implementing a backend service for generating, sending, and 
-validating one-time passwords (OTPs), exposed via a REST API.a robust and scalable backend service designed for generating, sending, 
-and validating authorization codes, exposed via a REST API.
+validating one-time passwords (OTPs), exposed via a REST API.
 
 ## Key Features
 
