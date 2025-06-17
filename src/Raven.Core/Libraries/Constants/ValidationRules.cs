@@ -1,5 +1,8 @@
 ﻿using FluentValidation;
+using MySql.Data.MySqlClient;
+using Raven.Core.Abstractions.Factories;
 using Raven.Core.Libraries.Enums;
+using Raven.Core.Models.Configuration;
 
 namespace Raven.Core.Libraries.Constants
 {
@@ -46,6 +49,29 @@ namespace Raven.Core.Libraries.Constants
                 if (!File.Exists(filePath))
                 {
                     context.AddFailure("File path does not exist.");
+                }
+            });
+        }
+
+        public static IRuleBuilderOptions<T, string?> MustBeAbleToEstablishAMySqlDatabaseConnection<T>(this IRuleBuilder<T, string?> ruleBuilder)
+        {
+            return (IRuleBuilderOptions<T, string?>)ruleBuilder.Custom((value, context) =>
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    context.AddFailure("Connection string is required.");
+                }
+                else
+                {
+                    try
+                    {
+                        using var connection = new MySqlConnection(value);
+                        connection.Open();
+                    }
+                    catch (Exception ex)
+                    {
+                        context.AddFailure($"Connection string is invalid: {ex.Message}");
+                    }
                 }
             });
         }
