@@ -15,3 +15,11 @@ and [Gerard Meszaros's xUnit Test Patterns](https://www.oreilly.com/library/view
 - [FluentMigrator](https://fluentmigrator.github.io/) for running migrations on test databases,
 - [TestContainers](https://testcontainers.com/) for creating throwaway test databases against which integration tests will be run, and,
 - [Coverlet](https://github.com/coverlet-coverage/coverlet) for measuring code coverage.
+
+## API Specification
+| API | Description | Request body | Response body |
+|-----|-------------|--------------|---------------|
+|GET /api/users?searchType=\{searchType\}&value=\{value\} | Get a user whose information matches the given search value | None | Single user object |
+|POST /api/users | Add a user to the database | Single user details object | Operation response object |
+|PUT /api/users/{userid} | Update the details of the user whose ID is given | Single user details object | Operation response object |
+|DELETE /api/users/{userid} | Delete the user whose ID from the database | None | Operation response object |
