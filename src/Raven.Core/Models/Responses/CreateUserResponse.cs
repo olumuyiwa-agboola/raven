@@ -1,4 +1,4 @@
-﻿using Humanizer;
+﻿using System.ComponentModel;
 
 namespace Raven.Core.Models.Responses
 {
@@ -12,17 +12,13 @@ namespace Raven.Core.Models.Responses
         private CreateUserResponse(string userId, DateTimeOffset createdAt)
         {
             UserId = userId;
-            CreatedAt = $"{createdAt.ToString("dddd dd MMMM, yyyy, hh:mm:ss tt")} ({createdAt.Humanize()})";
+            CreatedAt = $"{createdAt.ToString("dddd dd MMMM, yyyy, hh:mm:ss tt")}";
         }
 
-        /// <summary>
-        /// The user identifier associated with the user.
-        /// </summary>
+        [Description("The system-assigned ID of the user.")]
         public string? UserId { get; init; }
 
-        /// <summary>
-        /// The date and time the user was created.
-        /// </summary>
+        [Description("The date and time the user was created, formatted as 'dddd dd MMMM, yyyy, hh:mm:ss tt' (e.g., 'Monday 01 January, 2024, 12:00:00 AM').")]
         public string? CreatedAt { get; init; }
 
         /// <summary>

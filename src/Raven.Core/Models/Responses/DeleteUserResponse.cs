@@ -1,4 +1,4 @@
-﻿using Humanizer;
+﻿using System.ComponentModel;
 
 namespace Raven.Core.Models.Responses
 {
@@ -12,18 +12,14 @@ namespace Raven.Core.Models.Responses
         private DeleteUserResponse(string userId, DateTimeOffset now)
         {
             UserId = userId;
-            DeletedAt = $"{now.ToString("dddd dd MMMM, yyyy, hh:mm:ss tt")} ({now.Humanize()})";
+            DeletedAt = $"{now.ToString("dddd dd MMMM, yyyy, hh:mm:ss tt")}";
         }
 
-        /// <summary>
-        /// The user identifier associated with the user.
-        /// </summary>
-        public string? UserId { get; init; }
+        [Description("The system-assigned ID of the user.")]
+        public string UserId { get; init; }
 
-        /// <summary>
-        /// The date and time the user was deleted.
-        /// </summary>
-        public string? DeletedAt { get; init; }
+        [Description("The date and time the user was deleted, formatted as 'dddd dd MMMM, yyyy, hh:mm:ss tt' (e.g., 'Monday 01 January, 2024, 12:00:00 AM').")]
+        public string DeletedAt { get; init; }
 
         /// <summary>
         /// Creates a new instance of the <see cref="DeleteUserResponse"/> class using the unique identifer

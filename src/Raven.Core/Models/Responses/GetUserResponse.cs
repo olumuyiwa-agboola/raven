@@ -1,4 +1,5 @@
 ﻿using Humanizer;
+using System.ComponentModel;
 using Raven.Core.Models.Entities;
 
 namespace Raven.Core.Models.Responses
@@ -21,40 +22,26 @@ namespace Raven.Core.Models.Responses
             LastUpdatedAt = $"{user.LastUpdatedAt.ToString("dddd dd MMMM, yyyy, hh:mm:ss tt")} ({user.LastUpdatedAt.Humanize()})";
         }
 
-        /// <summary>
-        /// The user identifier associated with the user.
-        /// </summary>
-        public string? UserId { get; init; }
+        [Description("The first name of the user.")]
+        public string FirstName { get; init; }
 
-        /// <summary>
-        /// The email address associated with the user.
-        /// </summary>
-        public string? EmailAddress { get; init; }
+        [Description("The last name of the user.")]
+        public string LastName { get; init; }
 
-        /// <summary>
-        /// The phone number associated with the user.
-        /// </summary>
-        public string? PhoneNumber { get; init; }
+        [Description("The system-assigned ID of the user.")]
+        public string UserId { get; init; }
 
-        /// <summary>
-        /// The first name associated with the user.
-        /// </summary>
-        public string? FirstName { get; init; }
+        [Description("The email address associated with the user.")]
+        public string EmailAddress { get; init; }
 
-        /// <summary>
-        /// The last name associated with the user.
-        /// </summary>
-        public string? LastName { get; init; }
+        [Description("The phone number associated with the user.")]
+        public string PhoneNumber { get; init; }
 
-        /// <summary>
-        /// The date and time the user was created.
-        /// </summary>
-        public string? CreatedAt { get; init; }
+        [Description("The date and time the user was created, formatted as 'dddd dd MMMM, yyyy, hh:mm:ss tt' with a humanized duration since creation.")]
+        public string CreatedAt { get; init; }
 
-        /// <summary>
-        /// The date and time the user was last updated.
-        /// </summary>
-        public string? LastUpdatedAt { get; init; }
+        [Description("The date and time the user was last updated, formatted as 'dddd dd MMMM, yyyy, hh:mm:ss tt' with a humanized duration since last update.")]
+        public string LastUpdatedAt { get; init; }
 
         /// <summary>
         /// Creates a new instance of the <see cref="GetUserResponse"/> class from a 

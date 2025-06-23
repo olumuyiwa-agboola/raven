@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using System.ComponentModel;
 using Raven.Core.Libraries.Constants;
 
 namespace Raven.Core.Models.Requests
@@ -10,24 +11,16 @@ namespace Raven.Core.Models.Requests
     /// from the body of a POST request to the relevant endpoint.</remarks>
     public record CreateUserRequest
     {
-        /// <summary>
-        /// The last name of the user.
-        /// </summary>
+        [Description("The last name of the user.")]
         public string LastName { get; init; } = string.Empty;
 
-        /// <summary>
-        /// The first name of the user.
-        /// </summary>
+        [Description("The first name of the user.")]
         public string FirstName { get; init; } = string.Empty;
 
-        /// <summary>
-        /// The phone number of the user.
-        /// </summary>
+        [Description("The phone number of the user.")]
         public string PhoneNumber { get; init; } = string.Empty;
 
-        /// <summary>
-        /// The email address of the user.
-        /// </summary>
+        [Description("The email address of the user.")]
         public string EmailAddress { get; init; } = string.Empty;
     }
 

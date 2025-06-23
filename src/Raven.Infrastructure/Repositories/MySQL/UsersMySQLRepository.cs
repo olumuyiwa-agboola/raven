@@ -109,7 +109,7 @@ namespace Raven.Infrastructure.Repositories.MySQL
             }
         }
 
-        public async Task<(bool, User?, Error?)> GetUser(string searchParameter, SearchParameter searchType)
+        public async Task<(bool, User?, Error?)> GetUser(string searchParameter, SearchType searchType)
         {
             DynamicParameters parameters = new();
             StringBuilder commandBuilder = new();
@@ -128,17 +128,17 @@ namespace Raven.Infrastructure.Repositories.MySQL
 
             switch (searchType)
             {
-                case SearchParameter.UserId:
+                case SearchType.UserId:
                     parameters.Add("UserId", searchParameter);
                     commandBuilder.Append($"WHERE {DataStores.Users.Attributes.UserId} = @UserId;");
                     break;
 
-                case SearchParameter.EmailAddress:
+                case SearchType.EmailAddress:
                     parameters.Add("EmailAddress", searchParameter);
                     commandBuilder.Append($"WHERE {DataStores.Users.Attributes.EmailAddress} = @EmailAddress;");
                     break;
 
-                case SearchParameter.PhoneNumber:
+                case SearchType.PhoneNumber:
                     parameters.Add("PhoneNumber", searchParameter);
                     commandBuilder.Append($"WHERE {DataStores.Users.Attributes.PhoneNumber} = @PhoneNumber;");
                     break;

@@ -89,7 +89,7 @@ namespace Raven.IntegrationTests.RepositoryTests
             User existingUser = UsersTable.SeedData[3];
 
             // Act
-            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(existingUser.UserId, SearchParameter.UserId);
+            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(existingUser.UserId, SearchType.UserId);
 
             // Assert
             isRetrievedSuccessfully.Should().BeTrue();
@@ -111,7 +111,7 @@ namespace Raven.IntegrationTests.RepositoryTests
             User existingUser = UsersTable.SeedData[3];
 
             // Act
-            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(existingUser.EmailAddress, SearchParameter.EmailAddress);
+            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(existingUser.EmailAddress, SearchType.EmailAddress);
 
             // Assert
             isRetrievedSuccessfully.Should().BeTrue();
@@ -133,7 +133,7 @@ namespace Raven.IntegrationTests.RepositoryTests
             User existingUser = UsersTable.SeedData[3];
 
             // Act
-            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(existingUser.PhoneNumber, SearchParameter.PhoneNumber);
+            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(existingUser.PhoneNumber, SearchType.PhoneNumber);
 
             // Assert
             isRetrievedSuccessfully.Should().BeTrue();
@@ -155,7 +155,7 @@ namespace Raven.IntegrationTests.RepositoryTests
             User nonExistentUser = Users.Generate(1).First();
 
             // Act
-            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(nonExistentUser.UserId, SearchParameter.UserId);
+            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(nonExistentUser.UserId, SearchType.UserId);
 
             // Assert
             isRetrievedSuccessfully.Should().BeFalse();
@@ -171,7 +171,7 @@ namespace Raven.IntegrationTests.RepositoryTests
             User nonExistentUser = Users.Generate(1).First();
 
             // Act
-            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(nonExistentUser.EmailAddress, SearchParameter.EmailAddress);
+            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(nonExistentUser.EmailAddress, SearchType.EmailAddress);
 
             // Assert
             isRetrievedSuccessfully.Should().BeFalse();
@@ -187,7 +187,7 @@ namespace Raven.IntegrationTests.RepositoryTests
             User nonExistentUser = Users.Generate(1).First();
 
             // Act
-            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(nonExistentUser.PhoneNumber, SearchParameter.PhoneNumber);
+            var (isRetrievedSuccessfully, user, error) = await sut.GetUser(nonExistentUser.PhoneNumber, SearchType.PhoneNumber);
 
             // Assert
             isRetrievedSuccessfully.Should().BeFalse();

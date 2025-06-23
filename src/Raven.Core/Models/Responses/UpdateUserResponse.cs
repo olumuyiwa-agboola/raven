@@ -1,4 +1,4 @@
-﻿using Humanizer;
+﻿using System.ComponentModel;
 
 namespace Raven.Core.Models.Responses
 {
@@ -12,17 +12,13 @@ namespace Raven.Core.Models.Responses
         private UpdateUserResponse(string userId, DateTimeOffset now)
         {
             UserId = userId;
-            LastUpdatedAt = $"{now.ToString("dddd dd MMMM, yyyy, hh:mm:ss tt")} ({now.Humanize()})";
+            LastUpdatedAt = $"{now.ToString("dddd dd MMMM, yyyy, hh:mm:ss tt")}";
         }
 
-        /// <summary>
-        /// The user identifier associated with the user.
-        /// </summary>
-        public string? UserId { get; init; }
+        [Description("The system-assigned ID of the user.")]
+        public string UserId { get; init; }
 
-        /// <summary>
-        /// The date and time the user was last updated.
-        /// </summary>
+        [Description("The date and time the user was last updated.")]
         public string? LastUpdatedAt { get; init; }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using System.ComponentModel;
 using Microsoft.AspNetCore.Mvc;
 using Raven.Core.Libraries.Constants;
 
@@ -12,10 +13,8 @@ namespace Raven.Core.Models.Requests
     /// </remarks>
     public record UserIdRouteParameter
     {
-        /// <summary>
-        /// The unique identifier for the user.
-        /// </summary>
         [FromRoute]
+        [Description("The system-assigned ID of the user.")]
         public string UserId { get; set; } = string.Empty;
     }
 

@@ -12,7 +12,7 @@
                     {
                         Title = "Raven",
                         Version = "v1.0",
-                        Description = "RESTful API for auth code management.",
+                        Description = "RESTful API for user management.",
                         Contact = new()
                         {
                             Email = "agboolaod@gmail.com",

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using System.ComponentModel;
 using Microsoft.AspNetCore.Mvc;
 using Raven.Core.Libraries.Enums;
 using Raven.Core.Libraries.Constants;
@@ -14,34 +15,30 @@ namespace Raven.Core.Models.Requests
     /// request to the relevant endpoint.</remarks>
     public record GetUserRequest
     {
-        /// <summary>
-        /// The <see cref="Libraries.Enums.SearchParameter"/> to be used.
-        /// </summary>
         [FromQuery]
-        public SearchParameter SearchParameter { get; init; }
+        [Description("The type of search to be performed.")]
+        public SearchType SearchType { get; init; }
 
-        /// <summary>
-        /// The value of the search parameter to be used.
-        /// </summary>
         [FromQuery]
+        [Description("The search value to be used to query the database.")]
         public string Value { get; init; } = string.Empty;
     }
 
     /// <summary>
     /// Provides validation rules for <see cref="GetUserRequest"/> objects.
     /// </summary>
-    /// <remarks>This validator ensures that the <see cref="GetUserRequest.SearchParameter"/> is valid and
+    /// <remarks>This validator ensures that the <see cref="GetUserRequest.SearchType"/> is valid and
     /// applies specific validation rules to the <see cref="GetUserRequest.Value"/> based on the selected search
-    /// parameter. Supported search parameters include <see cref="SearchParameter.UserId"/> (the default value), 
-    /// <see cref="SearchParameter.PhoneNumber"/>,  and <see cref="SearchParameter.EmailAddress"/>.</remarks>
+    /// parameter. Supported search parameters include <see cref="SearchType.UserId"/> (the default value), 
+    /// <see cref="SearchType.PhoneNumber"/>,  and <see cref="SearchType.EmailAddress"/>.</remarks>
     public class GetUserRequestValidator : AbstractValidator<GetUserRequest>
     {
         public GetUserRequestValidator()
         {
-            RuleFor(x => x.SearchParameter)
+            RuleFor(x => x.SearchType)
                 .MustBeAValidSearchType();
 
-            When(x => x.SearchParameter == SearchParameter.UserId, () =>
+            When(x => x.SearchType == SearchType.UserId, () =>
             {
                 RuleFor(x => x.Value)
                     .IsRequired()
@@ -49,7 +46,7 @@ namespace Raven.Core.Models.Requests
                     .MustContainOnlyAllowedCharactersForUserIds();
             });
 
-            When(x => x.SearchParameter == SearchParameter.PhoneNumber, () =>
+            When(x => x.SearchType == SearchType.PhoneNumber, () =>
             {
                 RuleFor(x => x.Value)
                     .IsRequired()
@@ -57,7 +54,7 @@ namespace Raven.Core.Models.Requests
                     .MustContainOnlyAllowedCharactersForPhoneNumbers();
             });
 
-            When(x => x.SearchParameter == SearchParameter.EmailAddress, () =>
+            When(x => x.SearchType == SearchType.EmailAddress, () =>
             {
                 RuleFor(x => x.Value)
                     .IsRequired()

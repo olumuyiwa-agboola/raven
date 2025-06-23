@@ -37,7 +37,7 @@ namespace Raven.Core.Services
                 return (false, null, ProblemDetailsFactory.CreateProblemDetailsFromError(error!));
         }
 
-        public async Task<(bool, GetUserResponse?, ProblemDetails?)> GetUser(string userId, SearchParameter searchType)
+        public async Task<(bool, GetUserResponse?, ProblemDetails?)> GetUser(string userId, SearchType searchType)
         {
             var (userWasRetrievedSuccessfully, user, error) = await _usersRepo.GetUser(userId, searchType);
 
