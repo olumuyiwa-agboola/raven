@@ -6,43 +6,13 @@
 [![gRPC](https://img.shields.io/badge/gRPC-v1.x-lightgrey.svg)](https://grpc.io/)
 [![Maintenance](https://img.shields.io/badge/Maintained-Yes-brightgreen.svg)](#maintenance)
 
-## Overview
-
-**Raven** is a unit testing & integration testing practice project implementing a backend service for generating, sending, and 
-validating one-time passwords (OTPs), exposed via a REST API.a robust and scalable backend service designed for generating, sending, 
-and validating authorization codes, exposed via a REST API.
-
-## Key Features
-
-* **Authorization Code Generation & Delivery:** Secure and configurable authorization code generation and delivery via email and 
-* SMS (placeholder for actual implementation).
-* **Authorization Code Validation:** Secure and reliable authorization code validation with configurable expiration and retry count.
-* **REST API:** Well-documented RESTful API for easy integration with web and mobile applications.
-* **Hexagonal Architecture:** Clear separation of concerns with distinct layers for presentation, domain, and infrastructure.
-* **Design Patterns:** Implementation of relevant design patterns to promote maintainability and scalability.
-* **Clean Code:** Focus on writing readable, maintainable, and well-tested code.
-* **Configuration:** Flexible configuration options for various service parameters.
-* **Logging:** Comprehensive and structured logging for monitoring and debugging.
-* **Error Handling:** Robust error handling and consistent error response formats.
-
-## Tech Stack
-Raven was implemented using the following technologies and libraries:
-* **Language:** [C#](https://docs.microsoft.com/en-us/dotnet/csharp/)
-* **Backend Frameworks:** [.NET Core & ASP.NET Core](https://dotnet.microsoft.com/download/dotnet-core)
-* **REST API:** [ASP.NET Core Web API](https://learn.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-9.0)
-* **API Documentation (REST):** [Microsoft.OpenAPI](https://github.com/microsoft/OpenAPI.NET) & [Scalar](https://github.com/scalar/scalar/blob/main/integrations/aspnetcore/README.md).
-* **Dependency Injection:** [Microsoft.Extensions.DependencyInjection](https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection)
-* **Configuration:** [ASP.NET Core configuration system](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-9.0)
-* **Input Validation:** [FluentValidation](https://github.com/FluentValidation/FluentValidation)
-* **Logging:** [Serilog](https://serilog.net/)
-* **Testing:** [xUnit](https://xunit.net/)
-* **Data Access:** [Dapper](https://github.com/DapperLib/Dapper)
-* **Database**: [MySQL 9.3](https://dev.mysql.com/doc/refman/9.3/en/mysql-nutshell.html) (not tightly coupled)
-
-## License
-
-This project is licensed under the [GNU General Public License v3](https://opensource.org/license/gpl-3-0) License.
-
------
-
-**Thanks for checking out Raven\!**
+**Raven** is a unit & integration testing practice project that implements a REST API that exposes simple CRUD operations.
+My goal is to try out the ideas from [Vladimir Khorikov's Unit Testing: Principles, Practices and Patterns](https://www.manning.com/books/unit-testing)
+and [Gerard Meszaros's xUnit Test Patterns](https://www.oreilly.com/library/view/xunit-test-patterns/9780131495050/) while learning to use tools like:
+- [xUnit](https://xunit.net/) as my testing framework, 
+- [FluentAssertions](https://fluentassertions.com/) for writing readable assertions, 
+- [Bogus](https://github.com/bchavez/Bogus) for generating fake data, 
+- [FakeItEasy](https://github.com/FakeItEasy/FakeItEasy) for creatng fake objects and mocks,
+- [FluentMigrator](https://fluentmigrator.github.io/) for running migrations on test databases,
+- [TestContainers](https://testcontainers.com/) for creating throwaway test databases against which integration tests will be run, and,
+- [Coverlet](https://github.com/coverlet-coverage/coverlet) for measuring code coverage.
