@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Api", "src\Raven.Api\Raven.Api.csproj", "{14A919B8-9728-E7F7-9509-9A7F8A1F3A0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.API", "src\Raven.Api\Raven.API.csproj", "{14A919B8-9728-E7F7-9509-9A7F8A1F3A0D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Core", "src\Raven.Core\Raven.Core.csproj", "{1854E55D-44F1-9F41-57EC-A70749714B86}"
 EndProject
@@ -16,6 +16,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.IntegrationTests", "tests\Raven.IntegrationTests\Raven.IntegrationTests.csproj", "{28DDBF1A-2881-457A-BC20-7CC4B7F1BF2C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.UnitTests", "tests\Raven.UnitTests\Raven.UnitTests.csproj", "{64FBEAA2-705C-4840-B65A-6DDFD10B6B8C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{089100B1-113F-4E66-888A-E83F3999EAFD}"
+	ProjectSection(SolutionItems) = preProject
+		coverlet.runsettings = coverlet.runsettings
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
