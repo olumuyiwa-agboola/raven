@@ -21,7 +21,7 @@ public class UsersController(IUsersService _usersService) : ControllerBase
         var (isSuccess, createUserResponse, problemDetails) = await _usersService.CreateUser(request);
 
         return isSuccess ? 
-            StatusCode((int)HttpStatusCode.OK, createUserResponse) : 
+            StatusCode((int)HttpStatusCode.Created, createUserResponse) : 
             StatusCode((int)problemDetails!.Status!, problemDetails);
     }
 
@@ -45,33 +45,33 @@ public class UsersController(IUsersService _usersService) : ControllerBase
 
     [HttpDelete]
     [Route("{userId}")]
-    [ProducesResponseType(typeof(DeleteUserResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.UnprocessableEntity)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.InternalServerError)]
     [EndpointDescription("Deletes the user whose system-assigned ID is given from the database.")]
     public async Task<IActionResult> DeleteUser(UserIdRouteParameter routeParameter)
     {
-        var (isSuccess, deleteUserResponse, problemDetails) = await _usersService.DeleteUser(routeParameter.UserId);
+        var (isSuccess, problemDetails) = await _usersService.DeleteUser(routeParameter.UserId);
 
         return isSuccess ?
-            StatusCode((int)HttpStatusCode.OK, deleteUserResponse) :
+            StatusCode((int)HttpStatusCode.NoContent) :
             StatusCode((int)problemDetails!.Status!, problemDetails);
     }
 
     [HttpPut]
     [Route("{userId}")]
-    [ProducesResponseType(typeof(UpdateUserResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.UnprocessableEntity)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.InternalServerError)]
     [EndpointDescription("Updates the details of the user whose system-assigned ID is given in the database.")]
     public async Task<IActionResult> UpdateUser(UserIdRouteParameter routeParameter, UpdateUserRequest request)
     {
-        var (isSuccess, updateUserResponse, problemDetails) = await _usersService.UpdateUser(routeParameter.UserId, request);
+        var (isSuccess, problemDetails) = await _usersService.UpdateUser(routeParameter.UserId, request);
 
         return isSuccess ?
-            StatusCode((int)HttpStatusCode.OK, updateUserResponse) :
+            StatusCode((int)HttpStatusCode.NoContent) :
             StatusCode((int)problemDetails!.Status!, problemDetails);
     }
 }

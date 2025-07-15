@@ -27,25 +27,25 @@ namespace Raven.Core.Models.Responses
         }
 
         [Description("The first name of the user.")]
-        public string FirstName { get; init; }
+        public string? FirstName { get; init; }
 
         [Description("The last name of the user.")]
-        public string LastName { get; init; }
+        public string? LastName { get; init; }
 
         [Description("The system-assigned ID of the user.")]
-        public string UserId { get; init; }
+        public string? UserId { get; init; }
 
         [Description("The email address associated with the user.")]
-        public string EmailAddress { get; init; }
+        public string? EmailAddress { get; init; }
 
         [Description("The phone number associated with the user.")]
-        public string PhoneNumber { get; init; }
+        public string? PhoneNumber { get; init; }
 
         [Description("The date and time the user was created, formatted as 'dddd dd MMMM, yyyy, hh:mm:ss tt' with a humanized duration since creation.")]
-        public string CreatedAt { get; init; }
+        public string? CreatedAt { get; init; }
 
         [Description("The date and time the user was last updated, formatted as 'dddd dd MMMM, yyyy, hh:mm:ss tt' with a humanized duration since last update.")]
-        public string LastUpdatedAt { get; init; }
+        public string? LastUpdatedAt { get; init; }
 
         /// <summary>
         /// Creates a new instance of the <see cref="GetUserResponse"/> class from a 

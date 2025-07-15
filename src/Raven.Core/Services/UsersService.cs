@@ -22,19 +22,19 @@ namespace Raven.Core.Services
             var (userWasSavedSuccessfully, error) = await _usersRepo.SaveUser(user);
 
             if (userWasSavedSuccessfully)
-                return (true, CreateUserResponse.Create(user.UserId, user.CreatedAt), null);
+                return (true, CreateUserResponse.Create(user.UserId), null);
             else
                 return (false, null, ProblemDetailsFactory.CreateProblemDetailsFromError(error!));
         }
 
-        public async Task<(bool, DeleteUserResponse?, ProblemDetails?)> DeleteUser(string userId)
+        public async Task<(bool, ProblemDetails?)> DeleteUser(string userId)
         {
             var (userWasDeletedSuccessfully, error) = await _usersRepo.DeleteUser(userId);
 
             if (userWasDeletedSuccessfully)
-                return (true, DeleteUserResponse.Create(userId), null);
+                return (true, null);
             else
-                return (false, null, ProblemDetailsFactory.CreateProblemDetailsFromError(error!));
+                return (false, ProblemDetailsFactory.CreateProblemDetailsFromError(error!));
         }
 
         public async Task<(bool, GetUserResponse?, ProblemDetails?)> GetUser(string userId, SearchType searchType)
@@ -47,16 +47,16 @@ namespace Raven.Core.Services
                 return (false, null, ProblemDetailsFactory.CreateProblemDetailsFromError(error!));
         }
 
-        public async Task<(bool, UpdateUserResponse?, ProblemDetails?)> UpdateUser(string userId, UpdateUserRequest request)
+        public async Task<(bool, ProblemDetails?)> UpdateUser(string userId, UpdateUserRequest request)
         {
             var updates = new UserUpdateDto(request.FirstName, request.LastName, request.PhoneNumber, request.EmailAddress);
 
             var (userWasUpdatedSuccessfully, error) = await _usersRepo.UpdateUser(userId, updates);
 
             if (userWasUpdatedSuccessfully)
-                return (true, UpdateUserResponse.Create(userId), null);
+                return (true, null);
             else
-                return (false, null, ProblemDetailsFactory.CreateProblemDetailsFromError(error!));
+                return (false, ProblemDetailsFactory.CreateProblemDetailsFromError(error!));
         }
     }
 }

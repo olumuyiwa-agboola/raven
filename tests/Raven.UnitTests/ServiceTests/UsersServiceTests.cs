@@ -32,7 +32,6 @@ namespace Raven.UnitTests.ServiceTests
 
             createUserResponse.Should().NotBeNull();
             createUserResponse.UserId.Should().NotBeNullOrWhiteSpace();
-            createUserResponse.CreatedAt.Should().NotBeNullOrWhiteSpace();
 
             problemDetails.Should().BeNull();
         }
@@ -72,12 +71,11 @@ namespace Raven.UnitTests.ServiceTests
             A.CallTo(() => usersRepository.DeleteUser(nonExistentUserId)).Returns((false, error));
 
             // Act
-            var (isUserDeleteSuccessful, deleteUserResponse, problemDetails) = await sut.DeleteUser(nonExistentUserId);
+            var (isUserDeleteSuccessful, problemDetails) = await sut.DeleteUser(nonExistentUserId);
 
             // Assert
             isUserDeleteSuccessful.Should().BeFalse();
 
-            deleteUserResponse.Should().BeNull();
             problemDetails.Should().NotBeNull();
             problemDetails.Detail?.Should().Be(error.Message);
         }

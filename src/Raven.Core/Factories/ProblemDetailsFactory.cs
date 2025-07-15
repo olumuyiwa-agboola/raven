@@ -39,9 +39,9 @@ namespace Raven.Core.Factories
             };
         }
 
-        public static ValidationProblemDetails CreateValidationProblemDetails(Dictionary<string, string> validationFailures, string instance)
+        public static ProblemDetails CreateValidationProblemDetails(Dictionary<string, List<string>> validationFailures, string instance)
         {
-            var validationProblemDetails = new ValidationProblemDetails()
+            var validationProblemDetails = new ProblemDetails()
             {
                 Instance = instance,
                 Status = (int)HttpStatusCode.BadRequest,
@@ -49,9 +49,7 @@ namespace Raven.Core.Factories
                 Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
             };
 
-            validationFailures.ToList().ForEach(failure =>
-                validationProblemDetails.Errors.Add(failure.Key, [failure.Value])
-            );
+            validationProblemDetails.Extensions.Add("errors", validationFailures);
 
             return validationProblemDetails;
         }

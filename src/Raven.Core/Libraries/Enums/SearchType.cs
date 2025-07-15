@@ -2,10 +2,10 @@
 {
     public enum SearchType
     {
-        UserId,
+        UserId = 1,
 
-        PhoneNumber,
+        PhoneNumber = 2,
 
-        EmailAddress
+        EmailAddress = 3
     }
 }

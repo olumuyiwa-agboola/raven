@@ -1,7 +1,10 @@
-﻿namespace Raven.API.Configurations
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Raven.API.Configurations
 {
     internal static class OpenApiDocumentation
     {
+        [ExcludeFromCodeCoverage]
         internal static IServiceCollection AddOpenApiDocumentation(this IServiceCollection services)
         {
             services.AddOpenApi(options =>

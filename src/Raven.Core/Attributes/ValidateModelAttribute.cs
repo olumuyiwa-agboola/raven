@@ -28,13 +28,13 @@ namespace Raven.Core.Attributes
 
                     if (!validationResult.IsValid)
                     {
-                        Dictionary<string, string> validationFailures = [];
+                        Dictionary<string, List<string>> validationFailures = [];
                         foreach (ValidationFailure failure in validationResult.Errors)
                         {
-                            if (validationFailures.ContainsKey(failure.PropertyName))
-                                validationFailures[failure.PropertyName] += " | " + failure.ErrorMessage;
+                            if (!validationFailures.ContainsKey(failure.PropertyName))
+                                validationFailures[failure.PropertyName] = [failure.ErrorMessage];
                             else
-                                validationFailures[failure.PropertyName] = failure.ErrorMessage;
+                                validationFailures[failure.PropertyName].Add(failure.ErrorMessage);
                         }
 
                         var validationProblemDetails = ProblemDetailsFactory.CreateValidationProblemDetails(validationFailures, context.HttpContext.Request.Path);

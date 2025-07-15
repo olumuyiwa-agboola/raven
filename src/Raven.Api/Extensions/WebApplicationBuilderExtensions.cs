@@ -1,7 +1,9 @@
 using Raven.API.Configurations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Raven.API.Extensions
 {
+    [ExcludeFromCodeCoverage]
     internal static class WebApplicationBuilderExtensions
     {
         internal static WebApplication ConfigureApplicationBuilder(this WebApplicationBuilder builder)

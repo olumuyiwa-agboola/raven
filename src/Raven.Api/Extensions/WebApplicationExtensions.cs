@@ -1,9 +1,11 @@
 using Scalar.AspNetCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Raven.API.Extensions
 {
     internal static class WebApplicationExtensions
     {
+        [ExcludeFromCodeCoverage]
         internal static WebApplication ConfigureRequestPipeline(this WebApplication app)
         {
             if (app.Environment.IsDevelopment())

@@ -38,11 +38,10 @@ namespace Raven.Core.Abstractions.Services
         /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
         /// <list type="number">
         ///     <item>a <see langword="bool"/> indicating whether the operation was successful,</item>
-        ///     <item>a <see cref="DeleteUserResponse"/> object representing the response object to be returned to the caller if no error occured, and</item>
         ///     <item>a <see cref="ProblemDetails"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>    
         /// </returns>
-        Task<(bool, DeleteUserResponse?, ProblemDetails?)> DeleteUser(string userId);
+        Task<(bool, ProblemDetails?)> DeleteUser(string userId);
 
         /// <summary>
         /// Creates a new user with the specified details.
@@ -70,10 +69,9 @@ namespace Raven.Core.Abstractions.Services
         /// <returns>A task that represents the asynchronous operation. The task result contains a tuple which consists of:
         /// <list type="number">
         ///     <item>a <see langword="bool"/> indicating whether the operation was successful,</item>
-        ///     <item>a <see cref="UpdateUserResponse"/> object representing the response object to be returned to the caller if no error occured, and</item>
         ///     <item>a <see cref="ProblemDetails"/> object holding the error information, or <see langword="null"/> if no error occured.</item>
         /// </list>
         /// </returns>
-        Task<(bool, UpdateUserResponse?, ProblemDetails?)> UpdateUser(string userId, UpdateUserRequest request);
+        Task<(bool, ProblemDetails?)> UpdateUser(string userId, UpdateUserRequest request);
     }
 }

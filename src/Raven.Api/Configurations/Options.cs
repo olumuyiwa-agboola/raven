@@ -1,11 +1,13 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.Options;
 using Raven.Core.Models.Configuration;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Raven.API.Configurations
 {
     internal static class Options
     {
+        [ExcludeFromCodeCoverage]
         internal static IServiceCollection ConfigureOptions(this IServiceCollection services)
         {
             services.AddOptionsWithFluentValidation<LoggerSettings, LoggerSettingsValidator>(nameof(LoggerSettings));
@@ -14,9 +16,10 @@ namespace Raven.API.Configurations
             return services;
         }
 
-        private static IServiceCollection AddOptionsWithFluentValidation<TOptions, 
-            TOptionsValidator>(this IServiceCollection services, string configurationSection)
-            where TOptions : class, new() where TOptionsValidator : AbstractValidator<TOptions>
+        [ExcludeFromCodeCoverage]
+        private static IServiceCollection AddOptionsWithFluentValidation<TOptions,
+                TOptionsValidator>(this IServiceCollection services, string configurationSection)
+                where TOptions : class, new() where TOptionsValidator : AbstractValidator<TOptions>
         {
             services.AddScoped<IValidator<TOptions>, TOptionsValidator>();
 
@@ -28,6 +31,7 @@ namespace Raven.API.Configurations
             return services;
         }
 
+        [ExcludeFromCodeCoverage]
         private static OptionsBuilder<TOptions> ValidateOptionsWithFluentValidation<TOptions>(this OptionsBuilder<TOptions> builder) where TOptions : class
         {
             builder.Services.AddSingleton<IValidateOptions<TOptions>>(
@@ -43,6 +47,7 @@ namespace Raven.API.Configurations
     {
         private readonly string? _name = name;
 
+        [ExcludeFromCodeCoverage]
         public ValidateOptionsResult Validate(string? name, TOptions options)
         {
             if (_name != null && _name != name)
