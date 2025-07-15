@@ -4,7 +4,7 @@ using Raven.Core.Models.Requests;
 using Raven.Core.Models.Responses;
 using Raven.Core.Abstractions.Services;
 
-namespace Raven.Api.Controllers;
+namespace Raven.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

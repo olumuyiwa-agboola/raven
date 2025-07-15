@@ -10,8 +10,8 @@ namespace Raven.IntegrationTests.Data.TestData
             var userFaker = new Faker<User>(locale: "en_NG")
                 .RuleFor(user => user.LastName, faker => faker.Name.LastName())
                 .RuleFor(user => user.FirstName, faker => faker.Name.FirstName())
-                .RuleFor(user => user.CreatedAt, _ => DateTimeOffset.Now)
-                .RuleFor(user => user.LastUpdatedAt, _ => DateTimeOffset.Now)
+                .RuleFor(user => user.CreatedAt, _ => DateTime.Now)
+                .RuleFor(user => user.LastUpdatedAt, _ => DateTime.Now)
                 .RuleFor(user => user.PhoneNumber, faker =>
                 {
                     string phoneNumber;

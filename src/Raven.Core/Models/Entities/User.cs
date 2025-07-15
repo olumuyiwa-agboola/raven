@@ -36,12 +36,12 @@
         /// <summary>
         /// The date and time when the user was created.
         /// </summary>
-        public DateTimeOffset CreatedAt { get; init; }
+        public DateTime CreatedAt { get; init; }
 
         /// <summary>
         /// The date and time when the user was last updated.
         /// </summary>
-        public DateTimeOffset LastUpdatedAt { get; init; }
+        public DateTime LastUpdatedAt { get; init; }
 
         /// <summary>
         /// Creates a new instance of the <see cref="User"/> class with the specified details.
@@ -60,8 +60,8 @@
                 FirstName = firstName,
                 PhoneNumber = phoneNumber,
                 EmailAddress = emailAddress,
-                CreatedAt = DateTimeOffset.Now,
-                LastUpdatedAt = DateTimeOffset.Now,
+                CreatedAt = DateTime.Now,
+                LastUpdatedAt = DateTime.Now,
                 UserId = Ulid.NewUlid().ToString()
             };
     }

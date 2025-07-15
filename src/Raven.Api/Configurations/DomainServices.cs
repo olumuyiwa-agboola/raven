@@ -1,7 +1,7 @@
 ﻿using Raven.Core.Services;
 using Raven.Core.Abstractions.Services;
 
-namespace Raven.Api.Configurations
+namespace Raven.API.Configurations
 {
     internal static class DomainServices
     {

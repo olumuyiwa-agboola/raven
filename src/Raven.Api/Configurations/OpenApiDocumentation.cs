@@ -1,4 +1,4 @@
-﻿namespace Raven.Api.Configurations
+﻿namespace Raven.API.Configurations
 {
     internal static class OpenApiDocumentation
     {

@@ -1,7 +1,7 @@
 ﻿using Raven.Core.Abstractions.Repositories;
 using Raven.Infrastructure.Repositories.MySQL;
 
-namespace Raven.Api.Configurations
+namespace Raven.API.Configurations
 {
     internal static class Repositories
     {

@@ -38,28 +38,34 @@ namespace Raven.Core.Models.Requests
             RuleFor(x => x.SearchType)
                 .MustBeAValidSearchType();
 
-            When(x => x.SearchType == SearchType.UserId, () =>
-            {
-                RuleFor(x => x.Value)
-                    .IsRequired()
-                    .MustNotExceed(50)
-                    .MustContainOnlyAllowedCharactersForUserIds();
-            });
+            RuleFor(x => x.Value)
+                .IsRequired();
 
-            When(x => x.SearchType == SearchType.PhoneNumber, () =>
+            When(x => !string.IsNullOrWhiteSpace(x.Value), () =>
             {
-                RuleFor(x => x.Value)
-                    .IsRequired()
-                    .MustNotExceed(20)
-                    .MustContainOnlyAllowedCharactersForPhoneNumbers();
-            });
+                When(x => x.SearchType == SearchType.UserId, () =>
+                {
+                    RuleFor(x => x.Value)
+                        .IsRequired()
+                        .MustNotExceed(50)
+                        .MustContainOnlyAllowedCharactersForUserIds();
+                });
 
-            When(x => x.SearchType == SearchType.EmailAddress, () =>
-            {
-                RuleFor(x => x.Value)
-                    .IsRequired()
-                    .MustNotExceed(200)
-                    .MustBeAValidEmailAddress();
+                When(x => x.SearchType == SearchType.PhoneNumber, () =>
+                {
+                    RuleFor(x => x.Value)
+                        .IsRequired()
+                        .MustNotExceed(20)
+                        .MustContainOnlyAllowedCharactersForPhoneNumbers();
+                });
+
+                When(x => x.SearchType == SearchType.EmailAddress, () =>
+                {
+                    RuleFor(x => x.Value)
+                        .IsRequired()
+                        .MustNotExceed(200)
+                        .MustBeAValidEmailAddress();
+                });
             });
         }
     }

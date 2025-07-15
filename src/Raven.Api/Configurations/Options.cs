@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 using Raven.Core.Models.Configuration;
 
-namespace Raven.Api.Configurations
+namespace Raven.API.Configurations
 {
     internal static class Options
     {

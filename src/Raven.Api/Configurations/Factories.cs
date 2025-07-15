@@ -1,7 +1,7 @@
 ﻿using Raven.Infrastructure.Factories;
 using Raven.Core.Abstractions.Factories;
 
-namespace Raven.Api.Configurations
+namespace Raven.API.Configurations
 {
     internal static class Factories
     {

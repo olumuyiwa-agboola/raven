@@ -107,7 +107,7 @@ namespace Raven.Core.Libraries.Constants
         public static IRuleBuilderOptions<T, string> MustContainOnlyAllowedCharactersForPhoneNumbers<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
             return ruleBuilder
-                .Matches("^[+0-9]+$")
+                .Matches("^[+0-9 ]+$")
                 .WithMessage($"Contains unallowed characters.");
         }
     }

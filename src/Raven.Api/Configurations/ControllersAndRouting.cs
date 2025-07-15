@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http.Json;
 using System.Text.Json.Serialization;
 
-namespace Raven.Api.Configurations
+namespace Raven.API.Configurations
 {
     internal static class ControllersAndRouting
     {

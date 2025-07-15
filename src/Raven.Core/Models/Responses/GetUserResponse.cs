@@ -11,6 +11,10 @@ namespace Raven.Core.Models.Responses
     /// response from a request to get a user sent to the relevant endpoint.</remarks>
     public record GetUserResponse
     {
+        /// <summary>
+        /// </summary>
+        public GetUserResponse() { }
+
         private GetUserResponse(User user)
         {
             UserId = user.UserId;

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Raven.Core.Models.Requests;
 
-namespace Raven.Api.Configurations
+namespace Raven.API.Configurations
 {
     internal static class AbstractValidators
     {

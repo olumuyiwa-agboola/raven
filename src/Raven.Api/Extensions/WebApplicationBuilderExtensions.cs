@@ -1,6 +1,6 @@
-using Raven.Api.Configurations;
+using Raven.API.Configurations;
 
-namespace Raven.Api.Extensions
+namespace Raven.API.Extensions
 {
     internal static class WebApplicationBuilderExtensions
     {

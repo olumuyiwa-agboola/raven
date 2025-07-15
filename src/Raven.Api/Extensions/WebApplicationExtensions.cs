@@ -1,6 +1,6 @@
 using Scalar.AspNetCore;
 
-namespace Raven.Api.Extensions
+namespace Raven.API.Extensions
 {
     internal static class WebApplicationExtensions
     {

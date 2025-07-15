@@ -8,8 +8,6 @@ namespace Raven.IntegrationTests.Data.Migrations
     [Migration(1)]
     public class UsersTable : Migration
     {
-        public static List<User> SeedData = Users.Generate(10);
-
         public override void Up()
         {
             Create.Table($"{DataStores.Users.Name}")
@@ -21,8 +19,9 @@ namespace Raven.IntegrationTests.Data.Migrations
                 .WithColumn($"{DataStores.Users.Attributes.CreatedAt}").AsDateTime()
                 .WithColumn($"{DataStores.Users.Attributes.LastUpdatedAt}").AsDateTime();
 
+            List<User> users = Users.Generate(10);
 
-            foreach (var user in SeedData)
+            foreach (var user in users)
             {
                 Insert.IntoTable($"{DataStores.Users.Name}").Row(new
                 {
