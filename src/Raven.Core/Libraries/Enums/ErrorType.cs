@@ -1,15 +1,14 @@
-﻿namespace Raven.Core.Libraries.Enums
+﻿namespace Raven.Core.Libraries.Enums;
+
+public enum ErrorType
 {
-    public enum ErrorType
-    {
-        Exception,
-        InvalidInput,
-        Unauthorized,
-        UserNotFound,
-        DatabaseError,
-        InvalidSearchType,
-        RecordAlreadyExists,
-        InternalServerError,
-        DatabaseInsertFailure
-    }
+    Exception,
+    InvalidInput,
+    Unauthorized,
+    UserNotFound,
+    DatabaseError,
+    InvalidSearchType,
+    RecordAlreadyExists,
+    InternalServerError,
+    DatabaseInsertFailure
 }

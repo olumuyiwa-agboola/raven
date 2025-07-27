@@ -1,11 +1,10 @@
-﻿namespace Raven.Core.Libraries.Enums
+﻿namespace Raven.Core.Libraries.Enums;
+
+public enum SearchType
 {
-    public enum SearchType
-    {
-        UserId = 1,
+    UserId = 1,
 
-        PhoneNumber = 2,
+    PhoneNumber = 2,
 
-        EmailAddress = 3
-    }
+    EmailAddress = 3
 }

@@ -10,118 +10,117 @@ using Microsoft.Extensions.Configuration;
 using Raven.IntegrationTests.Data.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Raven.IntegrationTests.Fixtures
+namespace Raven.IntegrationTests.Fixtures;
+
+public class ApiTestFixture : IAsyncLifetime
 {
-    public class ApiTestFixture : IAsyncLifetime
+    private MySqlContainer? _MySqlContainer = new MySqlBuilder()
+                                        .WithName("raven_test")
+                                        .WithImage("mysql:9.3")
+                                        .WithUsername("raven_test")
+                                        .WithPassword("raven_test123")
+                                        .WithPortBinding(63184, 3306)
+                                        .Build();
+
+    public List<User>? TestUsers { get; set; }
+    private IServiceScope? ServiceScope { get; set; }
+    public HttpClient? HttpClient { get; private set; }
+    private string? MySqlDbConnectionString { get; set; }
+    public WebApplicationFactory<Program>? Factory { get; private set; }
+
+    public async Task InitializeAsync()
     {
-        private MySqlContainer? _MySqlContainer = new MySqlBuilder()
-                                            .WithName("raven_test")
-                                            .WithImage("mysql:9.3")
-                                            .WithUsername("raven_test")
-                                            .WithPassword("raven_test123")
-                                            .WithPortBinding(63184, 3306)
-                                            .Build();
+        if (_MySqlContainer == null)
+            throw new Exception("_MySqlContainer is null.");
 
-        public List<User>? TestUsers { get; set; }
-        private IServiceScope? ServiceScope { get; set; }
-        public HttpClient? HttpClient { get; private set; }
-        private string? MySqlDbConnectionString { get; set; }
-        public WebApplicationFactory<Program>? Factory { get; private set; }
+        await _MySqlContainer.StartAsync();
 
-        public async Task InitializeAsync()
-        {
-            if (_MySqlContainer == null)
-                throw new Exception("_MySqlContainer is null.");
+        MySqlDbConnectionString = _MySqlContainer.GetConnectionString();
 
-            await _MySqlContainer.StartAsync();
-
-            MySqlDbConnectionString = _MySqlContainer.GetConnectionString();
-
-            Factory = new WebApplicationFactory<Program>()
-                .WithWebHostBuilder(builder =>
+        Factory = new WebApplicationFactory<Program>()
+            .WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureAppConfiguration((context, config) =>
                 {
-                    builder.ConfigureAppConfiguration((context, config) =>
+                    config.AddInMemoryCollection(new Dictionary<string, string>
                     {
-                        config.AddInMemoryCollection(new Dictionary<string, string>
-                        {
-                            ["ConnectionStrings:RavenMySQLConnectionString"] = MySqlDbConnectionString
-                        }!);
-                    });
-
-                    builder.UseEnvironment("Testing");
+                        ["ConnectionStrings:RavenMySQLConnectionString"] = MySqlDbConnectionString
+                    }!);
                 });
 
-            HttpClient = Factory.CreateClient();
-            ServiceScope = Factory.Services.CreateScope();
-
-            await RunMySqlDbMigration();
-            TestUsers = await GetSeedData();
-        }
-
-        private async Task RunMySqlDbMigration()
-        {
-            var services = new ServiceCollection()
-                  .AddFluentMigratorCore()
-                  .ConfigureRunner(rb => rb
-                      .AddMySql8()
-                      .WithGlobalConnectionString(MySqlDbConnectionString)
-                      .ScanIn(typeof(UsersTable).Assembly).For.Migrations())
-                  .AddLogging(lb => lb.AddFluentMigratorConsole())
-                  .BuildServiceProvider(false);
-
-            await Task.Run(() =>
-            {
-                using var scope = services.CreateScope();
-                var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
-                runner.MigrateUp();
+                builder.UseEnvironment("Testing");
             });
-        }
 
-        private async Task<List<User>> GetSeedData()
-        {
-            string command = $"""
-                SELECT 
-                    {DataStores.Users.Attributes.UserId} AS UserId,
-                    {DataStores.Users.Attributes.LastName} AS LastName,
-                    {DataStores.Users.Attributes.FirstName} AS FirstName,
-                    {DataStores.Users.Attributes.CreatedAt} AS CreatedAt,
-                    {DataStores.Users.Attributes.PhoneNumber} AS PhoneNumber,
-                    {DataStores.Users.Attributes.EmailAddress} AS EmailAddress,
-                    {DataStores.Users.Attributes.LastUpdatedAt} AS LastUpdatedAt
-                FROM 
-                    {DataStores.Users.Name} 
-                """;
-            var dbConnectionFactory = GetService<IDbConnectionFactory>();
-            using var connection = dbConnectionFactory.GetRavenMySqlDbConnection();
-            var result = await connection.QueryAsync<User>(command);
-            return result.ToList();
-        }
+        HttpClient = Factory.CreateClient();
+        ServiceScope = Factory.Services.CreateScope();
 
-        public async Task DisposeAsync()
-        {
-            ServiceScope?.Dispose();
-            HttpClient?.Dispose();
-            Factory?.Dispose();
-
-            if (_MySqlContainer != null)
-            {
-                await _MySqlContainer.StopAsync();
-                await _MySqlContainer.DisposeAsync();
-            }
-        }
-
-        public T GetService<T>() where T : class
-        {
-            if (ServiceScope == null)
-                throw new InvalidOperationException("ServiceScope is null.");
-
-            return ServiceScope.ServiceProvider.GetRequiredService<T>();
-        }
+        await RunMySqlDbMigration();
+        TestUsers = await GetSeedData();
     }
 
-    [CollectionDefinition("API Test Collection")]
-    public class ApiTestCollection : ICollectionFixture<ApiTestFixture>
+    private async Task RunMySqlDbMigration()
     {
+        var services = new ServiceCollection()
+              .AddFluentMigratorCore()
+              .ConfigureRunner(rb => rb
+                  .AddMySql8()
+                  .WithGlobalConnectionString(MySqlDbConnectionString)
+                  .ScanIn(typeof(UsersTable).Assembly).For.Migrations())
+              .AddLogging(lb => lb.AddFluentMigratorConsole())
+              .BuildServiceProvider(false);
 
+        await Task.Run(() =>
+        {
+            using var scope = services.CreateScope();
+            var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
+            runner.MigrateUp();
+        });
     }
+
+    private async Task<List<User>> GetSeedData()
+    {
+        string command = $"""
+            SELECT 
+                {DataStores.Users.Attributes.UserId} AS UserId,
+                {DataStores.Users.Attributes.LastName} AS LastName,
+                {DataStores.Users.Attributes.FirstName} AS FirstName,
+                {DataStores.Users.Attributes.CreatedAt} AS CreatedAt,
+                {DataStores.Users.Attributes.PhoneNumber} AS PhoneNumber,
+                {DataStores.Users.Attributes.EmailAddress} AS EmailAddress,
+                {DataStores.Users.Attributes.LastUpdatedAt} AS LastUpdatedAt
+            FROM 
+                {DataStores.Users.Name} 
+            """;
+        var dbConnectionFactory = GetService<IDbConnectionFactory>();
+        using var connection = dbConnectionFactory.GetRavenMySqlDbConnection();
+        var result = await connection.QueryAsync<User>(command);
+        return result.ToList();
+    }
+
+    public async Task DisposeAsync()
+    {
+        ServiceScope?.Dispose();
+        HttpClient?.Dispose();
+        Factory?.Dispose();
+
+        if (_MySqlContainer != null)
+        {
+            await _MySqlContainer.StopAsync();
+            await _MySqlContainer.DisposeAsync();
+        }
+    }
+
+    public T GetService<T>() where T : class
+    {
+        if (ServiceScope == null)
+            throw new InvalidOperationException("ServiceScope is null.");
+
+        return ServiceScope.ServiceProvider.GetRequiredService<T>();
+    }
+}
+
+[CollectionDefinition("API Test Collection")]
+public class ApiTestCollection : ICollectionFixture<ApiTestFixture>
+{
+
 }

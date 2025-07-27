@@ -1,9 +1,8 @@
 ﻿using System.Data;
 
-namespace Raven.Core.Abstractions.Factories
+namespace Raven.Core.Abstractions.Factories;
+
+public interface IDbConnectionFactory
 {
-    public interface IDbConnectionFactory
-    {
-        IDbConnection GetRavenMySqlDbConnection();
-    }
+    IDbConnection GetRavenMySqlDbConnection();
 }

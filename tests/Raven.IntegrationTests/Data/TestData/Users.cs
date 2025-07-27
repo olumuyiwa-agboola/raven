@@ -1,55 +1,54 @@
 ﻿using Bogus;
 using Raven.Core.Models.Entities;
 
-namespace Raven.IntegrationTests.Data.TestData
+namespace Raven.IntegrationTests.Data.TestData;
+
+public static class Users
 {
-    public static class Users
+    public static List<User> Generate(int numberOfUsers)
     {
-        public static List<User> Generate(int numberOfUsers)
-        {
-            var userFaker = new Faker<User>(locale: "en_NG")
-                .RuleFor(user => user.LastName, faker => faker.Name.LastName())
-                .RuleFor(user => user.FirstName, faker => faker.Name.FirstName())
-                .RuleFor(user => user.CreatedAt, _ => DateTime.Now)
-                .RuleFor(user => user.LastUpdatedAt, _ => DateTime.Now)
-                .RuleFor(user => user.PhoneNumber, faker =>
+        var userFaker = new Faker<User>(locale: "en_NG")
+            .RuleFor(user => user.LastName, faker => faker.Name.LastName())
+            .RuleFor(user => user.FirstName, faker => faker.Name.FirstName())
+            .RuleFor(user => user.CreatedAt, _ => DateTime.Now)
+            .RuleFor(user => user.LastUpdatedAt, _ => DateTime.Now)
+            .RuleFor(user => user.PhoneNumber, faker =>
+            {
+                string phoneNumber;
+                var usedPhoneNumbers = new HashSet<string>();
+
+                do
                 {
-                    string phoneNumber;
-                    var usedPhoneNumbers = new HashSet<string>();
+                    phoneNumber = faker.Phone.PhoneNumber();
+                } while (!usedPhoneNumbers.Add(phoneNumber));
 
-                    do
-                    {
-                        phoneNumber = faker.Phone.PhoneNumber();
-                    } while (!usedPhoneNumbers.Add(phoneNumber));
+                return phoneNumber;
+            })
+            .RuleFor(user => user.EmailAddress, (faker, user) =>
+            {
+                string emailAddress;
+                var usedEmailAddresses = new HashSet<string>();
 
-                    return phoneNumber;
-                })
-                .RuleFor(user => user.EmailAddress, (faker, user) =>
+                do
                 {
-                    string emailAddress;
-                    var usedEmailAddresses = new HashSet<string>();
+                    emailAddress = faker.Internet.Email(user.FirstName, user.LastName);
+                } while (!usedEmailAddresses.Add(emailAddress));
 
-                    do
-                    {
-                        emailAddress = faker.Internet.Email(user.FirstName, user.LastName);
-                    } while (!usedEmailAddresses.Add(emailAddress));
+                return emailAddress;
+            })
+            .RuleFor(user => user.UserId, faker =>
+            {
+                string userId;
+                var usedUserIds = new HashSet<string>();
 
-                    return emailAddress;
-                })
-                .RuleFor(user => user.UserId, faker =>
+                do
                 {
-                    string userId;
-                    var usedUserIds = new HashSet<string>();
+                    userId = Ulid.NewUlid().ToString();
+                } while (!usedUserIds.Add(userId));
 
-                    do
-                    {
-                        userId = Ulid.NewUlid().ToString();
-                    } while (!usedUserIds.Add(userId));
+                return userId;
+            });
 
-                    return userId;
-                });
-
-            return userFaker.Generate(numberOfUsers);
-        }
+        return userFaker.Generate(numberOfUsers);
     }
 }

@@ -2,16 +2,15 @@
 using System.Diagnostics.CodeAnalysis;
 using Raven.Core.Abstractions.Factories;
 
-namespace Raven.API.Configurations
-{
-    internal static class Factories
-    {
-        [ExcludeFromCodeCoverage]
-        internal static IServiceCollection AddFactories(this IServiceCollection services)
-        {
-            services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
+namespace Raven.API.Configurations;
 
-            return services;
-        }
+internal static class Factories
+{
+    [ExcludeFromCodeCoverage]
+    internal static IServiceCollection AddFactories(this IServiceCollection services)
+    {
+        services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
+
+        return services;
     }
 }

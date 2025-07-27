@@ -9,104 +9,103 @@ using Raven.IntegrationTests.Fixtures;
 using Raven.IntegrationTests.Utilities;
 using Raven.IntegrationTests.Data.TestData;
 
-namespace Raven.IntegrationTests.Tests
+namespace Raven.IntegrationTests.Tests;
+
+[Collection("API Test Collection")]
+public class UserCreationTests
 {
-    [Collection("API Test Collection")]
-    public class UserCreationTests
+    private readonly HttpClient HttpClient;
+    private readonly ApiTestFixture _fixture;
+
+    public UserCreationTests(ApiTestFixture fixture)
     {
-        private readonly HttpClient HttpClient;
-        private readonly ApiTestFixture _fixture;
+        _fixture = fixture ?? throw new ArgumentNullException(nameof(fixture));
 
-        public UserCreationTests(ApiTestFixture fixture)
+        if (_fixture.HttpClient == null)
+            throw new InvalidOperationException("HttpClient is not initialized in the fixture.");
+        HttpClient = _fixture.HttpClient;
+
+        if (_fixture.TestUsers == null)
+            throw new InvalidOperationException("Seed data is not initialized in the fixture.");
+    }
+
+    [Fact]
+    public async Task Creating_a_user_with_valid_data_returns_201Created_response_with_user_details()
+    {
+        #region Arrange
+        User nonExistingUser = Users.Generate(1)[0];
+        var requestBody = new
         {
-            _fixture = fixture ?? throw new ArgumentNullException(nameof(fixture));
+            LastName = nonExistingUser.LastName,
+            FirstName = nonExistingUser.FirstName,
+            PhoneNumber = nonExistingUser.PhoneNumber,
+            EmailAddress = nonExistingUser.EmailAddress
+        };
+        #endregion
 
-            if (_fixture.HttpClient == null)
-                throw new InvalidOperationException("HttpClient is not initialized in the fixture.");
-            HttpClient = _fixture.HttpClient;
+        #region Act
+        var response = await HttpClient.PostAsJsonAsync(Routes.CreateUser, requestBody);
+        #endregion
 
-            if (_fixture.TestUsers == null)
-                throw new InvalidOperationException("Seed data is not initialized in the fixture.");
-        }
 
-        [Fact]
-        public async Task Creating_a_user_with_valid_data_returns_201Created_response_with_user_details()
+        #region Assert
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
+
+        response.Content.Should().NotBeNull();
+        var responseContent = await response.Content.ReadAsStringAsync();
+        var createUserResponse = JsonConvert.DeserializeObject<CreateUserResponse>(responseContent);
+
+        createUserResponse.Should().NotBeNull();
+        createUserResponse.UserId.Should().NotBeNullOrWhiteSpace();
+        #endregion
+    }
+
+    [Fact]
+    public async Task Creating_a_user_with_an_existing_email_address_or_phone_number_returns_422UnprocessableEntity_response_with_the_problem_details()
+    {
+        #region Arrange
+        User existingUser = _fixture.TestUsers![2];
+        User nonExistingUser = Users.Generate(1)[0];
+        var payloads = new List<object>
         {
-            #region Arrange
-            User nonExistingUser = Users.Generate(1)[0];
-            var requestBody = new
+            new
             {
                 LastName = nonExistingUser.LastName,
                 FirstName = nonExistingUser.FirstName,
+                EmailAddress = existingUser.EmailAddress,
                 PhoneNumber = nonExistingUser.PhoneNumber,
-                EmailAddress = nonExistingUser.EmailAddress
-            };
-            #endregion
+            },
+            new
+            {
+                LastName = nonExistingUser.LastName,
+                FirstName = nonExistingUser.FirstName,
+                PhoneNumber = existingUser.PhoneNumber,
+                EmailAddress = nonExistingUser.EmailAddress,
+            },
+            new
+            {
+                LastName = nonExistingUser.LastName,
+                FirstName = nonExistingUser.FirstName,
+                PhoneNumber = existingUser.PhoneNumber,
+                EmailAddress = existingUser.EmailAddress,
+            }
+        };
+        #endregion
 
+        foreach (var payload in payloads)
+        {
             #region Act
-            var response = await HttpClient.PostAsJsonAsync(Routes.CreateUser, requestBody);
+            var response = await HttpClient.PostAsJsonAsync(Routes.CreateUser, payload);
             #endregion
-
 
             #region Assert
-            response.StatusCode.Should().Be(HttpStatusCode.Created);
+            response.StatusCode.Should().Be(HttpStatusCode.Conflict);
 
             response.Content.Should().NotBeNull();
             var responseContent = await response.Content.ReadAsStringAsync();
-            var createUserResponse = JsonConvert.DeserializeObject<CreateUserResponse>(responseContent);
-
-            createUserResponse.Should().NotBeNull();
-            createUserResponse.UserId.Should().NotBeNullOrWhiteSpace();
+            var problemDetails = JsonConvert.DeserializeObject<ProblemDetailsDto>(responseContent);
+            problemDetails.Should().NotBeNull();
             #endregion
-        }
-
-        [Fact]
-        public async Task Creating_a_user_with_an_existing_email_address_or_phone_number_returns_422UnprocessableEntity_response_with_the_problem_details()
-        {
-            #region Arrange
-            User existingUser = _fixture.TestUsers![2];
-            User nonExistingUser = Users.Generate(1)[0];
-            var payloads = new List<object>
-            {
-                new
-                {
-                    LastName = nonExistingUser.LastName,
-                    FirstName = nonExistingUser.FirstName,
-                    EmailAddress = existingUser.EmailAddress,
-                    PhoneNumber = nonExistingUser.PhoneNumber,
-                },
-                new
-                {
-                    LastName = nonExistingUser.LastName,
-                    FirstName = nonExistingUser.FirstName,
-                    PhoneNumber = existingUser.PhoneNumber,
-                    EmailAddress = nonExistingUser.EmailAddress,
-                },
-                new
-                {
-                    LastName = nonExistingUser.LastName,
-                    FirstName = nonExistingUser.FirstName,
-                    PhoneNumber = existingUser.PhoneNumber,
-                    EmailAddress = existingUser.EmailAddress,
-                }
-            };
-            #endregion
-
-            foreach (var payload in payloads)
-            {
-                #region Act
-                var response = await HttpClient.PostAsJsonAsync(Routes.CreateUser, payload);
-                #endregion
-
-                #region Assert
-                response.StatusCode.Should().Be(HttpStatusCode.Conflict);
-
-                response.Content.Should().NotBeNull();
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var problemDetails = JsonConvert.DeserializeObject<ProblemDetailsDto>(responseContent);
-                problemDetails.Should().NotBeNull();
-                #endregion
-            }
         }
     }
 }
