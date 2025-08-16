@@ -19,6 +19,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\dotnet\Olumuyiwa.AspNetCoreKit\src\Filters\Olumuyiwa.AspNetCoreKit.ActionFilters\Olumuyiwa.AspNetCoreKit.ActionFilters.csproj" />
 		<ProjectReference Include="..\Raven.Core\Raven.Core.csproj" />
 		<ProjectReference Include="..\Raven.Infrastructure\Raven.Infrastructure.csproj" />
 	</ItemGroup>

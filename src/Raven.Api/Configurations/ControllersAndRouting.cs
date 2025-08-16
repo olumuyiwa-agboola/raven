@@ -1,7 +1,7 @@
-﻿using Raven.Core.Attributes;
-using Microsoft.AspNetCore.Http.Json;
+﻿using Microsoft.AspNetCore.Http.Json;
 using System.Text.Json.Serialization;
 using System.Diagnostics.CodeAnalysis;
+using Olumuyiwa.AspNetCoreKit.ActionFilters;
 
 namespace Raven.API.Configurations;
 
@@ -12,7 +12,7 @@ internal static class ControllersAndRouting
     {
         services.AddControllers(options =>
         {
-            options.Filters.Add<ValidateModelAttribute>();
+            options.Filters.Add<ValidateRequestParametersAttribute>();
         });
         services.Configure<JsonOptions>(options =>
         {
