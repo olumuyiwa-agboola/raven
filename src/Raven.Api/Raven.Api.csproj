@@ -16,10 +16,10 @@
 		<PackageReference Include="Serilog.Extensions.Hosting" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" />
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+		<PackageReference Include="Olumuyiwa.DotNetDevKit.AspNetCore.ActionFilters" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\dotnet\Olumuyiwa.AspNetCoreKit\src\Filters\Olumuyiwa.AspNetCoreKit.ActionFilters\Olumuyiwa.AspNetCoreKit.ActionFilters.csproj" />
 		<ProjectReference Include="..\Raven.Core\Raven.Core.csproj" />
 		<ProjectReference Include="..\Raven.Infrastructure\Raven.Infrastructure.csproj" />
 	</ItemGroup>

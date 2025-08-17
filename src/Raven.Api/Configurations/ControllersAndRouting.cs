@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.Json;
 using System.Text.Json.Serialization;
 using System.Diagnostics.CodeAnalysis;
-using Olumuyiwa.AspNetCoreKit.ActionFilters;
+using Olumuyiwa.DotNetDevKit.AspNetCore.ActionFilters;
 
 namespace Raven.API.Configurations;
 
